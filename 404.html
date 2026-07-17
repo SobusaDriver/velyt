@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    // Encode the full path as a query param so GitHub Pages serves index.html
+    var l = window.location
+    l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+      l.pathname.split('/').slice(0, 2).join('/') +
+      '/?p=' + encodeURIComponent(l.pathname.slice(1) + l.search) + l.hash)
+  </script>
+</head>
+</html>

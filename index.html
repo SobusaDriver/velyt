@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title id="page-title">velyt — Tu próximo carro sin sorpresas</title>
+  <meta name="description" id="meta-desc" content="Compra con la información que el vendedor prefiere ocultar. Precio real, fallas documentadas, el vehículo que realmente necesitas." />
+  <meta name="theme-color" content="#0d0d0d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="velyt" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="canonical" href="https://sobusadriver.github.io/velyt/" />
+
+  <meta property="og:title" content="velyt — Tu próximo carro sin sorpresas" />
+  <meta property="og:description" content="Precio real multicruzado, fallas documentadas, el vehículo que realmente necesitas. Compra informado." />
+  <meta property="og:url" content="https://sobusadriver.github.io/velyt/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://sobusadriver.github.io/velyt/assets/og-image.png" />
+  <meta property="og:image:width" content="1024" />
+  <meta property="og:image:height" content="1024" />
+  <meta property="og:locale" content="es_CO" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="velyt — Tu próximo carro sin sorpresas" />
+  <meta name="twitter:description" content="Precio real multicruzado, fallas documentadas, el vehículo que realmente necesitas. Compra informado." />
+
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --bg-card: #141414;
+      --bg-card-hover: #1a1a1a;
+      --bg-nav: rgba(13,13,13,.88);
+      --border: #222;
+      --border-hover: #333;
+      --text: #f0f0f0;
+      --text-secondary: #999;
+      --text-tertiary: #666;
+      --text-muted: #777;
+      --accent: #f0f0f0;
+      --accent-dim: #999;
+      --accent-glow: rgba(255,255,255,.04);
+      --grid-line: rgba(255,255,255,.03);
+      --cta-bg: #f0f0f0;
+      --cta-text: #0d0d0d;
+      --shadow: rgba(255,255,255,.08);
+      --icon-bg: #1a1a1a;
+      --icon-border: #2a2a2a;
+      --gauge-track: #222;
+      --gauge-fill: #f0f0f0;
+      --tag-bg: #f0f0f0;
+      --tag-text: #0d0d0d;
+      --invert-badge: none;
+    }
+    .light {
+      --bg: #f5f5f5;
+      --bg-card: #fff;
+      --bg-card-hover: #fafafa;
+      --bg-nav: rgba(245,245,245,.88);
+      --border: #ddd;
+      --border-hover: #bbb;
+      --text: #111;
+      --text-secondary: #666;
+      --text-tertiary: #999;
+      --text-muted: #777;
+      --accent: #111;
+      --accent-dim: #666;
+      --accent-glow: rgba(0,0,0,.04);
+      --grid-line: rgba(0,0,0,.04);
+      --cta-bg: #111;
+      --cta-text: #f5f5f5;
+      --shadow: rgba(0,0,0,.08);
+      --icon-bg: #f0f0f0;
+      --icon-border: #ddd;
+      --gauge-track: #ddd;
+      --gauge-fill: #111;
+      --tag-bg: #111;
+      --tag-text: #f5f5f5;
+      --invert-badge: invert(1) brightness(0.9);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; transition: background .4s, color .4s; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 14px 0; transition: background .4s, backdrop-filter .4s; }
+    nav.scrolled { background: var(--bg-nav); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+    nav .container { display: flex; align-items: center; justify-content: space-between; }
+    nav .brand { display: flex; align-items: center; gap: 10px; }
+    nav .brand-icon { width: 30px; height: 30px; border-radius: 7px; }
+    nav .brand span { font-family: 'DM Sans', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: -.03em; }
+    nav .nav-actions { display: flex; align-items: center; gap: 8px; }
+    nav .theme-toggle, nav .lang-toggle { height: 36px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card); transition: border-color .2s, background .2s; display: flex; align-items: center; justify-content: center; }
+    nav .theme-toggle { width: 36px; }
+    nav .theme-toggle svg { width: 16px; height: 16px; stroke: var(--text-secondary); }
+    nav .theme-toggle:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+    nav .lang-toggle { padding: 0 12px; font-size: .8rem; font-weight: 500; color: var(--text-secondary); }
+    nav .lang-toggle:hover { color: var(--text); border-color: var(--border-hover); }
+
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; padding: 120px 0 80px; overflow: hidden; }
+    .hero-bg-pattern { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+    .hero-bg-pattern::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 1120px; height: 100%; background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, black 30%, transparent 70%); -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 0%, black 30%, transparent 70%); }
+    .hero-bg-pattern::after { content: ''; position: absolute; top: 15%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); }
+    .hero-content { position: relative; z-index: 1; text-align: center; max-width: 780px; }
+    .hero-logo { width: 80px; height: 80px; border-radius: 19px; margin: 0 auto 28px; box-shadow: 0 0 0 1px var(--border); }
+    .hero h1 { font-family: 'DM Sans', sans-serif; font-size: clamp(2.5rem, 6vw, 4rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.05; margin-bottom: 20px; }
+    .hero h1 .hl { color: var(--accent); }
+    .hero p { font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text-secondary); max-width: 560px; margin: 0 auto 36px; line-height: 1.7; }
+    .hero-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--cta-bg); color: var(--cta-text); padding: 16px 36px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.05rem; transition: opacity .2s, transform .2s; }
+    .hero-cta:hover { opacity: .9; transform: translateY(-2px); }
+    .hero-cta svg { width: 18px; height: 18px; }
+    .hero-sub { margin-top: 14px; font-size: .8rem; color: var(--text-tertiary); }
+
+    .gauge-cluster { display: flex; justify-content: center; gap: 48px; margin-top: 56px; flex-wrap: wrap; }
+    .gauge { text-align: center; position: relative; }
+    .gauge-circle { width: 80px; height: 80px; border-radius: 50%; position: relative; margin: 0 auto 8px; }
+    .gauge-circle svg { width: 80px; height: 80px; transform: rotate(-90deg); }
+    .gauge-circle svg circle { fill: none; stroke-width: 4; }
+    .gauge-circle .track { stroke: var(--gauge-track); }
+    .gauge-circle .fill { stroke: var(--gauge-fill); stroke-linecap: round; stroke-dasharray: 213.6; transition: stroke-dashoffset 1.2s ease; }
+    .gauge-circle .value { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'DM Sans', sans-serif; font-size: 1.25rem; font-weight: 700; }
+    .gauge-label { font-size: .7rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .06em; font-weight: 500; }
+
+    section { padding: 100px 0; }
+    .section-label { font-family: 'DM Sans', sans-serif; font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; font-weight: 600; margin-bottom: 8px; color: var(--text-tertiary); }
+    .section-title { font-family: 'DM Sans', sans-serif; font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin-bottom: 14px; }
+    .section-desc { color: var(--text-secondary); max-width: 540px; font-size: 1.05rem; line-height: 1.7; }
+
+    .props-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px; margin-top: 48px; }
+    .props-grid .prop-card:first-child { grid-row: span 2; }
+    @media (max-width: 768px) { .props-grid { grid-template-columns: 1fr; } .props-grid .prop-card:first-child { grid-row: span 1; } }
+    .prop-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 32px; transition: border-color .3s, transform .3s, background .3s; }
+    .prop-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: translateY(-3px); }
+    .prop-card .icon-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .prop-card .icon-mark { width: 40px; height: 40px; border-radius: 10px; background: var(--icon-bg); border: 1px solid var(--icon-border); display: flex; align-items: center; justify-content: center; font-size: 1.15rem; flex-shrink: 0; }
+    .prop-card .icon-row h3 { font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 700; }
+    .prop-card p { font-size: .9rem; color: var(--text-muted); line-height: 1.7; }
+    .prop-card p + p { margin-top: 12px; }
+
+    .timeline { margin-top: 48px; position: relative; }
+    .timeline::before { content: ''; position: absolute; left: 24px; top: 0; bottom: 0; width: 1.5px; background: var(--border); }
+    @media (max-width: 768px) { .timeline::before { left: 18px; } }
+    .tl-step { position: relative; padding-left: 68px; padding-bottom: 40px; }
+    .tl-step:last-child { padding-bottom: 0; }
+    .tl-step::before { content: ''; position: absolute; left: 17px; top: 6px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 2px solid var(--text-tertiary); z-index: 1; transition: border-color .3s; }
+    .tl-step:hover::before { border-color: var(--accent); }
+    .tl-step .step-num { position: absolute; left: 0; top: 2px; width: 48px; text-align: center; font-family: 'DM Sans', sans-serif; font-size: .7rem; font-weight: 700; color: var(--text-tertiary); letter-spacing: .04em; }
+    .tl-step h3 { font-family: 'DM Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .tl-step p { font-size: .9rem; color: var(--text-muted); line-height: 1.7; max-width: 480px; }
+    .tl-step .step-meta { font-size: .78rem; color: var(--text-tertiary); margin-top: 6px; font-weight: 500; }
+
+    .cta-section { text-align: center; padding: 120px 0; position: relative; }
+    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 50% 50%, var(--accent-glow) 0%, transparent 70%); pointer-events: none; }
+    .cta-section .container { position: relative; z-index: 1; }
+    .cta-section h2 { font-family: 'DM Sans', sans-serif; font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: 10px; }
+    .cta-section p { color: var(--text-secondary); margin-bottom: 32px; font-size: 1.05rem; }
+    .app-buttons { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+    .store-btn-wrap { position: relative; display: inline-block; }
+    .store-btn-wrap img { height: 44px; transition: transform .2s, opacity .2s; filter: var(--invert-badge); }
+    .store-btn-wrap:hover img { transform: translateY(-2px); opacity: .9; }
+    .store-btn-wrap .qa-tag { position: absolute; top: -9px; right: -9px; background: var(--tag-bg); color: var(--tag-text); font-size: .6rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 3px 8px; border-radius: 4px; font-family: 'DM Sans', sans-serif; }
+    .deep-link-hint { margin-top: 18px; font-size: .8rem; color: var(--text-tertiary); }
+    .deep-link-hint a { color: var(--text); text-decoration: underline; }
+
+    footer { border-top: 1px solid var(--border); padding: 36px 0; }
+    footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    footer p { color: var(--text-tertiary); font-size: .78rem; }
+
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    .deep-link-redirect { display: none; text-align: center; padding: 100px 24px; }
+    .deep-link-redirect.show { display: block; }
+    .deep-link-redirect h2 { font-family: 'DM Sans', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; }
+    .deep-link-redirect p { color: var(--text-secondary); margin-bottom: 24px; }
+    .deep-link-redirect .btn { display: inline-block; background: var(--cta-bg); color: var(--cta-text); padding: 14px 32px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-weight: 700; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms; animation-duration: 0.01ms; }
+      .fade-up { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 100px 0 60px; }
+      section { padding: 64px 0; }
+      .gauge-cluster { gap: 28px; margin-top: 40px; }
+      .gauge-circle, .gauge-circle svg { width: 64px; height: 64px; }
+      .gauge-circle svg circle { r: 26; cx: 32; cy: 32; }
+      .gauge-circle .fill { stroke-dasharray: 163.4; }
+      .gauge-circle .value { font-size: 1rem; }
+      .prop-card { padding: 24px; }
+      .tl-step { padding-left: 52px; }
+      .tl-step .step-num { width: 36px; font-size: .6rem; }
+      .cta-section { padding: 80px 0; }
+      .store-btn-wrap img { height: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="assets/favicon.png" alt="" class="brand-icon" width="30" height="30" />
+        <span>velyt</span>
+      </a>
+      <div class="nav-actions">
+        <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <svg id="theme-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="Theme"><title>Toggle theme</title><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button type="button" class="lang-toggle" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="deep-link-redirect" id="deep-link-redirect">
+    <h2 id="dl-title">Abriendo en velyt&hellip;</h2>
+    <p id="dl-desc">Si la app no se abre autom&aacute;ticamente, toca el bot&oacute;n.</p>
+    <a class="btn" id="dl-btn" href="velyt://">Abrir app</a>
+  </div>
+
+  <section class="hero" id="hero-section">
+    <div class="hero-bg-pattern"></div>
+    <div class="hero-content">
+      <img src="assets/logo.png" alt="velyt" class="hero-logo" width="80" height="80" />
+      <h1 id="hero-title">Compra con la informaci&oacute;n<br />que el vendedor <span class="hl">prefiere ocultar</span>.</h1>
+      <p id="hero-desc">Velyt cruza datos de m&uacute;ltiples fuentes para mostrarte el precio real, las fallas documentadas y el veh&iacute;culo que realmente necesitas. Sin vueltas.</p>
+      <a href="velyt://" class="hero-cta" id="hero-cta">
+        <span id="cta-text">Encontrar mi pr&oacute;ximo carro</span>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="CTA arrow"><title>CTA arrow</title><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <p class="hero-sub" id="hero-sub-note">Menos de 2 minutos &middot; Sin registro &middot; Solo Colombia</p>
+
+      <div class="gauge-cluster">
+        <div class="gauge">
+          <div class="gauge-circle">
+            <svg viewBox="0 0 80 80" role="img" aria-label="Vehicles gauge"><title>Vehicles gauge</title><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="vehicles" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
+            <span class="value">3000+</span>
+          </div>
+          <div class="gauge-label" id="stat1-label">Veh&iacute;culos</div>
+        </div>
+        <div class="gauge">
+          <div class="gauge-circle">
+            <svg viewBox="0 0 80 80" role="img" aria-label="Marketplaces gauge"><title>Marketplaces gauge</title><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="marketplaces" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
+            <span class="value">7</span>
+          </div>
+          <div class="gauge-label" id="stat2-label">Marketplaces</div>
+        </div>
+        <div class="gauge">
+          <div class="gauge-circle">
+            <svg viewBox="0 0 80 80" role="img" aria-label="Price sources gauge"><title>Price sources gauge</title><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="sources" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
+            <span class="value">3</span>
+          </div>
+          <div class="gauge-label" id="stat3-label">Fuentes de precio</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <span class="section-label" id="s1-label">Por qu&eacute; velyt</span>
+      <h2 class="section-title" id="s1-title">La informaci&oacute;n que necesitas<br />para negociar con confianza.</h2>
+      <p class="section-desc" id="s1-desc">No compres basado en corazonadas. Compra con datos reales.</p>
+      <div class="props-grid">
+        <div class="prop-card fade-up">
+          <div class="icon-row">
+            <span class="icon-mark">🎯</span>
+            <h3 id="s1c1-title">El veh&iacute;culo que realmente necesitas</h3>
+          </div>
+          <p id="s1c1-p">No te mostramos todo lo que existe, solo los carros que realmente encajan contigo. Respondes unas preguntas sobre tu d&iacute;a a d&iacute;a y nosotros encontramos tu mejor opci&oacute;n.</p>
+        </div>
+        <div class="prop-card fade-up">
+          <div class="icon-row">
+            <span class="icon-mark">💰</span>
+            <h3 id="s1c2-title">El precio real, no el inflado</h3>
+          </div>
+          <p id="s1c2-p">Cruzamos el precio de cada veh&iacute;culo contra m&uacute;ltiples referencias del mercado colombiano para que sepas si est&aacute;s pagando de m&aacute;s o encontraste una ganga.</p>
+        </div>
+        <div class="prop-card fade-up">
+          <div class="icon-row">
+            <span class="icon-mark">🛠️</span>
+            <h3 id="s1c3-title">Lo que el vendedor no te dice</h3>
+          </div>
+          <p id="s1c3-p">Antes de comprar, ent&eacute;rate de los problemas comunes de ese modelo, qu&eacute; revisar en la inspecci&oacute;n y si realmente es una buena compra.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <span class="section-label" id="s2-label">C&oacute;mo funciona</span>
+      <h2 class="section-title" id="s2-title">Cuatro pasos para comprar informado.</h2>
+      <div class="timeline">
+        <div class="tl-step fade-up">
+          <span class="step-num">01</span>
+          <h3 id="tl1-title">Cu&eacute;ntanos tu d&iacute;a a d&iacute;a</h3>
+          <p id="tl1-desc">Pasajeros, presupuesto, terreno, combustible, prioridades. Respondes unas preguntas y listo.</p>
+          <div class="step-meta" id="tl1-meta">Toma &lt; 2 min &middot; Sin registro</div>
+        </div>
+        <div class="tl-step fade-up">
+          <span class="step-num">02</span>
+          <h3 id="tl2-title">Velyt encuentra tus opciones</h3>
+          <p id="tl2-desc">Buscamos entre miles de veh&iacute;culos para mostrarte solo los que realmente te sirven, ordenados del mejor al peor para ti.</p>
+          <div class="step-meta" id="tl2-meta">Sin anuncios &middot; Sin sesgos</div>
+        </div>
+        <div class="tl-step fade-up">
+          <span class="step-num">03</span>
+          <h3 id="tl3-title">Ve el precio real y las fallas</h3>
+          <p id="tl3-desc">Por cada opci&oacute;n ves el precio multicruzado, los problemas documentados, el historial por a&ntilde;o y qu&eacute; revisar antes de comprar.</p>
+          <div class="step-meta" id="tl3-meta">Datos reales &middot; Sin rodeos</div>
+        </div>
+        <div class="tl-step fade-up">
+          <span class="step-num">04</span>
+          <h3 id="tl4-title">Decide con confianza</h3>
+          <p id="tl4-desc">Compara hasta 3 veh&iacute;culos lado a lado, revisa listados en vivo del mercado y comparte con tu familia para decidir juntos.</p>
+          <div class="step-meta" id="tl4-meta">Compara &middot; Comparte &middot; Decide</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2 id="cta-title">Empieza ahora, es gratis.</h2>
+      <p id="cta-desc">&Uacute;nete a los compradores que ya descubrieron el precio real y las fallas documentadas antes de negociar.</p>
+      <div class="app-buttons">
+        <div class="store-btn-wrap">
+          <a href="https://apps.apple.com/app/com.velyt" target="_blank" rel="noopener noreferrer">
+            <img src="assets/app-store-badge.svg" alt="Download on the App Store" height="44" />
+          </a>
+          <span class="qa-tag" id="ios-soon">Pr&oacute;ximamente</span>
+        </div>
+        <div class="store-btn-wrap">
+          <a href="https://play.google.com/store/apps/details?id=com.velyt" target="_blank" rel="noopener noreferrer">
+            <img src="assets/google-play-badge.svg" alt="Get it on Google Play" height="44" />
+          </a>
+          <span class="qa-tag" id="android-soon">Pr&oacute;ximamente</span>
+        </div>
+      </div>
+      <p class="deep-link-hint" id="deep-link-text">&iquest;Ya tienes la app instalada? <a href="velyt://">&Aacute;brela aqu&iacute;</a></p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p id="footer-text">velyt &mdash; Colombia &middot; Tu pr&oacute;ximo carro sin sorpresas</p>
+    </div>
+  </footer>
+
+  <script>
+    var NAV_SCROLL_THRESHOLD = 40
+
+    var nav = document.getElementById('nav')
+    var ticking = false
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          nav.classList.toggle('scrolled', window.scrollY > NAV_SCROLL_THRESHOLD)
+          ticking = false
+        })
+        ticking = true
+      }
+    })
+
+    var observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('visible')
+      })
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
+    document.querySelectorAll('.fade-up').forEach((el) => { observer.observe(el) })
+
+    var GAUGE_TARGETS = { vehicles: 30, marketplaces: 30, sources: 30 }
+    function animateGauges() {
+      document.querySelectorAll('.fill[data-gauge]').forEach((el) => {
+        var target = GAUGE_TARGETS[el.getAttribute('data-gauge')]
+        if (target !== undefined) el.style.strokeDashoffset = String(target)
+      })
+    }
+    requestAnimationFrame(() => { requestAnimationFrame(animateGauges) })
+
+    var THEME_META = document.querySelector('meta[name="theme-color"]')
+    function toggleTheme() {
+      var html = document.documentElement
+      var isLight = html.classList.toggle('light')
+      var icon = document.getElementById('theme-icon')
+      icon.innerHTML = isLight
+        ? '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+        : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+      THEME_META.content = isLight ? '#f5f5f5' : '#0d0d0d'
+      localStorage.setItem('theme', isLight ? 'light' : 'dark')
+    }
+    var SAVED_THEME = localStorage.getItem('theme')
+    if (SAVED_THEME === 'light') requestAnimationFrame(toggleTheme)
+
+    var TRANSLATIONS = {
+      es: {
+        'cta-text': 'Encontrar mi pr\u00F3ximo carro',
+        'hero-sub-note': 'Menos de 2 minutos \u00B7 Sin registro \u00B7 Solo Colombia',
+        'stat1-label': 'Veh\u00EDculos',
+        'stat2-label': 'Marketplaces',
+        'stat3-label': 'Fuentes de precio',
+        'deep-link-text': '\u00BFYa tienes la app instalada? <a href="velyt://">\u00C1brela aqu\u00ED</a>',
+        'ios-soon': 'Pr\u00F3ximamente',
+        'android-soon': 'Pr\u00F3ximamente',
+        'dl-title': 'Abriendo en velyt\u2026',
+        'dl-desc': 'Si la app no se abre autom\u00E1ticamente, toca el bot\u00F3n.',
+        'hero-title': 'Compra con la informaci\u00F3n<br />que el vendedor <span class="hl">prefiere ocultar</span>.',
+        'hero-desc': 'Velyt cruza datos de m\u00FAltiples fuentes para mostrarte el precio real, las fallas documentadas y el veh\u00EDculo que realmente necesitas. Sin vueltas.',
+        's1-label': 'Por qu\u00E9 velyt',
+        's1-title': 'La informaci\u00F3n que necesitas<br />para negociar con confianza.',
+        's1-desc': 'No compres basado en corazonadas. Compra con datos reales.',
+        's1c1-title': 'El veh\u00EDculo que realmente necesitas',
+        's1c1-p': 'No te mostramos todo lo que existe, solo los carros que realmente encajan contigo. Respondes unas preguntas sobre tu d\u00EDa a d\u00EDa y nosotros encontramos tu mejor opci\u00F3n.',
+        's1c2-title': 'El precio real, no el inflado',
+        's1c2-p': 'Cruzamos el precio de cada veh\u00EDculo contra m\u00FAltiples referencias del mercado colombiano para que sepas si est\u00E1s pagando de m\u00E1s o encontraste una ganga.',
+        's1c3-title': 'Lo que el vendedor no te dice',
+        's1c3-p': 'Antes de comprar, ent\u00E9rate de los problemas comunes de ese modelo, qu\u00E9 revisar en la inspecci\u00F3n y si realmente es una buena compra.',
+        's2-label': 'C\u00F3mo funciona',
+        's2-title': 'Cuatro pasos para comprar informado.',
+        'tl1-title': 'Cu\u00E9ntanos tu d\u00EDa a d\u00EDa',
+        'tl1-desc': 'Pasajeros, presupuesto, terreno, combustible, prioridades. Respondes unas preguntas y listo.',
+        'tl1-meta': 'Toma < 2 min \u00B7 Sin registro',
+        'tl2-title': 'Velyt encuentra tus opciones',
+        'tl2-desc': 'Buscamos entre miles de veh\u00EDculos para mostrarte solo los que realmente te sirven, ordenados del mejor al peor para ti.',
+        'tl2-meta': 'Sin anuncios \u00B7 Sin sesgos',
+        'tl3-title': 'Ve el precio real y las fallas',
+        'tl3-desc': 'Por cada opci\u00F3n ves el precio multicruzado, los problemas documentados, el historial por a\u00F1o y qu\u00E9 revisar antes de comprar.',
+        'tl3-meta': 'Datos reales \u00B7 Sin rodeos',
+        'tl4-title': 'Decide con confianza',
+        'tl4-desc': 'Compara hasta 3 veh\u00EDculos lado a lado, revisa listados en vivo del mercado y comparte con tu familia para decidir juntos.',
+        'tl4-meta': 'Compara \u00B7 Comparte \u00B7 Decide',
+        'cta-title': 'Empieza ahora, es gratis.',
+        'cta-desc': '\u00DAnete a los compradores que ya descubrieron el precio real y las fallas documentadas antes de negociar.',
+        'footer-text': 'velyt \u2014 Colombia \u00B7 Tu pr\u00F3ximo carro sin sorpresas',
+        'page-title': 'velyt \u2014 Tu pr\u00F3ximo carro sin sorpresas',
+        'meta-desc': 'Compra con la informaci\u00F3n que el vendedor prefiere ocultar. Precio real, fallas documentadas, el veh\u00EDculo que realmente necesitas.',
+      },
+      en: {
+        'cta-text': 'Find my next car',
+        'hero-sub-note': 'Less than 2 minutes \u00B7 No sign-up \u00B7 Colombia only',
+        'stat1-label': 'Vehicles',
+        'stat2-label': 'Marketplaces',
+        'stat3-label': 'Price sources',
+        'deep-link-text': 'Already have the app installed? <a href="velyt://">Open here</a>',
+        'ios-soon': 'Coming soon',
+        'android-soon': 'Coming soon',
+        'dl-title': 'Opening in velyt\u2026',
+        'dl-desc': "If the app doesn't open automatically, tap the button.",
+        'hero-title': 'Buy with the information<br />the seller <span class="hl">prefers to hide</span>.',
+        'hero-desc': 'Velyt cross-references data from multiple sources to show you the real price, documented issues, and the vehicle you actually need. Straightforward.',
+        's1-label': 'Why velyt',
+        's1-title': 'The information you need<br />to negotiate with confidence.',
+        's1-desc': "Don't buy on gut feeling. Buy with real data.",
+        's1c1-title': 'The vehicle you actually need',
+        's1c1-p': "We don't show you everything out there \u2014 just the cars that actually fit you. Answer a few questions about your daily life and we'll find your best match.",
+        's1c2-title': 'The real price, not the markup',
+        's1c2-p': "We cross-check every vehicle's price against multiple Colombian market references so you know if you're overpaying or found a deal.",
+        's1c3-title': "What the seller won't tell you",
+        's1c3-p': 'Before you buy, find out about common issues for that model, what to check during inspection, and whether it\u2019s actually a good purchase.',
+        's2-label': 'How it works',
+        's2-title': 'Four steps to buy informed.',
+        'tl1-title': 'Tell us about your daily life',
+        'tl1-desc': 'Passengers, budget, terrain, fuel, priorities. Answer a few questions and you\u2019re done.',
+        'tl1-meta': 'Takes < 2 min \u00B7 No sign-up',
+        'tl2-title': 'Velyt finds your options',
+        'tl2-desc': 'We search through thousands of vehicles to show you only the ones that work for you, ranked from best to worst.',
+        'tl2-meta': 'No ads \u00B7 No bias',
+        'tl3-title': 'See the real price and issues',
+        'tl3-desc': 'For each match you get multi-sourced pricing, documented problems, year-by-year history, and what to check before buying.',
+        'tl3-meta': 'Real data \u00B7 No fluff',
+        'tl4-title': 'Decide with confidence',
+        'tl4-desc': 'Compare up to 3 vehicles side by side, browse live market listings, and share with your family to decide together.',
+        'tl4-meta': 'Compare \u00B7 Share \u00B7 Decide',
+        'cta-title': "Start now, it's free.",
+        'cta-desc': 'Join the buyers who already discovered the real price and documented issues before negotiating.',
+        'footer-text': 'velyt \u2014 Colombia \u00B7 Your next car, no surprises',
+        'page-title': 'velyt \u2014 Your next car, no surprises',
+        'meta-desc': 'Buy with the information sellers prefer to hide. Real price, documented issues, the vehicle you actually need.',
+      }
+    }
+    var CURRENT_LANG = 'es'
+
+    function applyLang(lang) {
+      CURRENT_LANG = lang
+      document.querySelector('.lang-toggle').textContent = lang === 'es' ? 'EN' : 'ES'
+      document.documentElement.lang = lang
+      var t = TRANSLATIONS[lang]
+      Object.keys(t).forEach((id) => {
+        var el = document.getElementById(id)
+        if (!el) return
+        if (id === 'hero-title' || id === 'deep-link-text') {
+          el.innerHTML = t[id]
+        } else if (el.tagName === 'META') {
+          el.content = t[id]
+        } else {
+          el.textContent = t[id]
+        }
+      })
+    }
+
+    function toggleLang() {
+      var next = CURRENT_LANG === 'es' ? 'en' : 'es'
+      localStorage.setItem('lang', next)
+      applyLang(next)
+    }
+
+    ;(function initLang() {
+      var saved = localStorage.getItem('lang')
+      if (saved === 'en' || saved === 'es') {
+        applyLang(saved)
+        return
+      }
+      var browser = (navigator.language || navigator.userLanguage || '').substring(0, 2)
+      if (browser === 'en') applyLang('en')
+    })()
+
+    var APP_STORE_URL = 'https://apps.apple.com/app/com.velyt'
+    var PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.velyt'
+    var FALLBACK_TIMEOUT = 500
+
+    ;(() => {
+      const p = new URLSearchParams(window.location.search).get('p')
+      if (p) {
+        const decoded = decodeURIComponent(p)
+        window.history.replaceState(null, '', `/${decoded}`)
+      }
+    })()
+
+    ;(() => {
+      const ua = navigator.userAgent
+      const isIOS = /iPhone|iPad|iPod/i.test(ua)
+      const isAndroid = /Android/i.test(ua)
+
+      const path = window.location.pathname.replace(/\/$/, '')
+      const appRouteMatch = path.match(/\/(search|favorites|matches|vehicle)\/.+/)
+      const isDeepLink = !!appRouteMatch
+
+      if (isDeepLink) {
+        const appPath = appRouteMatch[0]
+        const scheme = `velyt://${appPath}${window.location.search}${window.location.hash}`
+        const hero = document.getElementById('hero-section')
+        const redirect = document.getElementById('deep-link-redirect')
+        if (hero) hero.style.display = 'none'
+        if (redirect) redirect.classList.add('show')
+
+        const btn = document.getElementById('dl-btn')
+        if (btn) btn.href = scheme
+
+        if (isIOS || isAndroid) {
+          window.location.href = scheme
+        }
+      }
+
+      if (isIOS || isAndroid) {
+        const cta = document.querySelector('.hero-cta')
+        if (cta) {
+          cta.href = 'velyt://'
+          cta.addEventListener('click', () => {
+            setTimeout(() => {
+              window.location.href = isIOS ? APP_STORE_URL : PLAY_STORE_URL
+            }, FALLBACK_TIMEOUT)
+          })
+        }
+        const dlBtn = document.getElementById('dl-btn')
+        if (dlBtn) {
+          dlBtn.addEventListener('click', (e) => {
+            e.preventDefault()
+            window.location.href = dlBtn.href
+            setTimeout(() => {
+              window.location.href = isIOS ? APP_STORE_URL : PLAY_STORE_URL
+            }, FALLBACK_TIMEOUT)
+          })
+        }
+      }
+    })()
+  </script>
+</body>
+</html>
