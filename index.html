@@ -210,7 +210,7 @@
 
   <nav id="nav">
     <div class="container">
-      <a href="/" class="brand">
+      <a href="./" class="brand">
         <img src="assets/favicon.png" alt="" class="brand-icon" width="30" height="30" />
         <span>velyt</span>
       </a>
@@ -356,6 +356,7 @@
   <footer>
     <div class="container">
       <p id="footer-text">velyt &mdash; Colombia &middot; Tu pr&oacute;ximo carro sin sorpresas</p>
+      <p id="footer-privacy"><a href="privacidad.html">Pol&iacute;tica de privacidad</a></p>
     </div>
   </footer>
 
@@ -444,6 +445,7 @@
         'cta-title': 'Empieza ahora, es gratis.',
         'cta-desc': '\u00DAnete a los compradores que ya descubrieron el precio real y las fallas documentadas antes de negociar.',
         'footer-text': 'velyt \u2014 Colombia \u00B7 Tu pr\u00F3ximo carro sin sorpresas',
+        'footer-privacy': '<a href="privacidad.html">Pol\u00EDtica de privacidad</a>',
         'page-title': 'velyt \u2014 Tu pr\u00F3ximo carro sin sorpresas',
         'meta-desc': 'Compra con la informaci\u00F3n que el vendedor prefiere ocultar. Precio real, fallas documentadas, el veh\u00EDculo que realmente necesitas.',
       },
@@ -486,6 +488,7 @@
         'cta-title': "Start now, it's free.",
         'cta-desc': 'Join the buyers who already discovered the real price and documented issues before negotiating.',
         'footer-text': 'velyt \u2014 Colombia \u00B7 Your next car, no surprises',
+        'footer-privacy': '<a href="privacidad.html">Privacy policy</a>',
         'page-title': 'velyt \u2014 Your next car, no surprises',
         'meta-desc': 'Buy with the information sellers prefer to hide. Real price, documented issues, the vehicle you actually need.',
       }
@@ -500,7 +503,7 @@
       Object.keys(t).forEach((id) => {
         var el = document.getElementById(id)
         if (!el) return
-        if (id === 'hero-title' || id === 'deep-link-text') {
+        if (id === 'hero-title' || id === 'deep-link-text' || id === 'footer-privacy') {
           el.innerHTML = t[id]
         } else if (el.tagName === 'META') {
           el.content = t[id]

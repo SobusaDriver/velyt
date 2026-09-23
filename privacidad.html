@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title id="page-title">Política de privacidad — velyt</title>
+  <meta name="description" id="meta-desc" content="Política de privacidad de velyt: qué datos recopilamos, cómo los usamos, con quién los compartimos y cómo ejercer tus derechos." />
+  <meta name="theme-color" id="theme-meta" content="#0d0d0d" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="canonical" href="https://sobusadriver.github.io/velyt/privacidad.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --bg-card: #141414;
+      --bg-card-hover: #1a1a1a;
+      --bg-nav: rgba(13,13,13,.88);
+      --border: #222;
+      --border-hover: #333;
+      --text: #f0f0f0;
+      --text-secondary: #999;
+      --text-tertiary: #666;
+      --accent: #f0f0f0;
+    }
+    .light {
+      --bg: #f5f5f5;
+      --bg-card: #fff;
+      --bg-card-hover: #fafafa;
+      --bg-nav: rgba(245,245,245,.88);
+      --border: #ddd;
+      --border-hover: #bbb;
+      --text: #111;
+      --text-secondary: #666;
+      --text-tertiary: #999;
+      --accent: #111;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; transition: background .4s, color .4s; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 14px 0; transition: background .4s, backdrop-filter .4s; }
+    nav.scrolled { background: var(--bg-nav); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+    nav .container { display: flex; align-items: center; justify-content: space-between; }
+    nav .brand { display: flex; align-items: center; gap: 10px; }
+    nav .brand-icon { width: 30px; height: 30px; border-radius: 7px; }
+    nav .brand span { font-family: 'DM Sans', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: -.03em; }
+    nav .nav-actions { display: flex; align-items: center; gap: 8px; }
+    nav .theme-toggle, nav .lang-toggle { height: 36px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-card); transition: border-color .2s, background .2s; display: flex; align-items: center; justify-content: center; }
+    nav .theme-toggle { width: 36px; }
+    nav .theme-toggle svg { width: 16px; height: 16px; stroke: var(--text-secondary); }
+    nav .theme-toggle:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+    nav .lang-toggle { padding: 0 12px; font-size: .8rem; font-weight: 500; color: var(--text-secondary); }
+    nav .lang-toggle:hover { color: var(--text); border-color: var(--border-hover); }
+
+    main { padding: 116px 0 64px; }
+    .doc { max-width: 720px; margin: 0 auto; }
+    .doc h1 { font-family: 'DM Sans', sans-serif; font-size: clamp(1.9rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: 6px; }
+    .doc .updated { color: var(--text-tertiary); font-size: .82rem; margin-bottom: 26px; }
+    .doc h2 { font-family: 'DM Sans', sans-serif; font-size: 1.15rem; font-weight: 700; margin: 32px 0 8px; }
+    .doc p, .doc li { color: var(--text-secondary); font-size: .95rem; }
+    .doc ul { padding-left: 20px; margin: 8px 0; }
+    .doc li { margin: 4px 0; }
+    .doc a { color: var(--text); text-decoration: underline; }
+    .doc strong { color: var(--text); }
+
+    footer { border-top: 1px solid var(--border); padding: 36px 0; margin-top: 40px; }
+    footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    footer p { color: var(--text-tertiary); font-size: .78rem; }
+    footer a { color: var(--text-tertiary); }
+    footer a:hover { color: var(--text); }
+
+    /* Language: one block per language, switched by html[data-lang] */
+    html[data-lang="es"] [data-lang-block="en"],
+    html[data-lang="en"] [data-lang-block="es"] { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition-duration: 0.01ms; animation-duration: 0.01ms; }
+    }
+    @media (max-width: 640px) {
+      main { padding-top: 100px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="container">
+      <a href="./" class="brand">
+        <img src="assets/favicon.png" alt="" class="brand-icon" width="30" height="30" />
+        <span>velyt</span>
+      </a>
+      <div class="nav-actions">
+        <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <svg id="theme-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="Theme"><title>Toggle theme</title><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button type="button" class="lang-toggle" onclick="toggleLang()">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- ============================== ESPAÑOL ============================== -->
+    <article class="doc" data-lang-block="es">
+      <h1>Política de privacidad</h1>
+      <p class="updated">Última actualización: 20 de septiembre de 2026</p>
+
+      <p>
+        Esta política explica qué datos personales recopila la aplicación <strong>velyt</strong>
+        (en adelante, «velyt» o «la app»), con qué finalidad, con quién se comparten y cómo puedes
+        ejercer tus derechos. Aplica a la app móvil y a este sitio. Al usar velyt aceptas esta política.
+      </p>
+
+      <h2>1. Datos que recopilamos</h2>
+      <ul>
+        <li><strong>Datos de cuenta:</strong> tu correo electrónico. Si inicias sesión con Google o Apple,
+          también recibimos el nombre y la foto de perfil que ese proveedor comparte con la app.</li>
+        <li><strong>Perfil de preferencias:</strong> las respuestas que das durante la configuración inicial
+          (uso previsto, número de pasajeros, necesidad de carga, rango de presupuesto, tipo de terreno,
+          combustible y prioridades). Se guardan asociadas a tu cuenta para personalizar las recomendaciones
+          y la estimación de precios.</li>
+        <li><strong>Favoritos:</strong> los vehículos que guardas en tu lista.</li>
+        <li><strong>Datos técnicos mínimos:</strong> un token de sesión que se guarda de forma cifrada en el
+          almacenamiento seguro de tu dispositivo (Keychain en iOS, Keystore en Android) para mantener tu sesión.</li>
+      </ul>
+      <p>
+        No solicitamos ni accedemos a tu ubicación, contactos, cámara, micrófono ni fotos. No usamos
+        publicidad ni herramientas de analítica de terceros.
+      </p>
+
+      <h2>2. Cómo usamos tus datos</h2>
+      <ul>
+        <li>Autenticarte y mantener tu sesión iniciada.</li>
+        <li>Generar recomendaciones de vehículos y estimaciones de precio ajustadas a tu perfil.</li>
+        <li>Guardar tu lista de favoritos y mostrarla entre tus dispositivos.</li>
+        <li>Prestar soporte y responder a tus solicitudes.</li>
+      </ul>
+      <p>No vendemos ni alquilamos tus datos personales. No los usamos para publicidad.</p>
+
+      <h2>3. Base legal</h2>
+      <p>
+        Tratamos tus datos con base en tu consentimiento, que otorgas al crear la cuenta y completar el perfil,
+        conforme a la Ley 1581 de 2012 de Protección de Datos Personales de Colombia.
+      </p>
+
+      <h2>4. Con quién compartimos datos</h2>
+      <ul>
+        <li><strong>Supabase:</strong> proveedor de infraestructura donde se alojan la base de datos
+          y la autenticación de velyt.</li>
+        <li><strong>Google y Apple:</strong> si eliges iniciar sesión con ellos, gestionan la autenticación
+          y nos comparten los datos básicos de tu perfil descritos arriba.</li>
+        <li><strong>Google Gemini (a través de una función de Supabase):</strong> se usa para redactar
+          resúmenes de vehículos. Solo se envían datos del vehículo (marca, modelo, año y especificaciones),
+          no datos personales.</li>
+      </ul>
+      <p>
+        Algunos enlaces dentro de la app abren listados o sitios de terceros (marketplaces de vehículos).
+        Esos sitios tienen sus propias políticas de privacidad, sobre las que no tenemos control.
+      </p>
+
+      <h2>5. Conservación</h2>
+      <p>
+        Conservamos tus datos mientras tu cuenta esté activa y durante el tiempo necesario para cumplir
+        obligaciones legales. Puedes solicitar la eliminación de tu cuenta y de tus datos en cualquier momento.
+      </p>
+
+      <h2>6. Seguridad</h2>
+      <p>
+        La información viaja cifrada mediante HTTPS/TLS, los tokens de sesión se almacenan en el
+        almacenamiento seguro del dispositivo y el acceso a los datos está restringido. Ningún sistema es
+        completamente infalible, por lo que no podemos garantizar seguridad absoluta.
+      </p>
+
+      <h2>7. Tus derechos</h2>
+      <p>
+        De acuerdo con la Ley 1581 de 2012, puedes conocer, actualizar, rectificar y suprimir tus datos
+        personales, revocar la autorización otorgada y presentar quejas ante la Superintendencia de Industria
+        y Comercio (SIC). Para ejercerlos, escríbenos a
+        <a href="mailto:contacto@velyt.co">contacto@velyt.co</a> y responderemos en los plazos legales.
+      </p>
+
+      <h2>8. Menores de edad</h2>
+      <p>velyt está dirigida a personas adultas y no está pensada para menores de 14 años.</p>
+
+      <h2>9. Cambios a esta política</h2>
+      <p>
+        Podemos actualizar esta política para reflejar cambios en la app o en la ley. Publicaremos la versión
+        vigente en esta página con su fecha de actualización.
+      </p>
+
+      <h2>10. Contacto</h2>
+      <p>Dudas o solicitudes sobre tus datos: <a href="mailto:contacto@velyt.co">contacto@velyt.co</a>.</p>
+    </article>
+
+    <!-- ============================== ENGLISH ============================== -->
+    <article class="doc" data-lang-block="en">
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last updated: September 20, 2026</p>
+
+      <p>
+        This policy explains what personal data the <strong>velyt</strong> application (the “app”)
+        collects, for what purpose, with whom it is shared, and how you can exercise your rights. It
+        applies to the mobile app and to this site. By using velyt you accept this policy.
+      </p>
+
+      <h2>1. Data we collect</h2>
+      <ul>
+        <li><strong>Account data:</strong> your email address. If you sign in with Google or Apple, we
+          also receive the name and profile photo that provider shares with the app.</li>
+        <li><strong>Preference profile:</strong> the answers you give during setup (intended use, number
+          of passengers, cargo needs, budget range, terrain, fuel, and priorities). They are stored with
+          your account to personalize recommendations and price estimates.</li>
+        <li><strong>Favorites:</strong> the vehicles you save to your list.</li>
+        <li><strong>Minimal technical data:</strong> a session token stored encrypted in your device’s
+          secure storage (Keychain on iOS, Keystore on Android) to keep you signed in.</li>
+      </ul>
+      <p>
+        We do not request or access your location, contacts, camera, microphone, or photos. We do not use
+        advertising or third-party analytics.
+      </p>
+
+      <h2>2. How we use your data</h2>
+      <ul>
+        <li>To authenticate you and keep your session active.</li>
+        <li>To generate vehicle recommendations and price estimates tailored to your profile.</li>
+        <li>To save your favorites list and show it across your devices.</li>
+        <li>To provide support and respond to your requests.</li>
+      </ul>
+      <p>We do not sell or rent your personal data, and we do not use it for advertising.</p>
+
+      <h2>3. Legal basis</h2>
+      <p>
+        We process your data based on your consent, given when you create your account and complete your
+        profile, under Colombia’s Law 1581 of 2012 on Personal Data Protection.
+      </p>
+
+      <h2>4. Who we share data with</h2>
+      <ul>
+        <li><strong>Supabase:</strong> infrastructure provider hosting velyt’s database and authentication.</li>
+        <li><strong>Google and Apple:</strong> if you choose to sign in with them, they handle
+          authentication and share the basic profile data described above.</li>
+        <li><strong>Google Gemini (through a Supabase function):</strong> used to draft vehicle summaries.
+          Only vehicle data is sent (make, model, year, and specifications) — no personal data.</li>
+      </ul>
+      <p>
+        Some links inside the app open third-party listings or sites (vehicle marketplaces). Those sites
+        have their own privacy policies, which we do not control.
+      </p>
+
+      <h2>5. Retention</h2>
+      <p>
+        We keep your data while your account is active and for as long as needed to meet legal obligations.
+        You may request deletion of your account and data at any time.
+      </p>
+
+      <h2>6. Security</h2>
+      <p>
+        Data travels encrypted over HTTPS/TLS, session tokens are kept in the device’s secure storage, and
+        access to data is restricted. No system is fully infallible, so we cannot guarantee absolute security.
+      </p>
+
+      <h2>7. Your rights</h2>
+      <p>
+        Under Law 1581 of 2012 you may know, update, rectify, and delete your personal data, withdraw the
+        authorization you granted, and file complaints with the Superintendencia de Industria y Comercio
+        (SIC). To exercise these rights, write to
+        <a href="mailto:contacto@velyt.co">contacto@velyt.co</a> and we will respond within the legal timeframes.
+      </p>
+
+      <h2>8. Minors</h2>
+      <p>velyt is intended for adults and is not designed for children under 14.</p>
+
+      <h2>9. Changes to this policy</h2>
+      <p>
+        We may update this policy to reflect changes in the app or the law. The current version will be
+        published on this page with its update date.
+      </p>
+
+      <h2>10. Contact</h2>
+      <p>Questions or requests about your data: <a href="mailto:contacto@velyt.co">contacto@velyt.co</a>.</p>
+    </article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <p data-lang-block="es">velyt — Colombia · Tu próximo carro sin sorpresas</p>
+      <p data-lang-block="en">velyt — Colombia · Your next car, no surprises</p>
+      <p>
+        <a href="./" data-lang-block="es">Volver al inicio</a>
+        <a href="./" data-lang-block="en">Back to home</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Same theme + language mechanism and storage keys as index.html, so the
+    // choice carries across pages.
+    var THEME_META = document.getElementById('theme-meta')
+    var pageTitle = document.getElementById('page-title')
+    var metaDesc = document.getElementById('meta-desc')
+
+    function toggleTheme() {
+      var html = document.documentElement
+      var isLight = html.classList.toggle('light')
+      var icon = document.getElementById('theme-icon')
+      icon.innerHTML = isLight
+        ? '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+        : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+      THEME_META.content = isLight ? '#f5f5f5' : '#0d0d0d'
+      localStorage.setItem('theme', isLight ? 'light' : 'dark')
+    }
+    var SAVED_THEME = localStorage.getItem('theme')
+    if (SAVED_THEME === 'light') requestAnimationFrame(toggleTheme)
+
+    var META = {
+      es: { title: 'Pol\u00EDtica de privacidad \u2014 velyt', desc: 'Pol\u00EDtica de privacidad de velyt: qu\u00E9 datos recopilamos, c\u00F3mo los usamos, con qui\u00E9n los compartimos y c\u00F3mo ejercer tus derechos.' },
+      en: { title: 'Privacy Policy \u2014 velyt', desc: 'velyt\u2019s privacy policy: what data we collect, how we use it, who we share it with, and how to exercise your rights.' }
+    }
+
+    function applyLang(lang) {
+      document.documentElement.lang = lang
+      document.documentElement.setAttribute('data-lang', lang)
+      document.querySelector('.lang-toggle').textContent = lang === 'es' ? 'EN' : 'ES'
+      pageTitle.textContent = META[lang].title
+      metaDesc.content = META[lang].desc
+      localStorage.setItem('lang', lang)
+    }
+
+    function toggleLang() {
+      applyLang(document.documentElement.getAttribute('data-lang') === 'es' ? 'en' : 'es')
+    }
+
+    ;(function initLang() {
+      var saved = localStorage.getItem('lang')
+      if (saved === 'en' || saved === 'es') { applyLang(saved); return }
+      var browser = (navigator.language || navigator.userLanguage || '').substring(0, 2)
+      applyLang(browser === 'en' ? 'en' : 'es')
+    })()
+
+    var nav = document.getElementById('nav')
+    function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 10) }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+  </script>
+</body>
+</html>
