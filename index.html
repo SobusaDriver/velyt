@@ -55,6 +55,9 @@
       --tag-bg: #f0f0f0;
       --tag-text: #0d0d0d;
       --invert-badge: none;
+      --ok: #1B7F4B;
+      --caution: #9A6700;
+      --danger: #B3261E;
     }
     .light {
       --bg: #f5f5f5;
@@ -81,6 +84,9 @@
       --tag-bg: #111;
       --tag-text: #f5f5f5;
       --invert-badge: invert(1) brightness(0.9);
+      --ok: #1B7F4B;
+      --caution: #9A6700;
+      --danger: #B3261E;
     }
 
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -139,6 +145,8 @@
     .props-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 20px; margin-top: 48px; }
     .props-grid .prop-card:first-child { grid-row: span 2; }
     @media (max-width: 768px) { .props-grid { grid-template-columns: 1fr; } .props-grid .prop-card:first-child { grid-row: span 1; } }
+    .checks-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 48px; }
+    @media (max-width: 768px) { .checks-grid { grid-template-columns: 1fr; } }
     .prop-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 32px; transition: border-color .3s, transform .3s, background .3s; }
     .prop-card:hover { border-color: var(--border-hover); background: var(--bg-card-hover); transform: translateY(-3px); }
     .prop-card .icon-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
@@ -164,7 +172,7 @@
     .cta-section .container { position: relative; z-index: 1; }
     .cta-section h2 { font-family: 'DM Sans', sans-serif; font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: 10px; }
     .cta-section p { color: var(--text-secondary); margin-bottom: 32px; font-size: 1.05rem; }
-    .app-buttons { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+    .app-buttons { display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap; }
     .store-btn-wrap { position: relative; display: inline-block; }
     .store-btn-wrap img { height: 44px; transition: transform .2s, opacity .2s; filter: var(--invert-badge); }
     .store-btn-wrap:hover img { transform: translateY(-2px); opacity: .9; }
@@ -175,7 +183,80 @@
     footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     footer p { color: var(--text-tertiary); font-size: .78rem; }
 
-    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; transition-delay: var(--d, 0s); }
+
+    /* Motion: one entrance curve, one ambient drift, nothing that runs forever. */
+    @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+    @keyframes drift { from { transform: translateX(-50%) scale(1); } to { transform: translateX(-50%) scale(1.16) translateY(16px); } }
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-enter { animation: rise .9s cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--d, 0s); }
+      .hero-bg-pattern::after { animation: drift 20s ease-in-out infinite alternate; }
+    }
+
+    /* Flow: a four-tab demo of the app, driven by one panel at a time. */
+    .flow { margin-top: 44px; display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 24px; align-items: start; }
+    .flow-tabs { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    .flow-tab { text-align: left; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-secondary); transition: border-color .25s, background .25s, color .25s, transform .25s; }
+    .flow-tab:hover { border-color: var(--border-hover); transform: translateX(2px); }
+    .flow-tab[aria-selected="true"] { border-color: var(--text); background: var(--bg-card-hover); color: var(--text); }
+    .flow-tab .flow-step { display: block; font-family: 'DM Sans', sans-serif; font-size: .68rem; letter-spacing: .08em; color: var(--text-tertiary); margin-bottom: 4px; }
+    .flow-tab strong { font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 700; }
+    .flow-panel { position: relative; min-width: 0; min-height: 250px; border: 1px solid var(--border); border-radius: 16px; background: var(--bg-card); padding: 28px; overflow: hidden; }
+    .flow-view { display: none; animation: rise .45s cubic-bezier(.2,.7,.2,1) both; }
+    .flow-view.active { display: block; }
+    .flow-view h3 { font-family: 'DM Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .flow-view .flow-caption { font-size: .85rem; color: var(--text-tertiary); margin-bottom: 20px; }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { border: 1px solid var(--border); border-radius: 999px; padding: 7px 14px; font-size: .82rem; color: var(--text-secondary); background: var(--bg); }
+    .chip.on { background: var(--tag-bg); color: var(--tag-text); border-color: var(--tag-bg); }
+    .match-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--bg); }
+    .match-card .match-name { font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 1.05rem; }
+    .match-card .match-meta { font-size: .8rem; color: var(--text-tertiary); margin-top: 2px; }
+    .match-score { text-align: right; }
+    .match-score b { font-family: 'DM Sans', sans-serif; font-size: 2.4rem; line-height: 1; display: block; }
+    .match-score span { font-size: .62rem; letter-spacing: .16em; color: var(--text-tertiary); text-transform: uppercase; }
+    .report { display: grid; gap: 10px; }
+    .report-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); font-size: .86rem; }
+    .report-row .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); flex-shrink: 0; }
+    .report-row.warn .dot { background: var(--caution); }
+    .report-row.bad .dot { background: var(--danger); }
+    .report-row span:first-of-type { flex: 1; display: flex; align-items: center; gap: 10px; }
+    .report-row em { font-style: normal; color: var(--text-tertiary); font-size: .78rem; }
+    .range-bar { position: relative; height: 44px; margin: 18px 0 10px; }
+    .range-track { position: absolute; left: 0; right: 0; top: 21px; height: 6px; border-radius: 3px; background: var(--gauge-track); }
+    .range-fill { position: absolute; top: 21px; height: 6px; border-radius: 3px; background: var(--gauge-fill); }
+    .range-ask { position: absolute; top: 8px; width: 2px; height: 28px; background: var(--danger); }
+    .range-ask::after { content: attr(data-label); position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: .68rem; color: var(--danger); white-space: nowrap; font-weight: 600; }
+    .range-legend { display: flex; justify-content: space-between; font-size: .72rem; color: var(--text-tertiary); }
+    .flow-footer { display: flex; align-items: center; gap: 10px; margin-top: 18px; font-size: .84rem; color: var(--text-secondary); }
+    .flow-dots { display: flex; gap: 6px; margin-top: 18px; }
+    .flow-dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--border-hover); transition: width .25s, background .25s; }
+    .flow-dots i.on { width: 18px; border-radius: 3px; background: var(--text); }
+
+    /* Cases: three worked examples, colour-coded like the app's report. */
+    .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 44px; }
+    .case-card { position: relative; border: 1px solid var(--border); border-radius: 14px; background: var(--bg-card); padding: 26px 24px; overflow: hidden; transition: transform .3s, border-color .3s, background .3s; }
+    .case-card:hover { transform: translateY(-3px); border-color: var(--border-hover); background: var(--bg-card-hover); }
+    .case-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--case-tone, var(--border-hover)); }
+    .case-card .case-idx { font-family: 'DM Sans', sans-serif; font-size: .68rem; letter-spacing: .12em; color: var(--text-tertiary); }
+    .case-card h3 { font-family: 'DM Sans', sans-serif; font-size: 1.05rem; font-weight: 700; margin: 6px 0 2px; }
+    .case-card .case-meta { font-size: .78rem; color: var(--text-tertiary); }
+    .case-card .case-figures { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; margin: 18px 0 6px; font-size: .82rem; color: var(--text-secondary); }
+    .case-card .case-figures b { display: block; font-family: 'DM Sans', sans-serif; font-size: 1.15rem; color: var(--text); font-weight: 700; }
+    .case-verdict { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; padding: 4px 10px; border-radius: 999px; font-size: .72rem; font-weight: 600; }
+    .case-verdict.ok { background: rgba(27,127,75,.16); color: #4ade80; }
+    .case-verdict.warn { background: rgba(154,103,0,.18); color: #fbbf24; }
+    .case-verdict.bad { background: rgba(179,38,30,.18); color: #f87171; }
+    .cases-note { margin-top: 18px; font-size: .76rem; color: var(--text-tertiary); }
+    .sources-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+    .sources-strip span { font-size: .72rem; letter-spacing: .04em; color: var(--text-tertiary); border: 1px solid var(--border); border-radius: 999px; padding: 5px 12px; }
+
+    @media (max-width: 900px) {
+      .flow { grid-template-columns: minmax(0, 1fr); }
+      .flow-tabs { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
+      .flow-tab { flex: 0 0 auto; }
+      .cases-grid { grid-template-columns: 1fr; }
+    }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
     .deep-link-redirect { display: none; text-align: center; padding: 100px 24px; }
@@ -231,10 +312,10 @@
   <section class="hero" id="hero-section">
     <div class="hero-bg-pattern"></div>
     <div class="hero-content">
-      <img src="assets/logo.png" alt="velyt" class="hero-logo" width="80" height="80" />
-      <h1 id="hero-title">Compra con la informaci&oacute;n<br />que el vendedor <span class="hl">prefiere ocultar</span>.</h1>
-      <p id="hero-desc">Velyt cruza datos de m&uacute;ltiples fuentes para mostrarte el precio real, las fallas documentadas y el veh&iacute;culo que realmente necesitas. Sin vueltas.</p>
-      <a href="velyt://" class="hero-cta" id="hero-cta">
+      <img src="assets/logo.png" alt="velyt" class="hero-logo hero-enter" width="80" height="80" style="--d:.05s" />
+      <h1 id="hero-title" class="hero-enter" style="--d:.15s">Compra con la informaci&oacute;n<br />que el vendedor <span class="hl">prefiere ocultar</span>.</h1>
+      <p id="hero-desc" class="hero-enter" style="--d:.25s">Velyt cruza datos de m&uacute;ltiples fuentes para mostrarte el precio real, las fallas documentadas y el veh&iacute;culo que realmente necesitas. Sin vueltas.</p>
+      <a href="velyt://" class="hero-cta hero-enter" id="hero-cta" style="--d:.35s">
         <span id="cta-text">Encontrar mi pr&oacute;ximo carro</span>
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="CTA arrow"><title>CTA arrow</title><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
@@ -330,6 +411,171 @@
     </div>
   </section>
 
+  <section>
+    <div class="container">
+      <span class="section-label" id="s3-label">Chequeo vehicular</span>
+      <h2 class="section-title" id="s3-title">El historial completo,<br />antes de firmar.</h2>
+      <p class="section-desc" id="s3-desc">Con solo la placa, Velyt cruza RUNT, SOAT, multas y siniestros y te entrega un informe verificable en un toque.</p>
+      <div class="checks-grid">
+        <div class="prop-card fade-up">
+          <div class="icon-row">
+            <span class="icon-mark">&#128663;</span>
+            <h3 id="s3c1-title">Datos y documentos</h3>
+          </div>
+          <p id="s3c1-p">Placa, VIN, motor y chasis contrastados con el RUNT.</p>
+        </div>
+        <div class="prop-card fade-up">
+          <div class="icon-row">
+            <span class="icon-mark">&#128181;</span>
+            <h3 id="s3c2-title">Multas y alertas</h3>
+          </div>
+          <p id="s3c2-p">Multas en cobro coactivo y alertas pendientes sobre la placa.</p>
+        </div>
+        <div class="prop-card fade-up">
+          <div class="icon-row">
+            <span class="icon-mark">&#128737;&#65039;</span>
+            <h3 id="s3c3-title">Historial y siniestralidad</h3>
+          </div>
+          <p id="s3c3-p">Accidentes reportados y el historial registrado del veh&iacute;culo.</p>
+        </div>
+        <div class="prop-card fade-up">
+          <div class="icon-row">
+            <span class="icon-mark">&#128273;</span>
+            <h3 id="s3c4-title">Propietario y restricciones</h3>
+          </div>
+          <p id="s3c4-p">N&uacute;mero de due&ntilde;os, grav&aacute;menes, restricciones y n&uacute;meros regrabados.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="flow">
+    <div class="container">
+      <span class="section-label" id="s4-label">El flujo</span>
+      <h2 class="section-title" id="s4-title">As&iacute; se ve una compra informada.</h2>
+      <p class="section-desc" id="s4-desc">Cuatro pantallas, un solo hilo: de tu perfil al informe del veh&iacute;culo.</p>
+      <div class="flow">
+        <div class="flow-tabs" role="tablist" aria-label="Recorrido">
+          <button type="button" class="flow-tab" role="tab" aria-selected="true" aria-controls="flow-1" id="tab-1" data-panel="flow-1">
+            <span class="flow-step">01</span><strong id="fl1">Tu perfil</strong>
+          </button>
+          <button type="button" class="flow-tab" role="tab" aria-selected="false" aria-controls="flow-2" id="tab-2" data-panel="flow-2" tabindex="-1">
+            <span class="flow-step">02</span><strong id="fl2">Tus opciones</strong>
+          </button>
+          <button type="button" class="flow-tab" role="tab" aria-selected="false" aria-controls="flow-3" id="tab-3" data-panel="flow-3" tabindex="-1">
+            <span class="flow-step">03</span><strong id="fl3">El informe</strong>
+          </button>
+          <button type="button" class="flow-tab" role="tab" aria-selected="false" aria-controls="flow-4" id="tab-4" data-panel="flow-4" tabindex="-1">
+            <span class="flow-step">04</span><strong id="fl4">La decisi&oacute;n</strong>
+          </button>
+        </div>
+
+        <div class="flow-panel">
+          <div class="flow-view active" id="flow-1" role="tabpanel" aria-labelledby="tab-1">
+            <h3 id="f1-title">Nueve preguntas, cero formularios eternos</h3>
+            <p class="flow-caption" id="f1-cap">Presupuesto, terreno, uso y prioridades.</p>
+            <div class="chip-row">
+              <span class="chip on">SUV</span>
+              <span class="chip on" id="f1c1">Autom&aacute;tico</span>
+              <span class="chip on" id="f1c2">5 puestos</span>
+              <span class="chip">2020+</span>
+              <span class="chip">$40M &ndash; $100M</span>
+              <span class="chip" id="f1c3">Gasolina</span>
+            </div>
+            <div class="flow-footer"><span>&#10003;</span><span id="f1-foot">Toma menos de 2 minutos y no pide registro.</span></div>
+          </div>
+
+          <div class="flow-view" id="flow-2" role="tabpanel" aria-labelledby="tab-2">
+            <h3 id="f2-title">Las opciones llegan ordenadas</h3>
+            <p class="flow-caption" id="f2-cap">Primero lo que encaja contigo, no lo que est&aacute; pautado.</p>
+            <div class="match-card">
+              <div>
+                <div class="match-name">Renault Duster</div>
+                <div class="match-meta">2025 &ndash; 2027 &middot; SUV</div>
+                <div class="chip-row" style="margin-top:12px">
+                  <span class="chip" id="f2c1">Dentro de tu presupuesto</span>
+                  <span class="chip" id="f2c2">Apto para tu terreno</span>
+                </div>
+              </div>
+              <div class="match-score"><b>100</b><span>Match</span></div>
+            </div>
+            <div class="flow-footer"><span id="f2-foot">Cada opci&oacute;n trae el motivo: presupuesto, terreno, reventa.</span></div>
+          </div>
+
+          <div class="flow-view" id="flow-3" role="tabpanel" aria-labelledby="tab-3">
+            <h3 id="f3-title">El informe, antes de la cita</h3>
+            <p class="flow-caption" id="f3-cap">Con la placa: RUNT, SOAT, multas y siniestros.</p>
+            <div class="report">
+              <div class="report-row"><span><i class="dot"></i><span id="f3r1">SOAT vigente hasta 2027</span></span><em>OK</em></div>
+              <div class="report-row"><span><i class="dot"></i><span id="f3r2">Sin multas en cobro coactivo</span></span><em>0</em></div>
+              <div class="report-row"><span><i class="dot"></i><span id="f3r3">Sin grav&aacute;menes ni restricciones</span></span><em>0</em></div>
+              <div class="report-row warn"><span><i class="dot"></i><span id="f3r4">N&uacute;mero de motor regrabado</span></span><em id="f3r4v">Revisar</em></div>
+            </div>
+            <div class="flow-footer"><span id="f3-foot">Un hallazgo &aacute;mbar no hunde el puntaje: te dice qu&eacute; preguntar.</span></div>
+          </div>
+
+          <div class="flow-view" id="flow-4" role="tabpanel" aria-labelledby="tab-4">
+            <h3 id="f4-title">Negocia con n&uacute;meros, no con corazonadas</h3>
+            <p class="flow-caption" id="f4-cap">Rango de mercado contra el precio que piden.</p>
+            <div class="range-bar">
+              <div class="range-track"></div>
+              <div class="range-fill" style="left:0;width:62%"></div>
+              <div class="range-ask" style="left:84%" data-label="82M"></div>
+            </div>
+            <div class="range-legend"><span>$51M</span><span id="f4-mid">techo del mercado $76M</span><span>$112M</span></div>
+            <div class="flow-footer"><span id="f4-foot">Si piden $82M por un carro que vale hasta $76M, ya tienes el argumento.</span></div>
+          </div>
+
+          <div class="flow-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="casos">
+    <div class="container">
+      <span class="section-label" id="s5-label">Casos</span>
+      <h2 class="section-title" id="s5-title">Tres lecturas del cat&aacute;logo.</h2>
+      <p class="section-desc" id="s5-desc">Ejemplos de lo que muestra un informe con datos reales de Velyt: precio pedido, rango de mercado y hallazgos.</p>
+      <div class="cases-grid">
+        <article class="case-card fade-up" style="--case-tone:#B3261E">
+          <span class="case-idx">01</span>
+          <h3>Kia Picanto</h3>
+          <div class="case-meta">2021 &ndash; 2027 &middot; Hatchback &middot; Bogot&aacute;</div>
+          <div class="case-figures">
+            <span><span id="c1-ask">Piden</span><b>$82M</b></span>
+            <span><span id="c1-mkt">Mercado</span><b>$51M &ndash; $76M</b></span>
+          </div>
+          <span class="case-verdict bad" id="c1-v">Sobreprecio: $6M sobre el techo</span>
+        </article>
+        <article class="case-card fade-up" style="--case-tone:#1B7F4B">
+          <span class="case-idx">02</span>
+          <h3>Renault Duster</h3>
+          <div class="case-meta">2025 &ndash; 2027 &middot; SUV &middot; Medell&iacute;n</div>
+          <div class="case-figures">
+            <span><span id="c2-ask">Piden</span><b>$86M</b></span>
+            <span><span id="c2-mkt">Mercado</span><b>$78M &ndash; $112M</b></span>
+          </div>
+          <span class="case-verdict ok" id="c2-v">En rango: buen punto de partida</span>
+        </article>
+        <article class="case-card fade-up" style="--case-tone:#9A6700">
+          <span class="case-idx">03</span>
+          <h3>Kia Picanto &middot; KJA0704</h3>
+          <div class="case-meta" id="c3-meta">Chequeo vehicular &middot; SOAT vencido</div>
+          <div class="case-figures">
+            <span><span id="c3-ask">Piden</span><b>$64M</b></span>
+            <span><span id="c3-mkt">Mercado</span><b>$51M &ndash; $76M</b></span>
+          </div>
+          <span class="case-verdict warn" id="c3-v">Riesgo: 1 multa coactiva y SOAT vencido</span>
+        </article>
+      </div>
+      <p class="cases-note" id="s5-note">Ejemplos armados con datos del cat&aacute;logo (Fasecolda, RUNT y marketplaces). No son testimonios de clientes.</p>
+      <div class="sources-strip">
+        <span>RUNT</span><span>SOAT</span><span>Fasecolda</span><span id="src1">7 marketplaces</span><span id="src2">3 fuentes de precio</span>
+      </div>
+    </div>
+  </section>
+
   <section class="cta-section">
     <div class="container">
       <h2 id="cta-title">Empieza ahora, es gratis.</h2>
@@ -378,6 +624,58 @@
       })
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
     document.querySelectorAll('.fade-up').forEach((el) => { observer.observe(el) })
+
+    // Stagger: siblings enter one after another instead of all at once.
+    document.querySelectorAll('.props-grid, .checks-grid, .cases-grid, .timeline').forEach((group) => {
+      Array.from(group.children).forEach((child, i) => {
+        child.style.setProperty('--d', (i * 0.08).toFixed(2) + 's')
+      })
+    })
+
+    // Flow: four tabs, one panel at a time, auto-advance until the reader takes over.
+    ;(() => {
+      const tabs = Array.from(document.querySelectorAll('.flow-tab'))
+      const views = Array.from(document.querySelectorAll('.flow-view'))
+      const dots = Array.from(document.querySelectorAll('.flow-dots i'))
+      if (!tabs.length) return
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      let index = 0
+      let timer = null
+
+      const show = (next) => {
+        index = (next + tabs.length) % tabs.length
+        tabs.forEach((tab, i) => {
+          const on = i === index
+          tab.setAttribute('aria-selected', on ? 'true' : 'false')
+          tab.tabIndex = on ? 0 : -1
+        })
+        views.forEach((view, i) => view.classList.toggle('active', i === index))
+        dots.forEach((dot, i) => dot.classList.toggle('on', i === index))
+      }
+      const stop = () => { if (timer) { clearInterval(timer); timer = null } }
+      const play = () => {
+        if (reduce) return
+        stop()
+        timer = setInterval(() => show(index + 1), 4800)
+      }
+
+      tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => { show(i); stop() })
+        tab.addEventListener('keydown', (event) => {
+          const forward = event.key === 'ArrowDown' || event.key === 'ArrowRight'
+          const back = event.key === 'ArrowUp' || event.key === 'ArrowLeft'
+          if (!forward && !back) return
+          event.preventDefault()
+          show(forward ? i + 1 : i - 1)
+          tabs[index].focus()
+          stop()
+        })
+      })
+      const flow = document.querySelector('.flow')
+      flow.addEventListener('mouseenter', stop)
+      flow.addEventListener('focusin', stop)
+      play()
+    })()
 
     var GAUGE_TARGETS = { vehicles: 30, marketplaces: 30, sources: 30 }
     function animateGauges() {
@@ -437,6 +735,48 @@
         'tl4-title': 'Decide con confianza',
         'tl4-desc': 'Compara hasta 3 veh\u00EDculos lado a lado, revisa listados en vivo del mercado y comparte con tu familia para decidir juntos.',
         'tl4-meta': 'Compara \u00B7 Comparte \u00B7 Decide',
+        's3-label': 'Chequeo vehicular',
+        's3-title': 'El historial completo,<br />antes de firmar.',
+        's3-desc': 'Con solo la placa, Velyt cruza RUNT, SOAT, multas y siniestros y te entrega un informe verificable en un toque.',
+        's3c1-title': 'Datos y documentos',
+        's3c1-p': 'Placa, VIN, motor y chasis contrastados con el RUNT.',
+        's3c2-title': 'Multas y alertas',
+        's3c2-p': 'Multas en cobro coactivo y alertas pendientes sobre la placa.',
+        's3c3-title': 'Historial y siniestralidad',
+        's3c3-p': 'Accidentes reportados y el historial registrado del veh\u00EDculo.',
+        's3c4-title': 'Propietario y restricciones',
+        's3c4-p': 'N\u00FAmero de due\u00F1os, grav\u00E1menes, restricciones y n\u00FAmeros regrabados.',
+        's4-label': 'El flujo',
+        's4-title': 'As\u00ED se ve una compra informada.',
+        's4-desc': 'Cuatro pantallas, un solo hilo: de tu perfil al informe del veh\u00EDculo.',
+        'fl1': 'Tu perfil', 'fl2': 'Tus opciones', 'fl3': 'El informe', 'fl4': 'La decisi\u00F3n',
+        'f1-title': 'Nueve preguntas, cero formularios eternos',
+        'f1-cap': 'Presupuesto, terreno, uso y prioridades.',
+        'f1c1': 'Autom\u00E1tico', 'f1c2': '5 puestos', 'f1c3': 'Gasolina',
+        'f1-foot': 'Toma menos de 2 minutos y no pide registro.',
+        'f2-title': 'Las opciones llegan ordenadas',
+        'f2-cap': 'Primero lo que encaja contigo, no lo que est\u00E1 pautado.',
+        'f2c1': 'Dentro de tu presupuesto', 'f2c2': 'Apto para tu terreno',
+        'f2-foot': 'Cada opci\u00F3n trae el motivo: presupuesto, terreno, reventa.',
+        'f3-title': 'El informe, antes de la cita',
+        'f3-cap': 'Con la placa: RUNT, SOAT, multas y siniestros.',
+        'f3r1': 'SOAT vigente hasta 2027', 'f3r2': 'Sin multas en cobro coactivo',
+        'f3r3': 'Sin grav\u00E1menes ni restricciones', 'f3r4': 'N\u00FAmero de motor regrabado', 'f3r4v': 'Revisar',
+        'f3-foot': 'Un hallazgo \u00E1mbar no hunde el puntaje: te dice qu\u00E9 preguntar.',
+        'f4-title': 'Negocia con n\u00FAmeros, no con corazonadas',
+        'f4-cap': 'Rango de mercado contra el precio que piden.',
+        'f4-mid': 'techo del mercado $76M',
+        'f4-foot': 'Si piden $82M por un carro que vale hasta $76M, ya tienes el argumento.',
+        's5-label': 'Casos',
+        's5-title': 'Tres lecturas del cat\u00E1logo.',
+        's5-desc': 'Ejemplos de lo que muestra un informe con datos reales de Velyt: precio pedido, rango de mercado y hallazgos.',
+        'c1-ask': 'Piden', 'c1-mkt': 'Mercado', 'c1-v': 'Sobreprecio: $6M sobre el techo',
+        'c2-ask': 'Piden', 'c2-mkt': 'Mercado', 'c2-v': 'En rango: buen punto de partida',
+        'c3-ask': 'Piden', 'c3-mkt': 'Mercado',
+        'c3-meta': 'Chequeo vehicular \u00B7 SOAT vencido',
+        'c3-v': 'Riesgo: 1 multa coactiva y SOAT vencido',
+        's5-note': 'Ejemplos armados con datos del cat\u00E1logo (Fasecolda, RUNT y marketplaces). No son testimonios de clientes.',
+        'src1': '7 marketplaces', 'src2': '3 fuentes de precio',
         'cta-title': 'Empieza ahora, es gratis.',
         'cta-desc': '\u00DAnete a los compradores que ya descubrieron el precio real y las fallas documentadas antes de negociar.',
         'footer-text': 'velyt \u2014 Colombia \u00B7 Tu pr\u00F3ximo carro sin sorpresas',
@@ -478,6 +818,48 @@
         'tl4-title': 'Decide with confidence',
         'tl4-desc': 'Compare up to 3 vehicles side by side, browse live market listings, and share with your family to decide together.',
         'tl4-meta': 'Compare \u00B7 Share \u00B7 Decide',
+        's3-label': 'Vehicle check',
+        's3-title': 'The full history,<br />before you sign.',
+        's3-desc': 'With just the plate, Velyt cross-checks RUNT, SOAT, fines and accidents and hands you a verifiable report in one tap.',
+        's3c1-title': 'Vehicle data and documents',
+        's3c1-p': 'Plate, VIN, engine and chassis matched against RUNT.',
+        's3c2-title': 'Fines and alerts',
+        's3c2-p': 'Coactive fines and pending alerts on the plate.',
+        's3c3-title': 'History and accident records',
+        's3c3-p': 'Accident reports and the vehicle\u2019s recorded history.',
+        's3c4-title': 'Owner and restrictions',
+        's3c4-p': 'Owner count, liens, restrictions and re-stamped numbers.',
+        's4-label': 'The flow',
+        's4-title': 'This is what an informed purchase looks like.',
+        's4-desc': 'Four screens, one thread: from your profile to the vehicle report.',
+        'fl1': 'Your profile', 'fl2': 'Your options', 'fl3': 'The report', 'fl4': 'The call',
+        'f1-title': 'Nine questions, no endless form',
+        'f1-cap': 'Budget, terrain, use and priorities.',
+        'f1c1': 'Automatic', 'f1c2': '5 seats', 'f1c3': 'Gasoline',
+        'f1-foot': 'Takes under 2 minutes and needs no sign-up.',
+        'f2-title': 'Options arrive ranked',
+        'f2-cap': 'What fits you first, not what is being promoted.',
+        'f2c1': 'Within your budget', 'f2c2': 'Fits your terrain',
+        'f2-foot': 'Every option carries its reason: budget, terrain, resale.',
+        'f3-title': 'The report, before the appointment',
+        'f3-cap': 'From the plate: RUNT, SOAT, fines and accidents.',
+        'f3r1': 'SOAT valid through 2027', 'f3r2': 'No coactive fines',
+        'f3r3': 'No liens or restrictions', 'f3r4': 'Re-stamped engine number', 'f3r4v': 'Check',
+        'f3-foot': 'An amber finding does not sink the score: it tells you what to ask.',
+        'f4-title': 'Negotiate with numbers, not hunches',
+        'f4-cap': 'Market range against the asking price.',
+        'f4-mid': 'market ceiling $76M',
+        'f4-foot': 'If they ask $82M for a car worth up to $76M, you already have the argument.',
+        's5-label': 'Cases',
+        's5-title': 'Three reads from the catalogue.',
+        's5-desc': 'Examples of what a report shows with real Velyt data: asking price, market range and findings.',
+        'c1-ask': 'Asking', 'c1-mkt': 'Market', 'c1-v': 'Overpriced: $6M above the ceiling',
+        'c2-ask': 'Asking', 'c2-mkt': 'Market', 'c2-v': 'In range: a good starting point',
+        'c3-ask': 'Asking', 'c3-mkt': 'Market',
+        'c3-meta': 'Vehicle check \u00B7 expired SOAT',
+        'c3-v': 'Risk: 1 coactive fine and expired SOAT',
+        's5-note': 'Examples built from catalogue data (Fasecolda, RUNT and marketplaces). They are not customer testimonials.',
+        'src1': '7 marketplaces', 'src2': '3 price sources',
         'cta-title': "Start now, it's free.",
         'cta-desc': 'Join the buyers who already discovered the real price and documented issues before negotiating.',
         'footer-text': 'velyt \u2014 Colombia \u00B7 Your next car, no surprises',
