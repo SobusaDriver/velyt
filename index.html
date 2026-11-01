@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title id="page-title">velyt — Tu próximo carro sin sorpresas</title>
-  <meta name="description" id="meta-desc" content="Compra con la información que el vendedor prefiere ocultar. Precio real, fallas documentadas, el vehículo que realmente necesitas." />
-  <meta name="theme-color" content="#0d0d0d" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="velyt" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png" />
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-  <link rel="canonical" href="https://sobusadriver.github.io/velyt/" />
+  <meta name="description" id="meta-desc" content="Compra con la información que el vendedor prefiere ocultar. Precio real, fallas documentadas, el vehículo que realmente necesitas.">
+  <meta name="theme-color" content="#0d0d0d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="velyt">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="canonical" href="https://sobusadriver.github.io/velyt/">
 
-  <meta property="og:title" content="velyt — Tu próximo carro sin sorpresas" />
-  <meta property="og:description" content="Precio real multicruzado, fallas documentadas, el vehículo que realmente necesitas. Compra informado." />
-  <meta property="og:url" content="https://sobusadriver.github.io/velyt/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://sobusadriver.github.io/velyt/assets/og-image.png" />
-  <meta property="og:image:width" content="1024" />
-  <meta property="og:image:height" content="1024" />
-  <meta property="og:locale" content="es_CO" />
+  <meta property="og:title" content="velyt — Tu próximo carro sin sorpresas">
+  <meta property="og:description" content="Precio real multicruzado, fallas documentadas, el vehículo que realmente necesitas. Compra informado.">
+  <meta property="og:url" content="https://sobusadriver.github.io/velyt/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="velyt">
+  <meta property="og:image" content="https://sobusadriver.github.io/velyt/assets/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1024">
+  <meta property="og:image:height" content="1024">
+  <meta property="og:image:alt" content="velyt — compra con la información que el vendedor prefiere ocultar">
+  <meta property="og:locale" content="es_CO">
+  <meta property="og:locale:alternate" content="en_US">
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="velyt — Tu próximo carro sin sorpresas" />
-  <meta name="twitter:description" content="Precio real multicruzado, fallas documentadas, el vehículo que realmente necesitas. Compra informado." />
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="velyt — Tu próximo carro sin sorpresas">
+  <meta name="twitter:description" content="Precio real multicruzado, fallas documentadas, el vehículo que realmente necesitas. Compra informado.">
+  <meta name="twitter:image" content="https://sobusadriver.github.io/velyt/assets/og-image.png">
+  <meta name="twitter:image:alt" content="velyt — compra con la información que el vendedor prefiere ocultar">
 
   <style>
     :root {
@@ -207,6 +213,7 @@
     .flow-view h3 { font-family: 'DM Sans', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
     .flow-view .flow-caption { font-size: .85rem; color: var(--text-tertiary); margin-bottom: 20px; }
     .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .match-card .chip-row { margin-top: 12px; }
     .chip { border: 1px solid var(--border); border-radius: 999px; padding: 7px 14px; font-size: .82rem; color: var(--text-secondary); background: var(--bg); }
     .chip.on { background: var(--tag-bg); color: var(--tag-text); border-color: var(--tag-bg); }
     .match-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 18px; border: 1px solid var(--border); border-radius: 14px; background: var(--bg); }
@@ -224,8 +231,8 @@
     .report-row em { font-style: normal; color: var(--text-tertiary); font-size: .78rem; }
     .range-bar { position: relative; height: 44px; margin: 18px 0 10px; }
     .range-track { position: absolute; left: 0; right: 0; top: 21px; height: 6px; border-radius: 3px; background: var(--gauge-track); }
-    .range-fill { position: absolute; top: 21px; height: 6px; border-radius: 3px; background: var(--gauge-fill); }
-    .range-ask { position: absolute; top: 8px; width: 2px; height: 28px; background: var(--danger); }
+    .range-fill { position: absolute; top: 21px; height: 6px; border-radius: 3px; background: var(--gauge-fill); left: 0; width: 62%; }
+    .range-ask { position: absolute; top: 8px; left: 84%; width: 2px; height: 28px; background: var(--danger); }
     .range-ask::after { content: attr(data-label); position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: .68rem; color: var(--danger); white-space: nowrap; font-weight: 600; }
     .range-legend { display: flex; justify-content: space-between; font-size: .72rem; color: var(--text-tertiary); }
     .flow-footer { display: flex; align-items: center; gap: 10px; margin-top: 18px; font-size: .84rem; color: var(--text-secondary); }
@@ -291,7 +298,7 @@
   <nav id="nav">
     <div class="container">
       <a href="./" class="brand">
-        <img src="assets/favicon.png" alt="" class="brand-icon" width="30" height="30" />
+        <img src="assets/favicon.png" alt="" class="brand-icon" width="30" height="30">
         <span>velyt</span>
       </a>
       <div class="nav-actions">
@@ -312,8 +319,8 @@
   <section class="hero" id="hero-section">
     <div class="hero-bg-pattern"></div>
     <div class="hero-content">
-      <img src="assets/logo.png" alt="velyt" class="hero-logo hero-enter" width="80" height="80" style="--d:.05s" />
-      <h1 id="hero-title" class="hero-enter" style="--d:.15s">Compra con la informaci&oacute;n<br />que el vendedor <span class="hl">prefiere ocultar</span>.</h1>
+      <img src="assets/logo.png" alt="velyt" class="hero-logo hero-enter" width="80" height="80" style="--d:.05s">
+      <h1 id="hero-title" class="hero-enter" style="--d:.15s">Compra con la informaci&oacute;n<br>que el vendedor <span class="hl">prefiere ocultar</span>.</h1>
       <p id="hero-desc" class="hero-enter" style="--d:.25s">Velyt cruza datos de m&uacute;ltiples fuentes para mostrarte el precio real, las fallas documentadas y el veh&iacute;culo que realmente necesitas. Sin vueltas.</p>
       <a href="velyt://" class="hero-cta hero-enter" id="hero-cta" style="--d:.35s">
         <span id="cta-text">Encontrar mi pr&oacute;ximo carro</span>
@@ -350,7 +357,7 @@
   <section>
     <div class="container">
       <span class="section-label" id="s1-label">Por qu&eacute; velyt</span>
-      <h2 class="section-title" id="s1-title">La informaci&oacute;n que necesitas<br />para negociar con confianza.</h2>
+      <h2 class="section-title" id="s1-title">La informaci&oacute;n que necesitas<br>para negociar con confianza.</h2>
       <p class="section-desc" id="s1-desc">No compres basado en corazonadas. Compra con datos reales.</p>
       <div class="props-grid">
         <div class="prop-card fade-up">
@@ -414,7 +421,7 @@
   <section>
     <div class="container">
       <span class="section-label" id="s3-label">Chequeo vehicular</span>
-      <h2 class="section-title" id="s3-title">El historial completo,<br />antes de firmar.</h2>
+      <h2 class="section-title" id="s3-title">El historial completo,<br>antes de firmar.</h2>
       <p class="section-desc" id="s3-desc">Con solo la placa, Velyt cruza RUNT, SOAT, multas y siniestros y te entrega un informe verificable en un toque.</p>
       <div class="checks-grid">
         <div class="prop-card fade-up">
@@ -492,7 +499,7 @@
               <div>
                 <div class="match-name">Renault Duster</div>
                 <div class="match-meta">2025 &ndash; 2027 &middot; SUV</div>
-                <div class="chip-row" style="margin-top:12px">
+                <div class="chip-row">
                   <span class="chip" id="f2c1">Dentro de tu presupuesto</span>
                   <span class="chip" id="f2c2">Apto para tu terreno</span>
                 </div>
@@ -519,8 +526,8 @@
             <p class="flow-caption" id="f4-cap">Rango de mercado contra el precio que piden.</p>
             <div class="range-bar">
               <div class="range-track"></div>
-              <div class="range-fill" style="left:0;width:62%"></div>
-              <div class="range-ask" style="left:84%" data-label="82M"></div>
+              <div class="range-fill"></div>
+              <div class="range-ask" data-label="82M"></div>
             </div>
             <div class="range-legend"><span>$51M</span><span id="f4-mid">techo del mercado $76M</span><span>$112M</span></div>
             <div class="flow-footer"><span id="f4-foot">Si piden $82M por un carro que vale hasta $76M, ya tienes el argumento.</span></div>
@@ -583,12 +590,12 @@
       <div class="app-buttons">
         <div class="store-btn-wrap">
           <a href="https://apps.apple.com/co/app/velyt/id6778179192" target="_blank" rel="noopener noreferrer">
-            <img src="assets/app-store-badge.svg" alt="Download on the App Store" height="44" />
+            <img src="assets/app-store-badge.svg" alt="Download on the App Store" height="44">
           </a>
         </div>
         <div class="store-btn-wrap">
           <a href="https://play.google.com/store/apps/details?id=com.velyt" target="_blank" rel="noopener noreferrer">
-            <img src="assets/google-play-badge.svg" alt="Get it on Google Play" height="44" />
+            <img src="assets/google-play-badge.svg" alt="Get it on Google Play" height="44">
           </a>
         </div>
       </div>
@@ -710,10 +717,10 @@
         'deep-link-text': '\u00BFYa tienes la app instalada? <a href="velyt://">\u00C1brela aqu\u00ED</a>',
         'dl-title': 'Abriendo en velyt\u2026',
         'dl-desc': 'Si la app no se abre autom\u00E1ticamente, toca el bot\u00F3n.',
-        'hero-title': 'Compra con la informaci\u00F3n<br />que el vendedor <span class="hl">prefiere ocultar</span>.',
+        'hero-title': 'Compra con la informaci\u00F3n<br>que el vendedor <span class="hl">prefiere ocultar</span>.',
         'hero-desc': 'Velyt cruza datos de m\u00FAltiples fuentes para mostrarte el precio real, las fallas documentadas y el veh\u00EDculo que realmente necesitas. Sin vueltas.',
         's1-label': 'Por qu\u00E9 velyt',
-        's1-title': 'La informaci\u00F3n que necesitas<br />para negociar con confianza.',
+        's1-title': 'La informaci\u00F3n que necesitas<br>para negociar con confianza.',
         's1-desc': 'No compres basado en corazonadas. Compra con datos reales.',
         's1c1-title': 'El veh\u00EDculo que realmente necesitas',
         's1c1-p': 'No te mostramos todo lo que existe, solo los carros que realmente encajan contigo. Respondes unas preguntas sobre tu d\u00EDa a d\u00EDa y nosotros encontramos tu mejor opci\u00F3n.',
@@ -736,7 +743,7 @@
         'tl4-desc': 'Compara hasta 3 veh\u00EDculos lado a lado, revisa listados en vivo del mercado y comparte con tu familia para decidir juntos.',
         'tl4-meta': 'Compara \u00B7 Comparte \u00B7 Decide',
         's3-label': 'Chequeo vehicular',
-        's3-title': 'El historial completo,<br />antes de firmar.',
+        's3-title': 'El historial completo,<br>antes de firmar.',
         's3-desc': 'Con solo la placa, Velyt cruza RUNT, SOAT, multas y siniestros y te entrega un informe verificable en un toque.',
         's3c1-title': 'Datos y documentos',
         's3c1-p': 'Placa, VIN, motor y chasis contrastados con el RUNT.',
@@ -793,10 +800,10 @@
         'deep-link-text': 'Already have the app installed? <a href="velyt://">Open here</a>',
         'dl-title': 'Opening in velyt\u2026',
         'dl-desc': "If the app doesn't open automatically, tap the button.",
-        'hero-title': 'Buy with the information<br />the seller <span class="hl">prefers to hide</span>.',
+        'hero-title': 'Buy with the information<br>the seller <span class="hl">prefers to hide</span>.',
         'hero-desc': 'Velyt cross-references data from multiple sources to show you the real price, documented issues, and the vehicle you actually need. Straightforward.',
         's1-label': 'Why velyt',
-        's1-title': 'The information you need<br />to negotiate with confidence.',
+        's1-title': 'The information you need<br>to negotiate with confidence.',
         's1-desc': "Don't buy on gut feeling. Buy with real data.",
         's1c1-title': 'The vehicle you actually need',
         's1c1-p': "We don't show you everything out there \u2014 just the cars that actually fit you. Answer a few questions about your daily life and we'll find your best match.",
@@ -819,7 +826,7 @@
         'tl4-desc': 'Compare up to 3 vehicles side by side, browse live market listings, and share with your family to decide together.',
         'tl4-meta': 'Compare \u00B7 Share \u00B7 Decide',
         's3-label': 'Vehicle check',
-        's3-title': 'The full history,<br />before you sign.',
+        's3-title': 'The full history,<br>before you sign.',
         's3-desc': 'With just the plate, Velyt cross-checks RUNT, SOAT, fines and accidents and hands you a verifiable report in one tap.',
         's3c1-title': 'Vehicle data and documents',
         's3c1-p': 'Plate, VIN, engine and chassis matched against RUNT.',

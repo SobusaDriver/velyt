@@ -1,13 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página no encontrada — velyt</title>
+  <meta name="robots" content="noindex">
   <script>
-    // Encode the full path as a query param so GitHub Pages serves index.html
+    // GitHub Pages serves this file for unknown paths. Replay the path on the
+    // landing page so deep links and shared vehicle URLs still resolve.
     var l = window.location
     l.replace(l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
       l.pathname.split('/').slice(0, 2).join('/') +
       '/?p=' + encodeURIComponent(l.pathname.slice(1) + l.search) + l.hash)
   </script>
 </head>
+<body>
+  <p><a href="/velyt/">Ir a velyt</a></p>
+</body>
 </html>
