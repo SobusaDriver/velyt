@@ -1,27 +1,97 @@
 # velyt landing page
 
-Public repo for the velyt app landing page, served from **GitHub Pages**
-at `https://sobusadriver.github.io/velyt/`.
+Marketing site + deep-link verification files for velyt.
 
-This is a public mirror of the `site/` directory from the private app repo
-(`SobusaDriver/velyt-app`) so the landing page can be published — GitHub Pages
-can't serve a private repo on the free plan.
+## Where it lives
 
-## Deploy
+| | |
+| --- | --- |
+| Live site | https://sobusadriver.github.io/velyt/ |
+| Deploy source (public repo) | https://github.com/SobusaDriver/velyt |
+| This folder | `velyt-app/site/` (mirror of that repo) |
 
-Automatic via `.github/workflows/deploy-site.yml`:
+`velyt-app` is private and GitHub Pages cannot serve it on the free plan, so
+`SobusaDriver/velyt` is a public mirror of this folder. The live site is built
+from the root of that repo's `main` branch.
 
-- Triggers on every push to `main` and on manual `workflow_dispatch`.
-- Uploads the repo root as the Pages artifact and deploys with
-  `actions/deploy-pages@v4`.
+## How to deploy
 
-GitHub Pages repo setting must use **Source: GitHub Actions**.
+1. Make the change in `SobusaDriver/velyt`, or make it here and copy the files
+   over.
+2. Commit and push to `main`:
 
-## Deep links
+   ```bash
+   git clone https://github.com/SobusaDriver/velyt.git
+   cd velyt
+   # edit index.html / assets
+   git commit -am "..." && git push origin main
+   ```
 
-The page also acts as a Universal-Links / App-Links host:
+3. The repo's `Deploy site to GitHub Pages` workflow runs on every push to
+   `main` (and on manual dispatch), uploads the repo root and deploys with
+   `actions/deploy-pages@v4` in about 20 seconds. Check it with:
 
-- `.well-known/apple-app-site-association` — iOS Universal Links
-- `.well-known/assetlinks.json` — Android App Links
+   ```bash
+   gh run list -R SobusaDriver/velyt --limit 1
+   ```
 
-The custom scheme `velyt://` is used for in-app deep links from the landing CTA.
+4. Verify the live page:
+
+   ```bash
+   curl -sI https://sobusadriver.github.io/velyt/
+   ```
+
+GitHub Pages must stay configured as **Settings → Pages → Source: GitHub
+Actions** in that repo.
+
+Do not re-add a Pages workflow here: Pages is not enabled for `velyt-app`, so
+`actions/deploy-pages` fails with `Not Found`. The previous `deploy-site.yml` in
+this repo was removed for that reason.
+
+## Current configuration
+
+- App Store: `https://apps.apple.com/co/app/velyt/id6778179192`
+- Google Play: **not published.** The badge is shown disabled with a
+  "Próximamente" label and links nowhere. When the app ships, restore the link in
+  `index.html` and the Android fallback in the deep-link script.
+- Share / deep-link base: `https://sobusadriver.github.io/velyt`, set through
+  `EXPO_PUBLIC_SHARE_BASE_URL` in `eas.json`
+- App Links host: `sobusadriver.github.io` with `pathPrefix: /velyt`, set in
+  `app.json` (`associatedDomains`, `intentFilters`)
+
+Deep-link verification files live in `.well-known/`. iOS reads the AASA from the
+host root (`https://sobusadriver.github.io/.well-known/...`), which is served by
+the separate `sobusadriver.github.io` repo, **not** by `/velyt/`. That repo needs a
+`.nojekyll` file, otherwise Pages' Jekyll build skips dot-directories and the AASA
+returns 404. Live check:
+
+```bash
+curl -sI https://sobusadriver.github.io/.well-known/apple-app-site-association
+```
+
+Team ID `UHA77MWXMX`; Android fingerprint comes from the release keystore
+(upload cert in `build/velyt.aab`), not EAS' internal key.
+
+## Privacy policy
+
+`privacidad.html` is the public privacy policy, linked from the landing footer.
+
+- Keep it in sync with what the app collects (account email + Google/Apple
+  profile, onboarding vehicle profile, saved favorites; Supabase backend; Gemini
+  for vehicle summaries).
+- Add the URL in App Store Connect (App Privacy) and Google Play (Store listing →
+  Privacy policy): `https://sobusadriver.github.io/velyt/privacidad.html`.
+
+## Files
+
+```
+site/
+├── index.html                   Landing page
+├── privacidad.html              Política de privacidad
+├── 404.html                     Not-found page
+├── assets/                      Logos, badges, social image
+├── .well-known/
+│   ├── apple-app-site-association    iOS Universal Links
+│   └── assetlinks.json               Android App Links
+└── README.md                    This file
+```
