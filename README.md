@@ -107,6 +107,19 @@ site/
 └── .well-known/                 Verification files (served from the root repo)
 ```
 
+## Copy claims
+
+The landing page says **"10+ fuentes de precio"** and **"11 marketplaces"**. Both
+are marketing claims:
+
+- price sources: the estimator blends 3 references (Revista Motor, Fasecolda,
+  catalog). Marketplace prices are inflated and are **not** valuation inputs — see
+  `docs/fair-price-estimator.md`.
+- marketplaces: 9 ingested adapters + MercadoLibre and Facebook open-market links.
+
+Change these numbers only in `index.html` (`#src1`, `#src2`, the two gauges, and the
+`es`/`en` translation maps), and keep this note in sync.
+
 ## Analytics and install attribution
 
 `assets/analytics.js` loads posthog-js and captures a `cta_click` for any element
