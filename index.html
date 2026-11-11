@@ -35,101 +35,9 @@
   <meta name="twitter:image" content="https://sobusadriver.github.io/velyt/assets/og-image.png">
   <meta name="twitter:image:alt" content="velyt — compra con la información que el vendedor prefiere ocultar">
 
+  <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/theme.js" defer></script>
   <style>
-    :root {
-      --bg: #06070a;
-      --bg-soft: #0b0d13;
-      --surface: rgba(255, 255, 255, .045);
-      --surface-strong: rgba(255, 255, 255, .08);
-      --line: rgba(255, 255, 255, .1);
-      --line-strong: rgba(255, 255, 255, .2);
-      --text: #f4f4f1;
-      --text-secondary: #a3a7b0;
-      --text-tertiary: #6d717a;
-      --accent: #3d6bff;
-      --accent-soft: rgba(61, 107, 255, .16);
-      --amber: #e8a33d;
-      --green: #3dd68c;
-      --red: #ff5c5c;
-      --on-accent: #ffffff;
-      --nav-bg: rgba(9, 10, 14, .62);
-      --shadow: 0 30px 80px rgba(0, 0, 0, .55);
-      --glow: radial-gradient(60% 60% at 70% 20%, rgba(61, 107, 255, .22), transparent 70%);
-      --display: "Space Grotesk", -apple-system, BlinkMacSystemFont, sans-serif;
-      --serif: "Instrument Serif", Georgia, serif;
-      --body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    .light {
-      --bg: #f3f2ee;
-      --bg-soft: #eceae4;
-      --surface: rgba(10, 12, 18, .035);
-      --surface-strong: rgba(10, 12, 18, .06);
-      --line: rgba(10, 12, 18, .12);
-      --line-strong: rgba(10, 12, 18, .24);
-      --text: #0c0e13;
-      --text-secondary: #4c4f57;
-      --text-tertiary: #83868d;
-      --accent: #2749d8;
-      --accent-soft: rgba(39, 73, 216, .12);
-      --on-accent: #ffffff;
-      --nav-bg: rgba(243, 242, 238, .72);
-      --shadow: 0 30px 80px rgba(20, 20, 20, .12);
-      --glow: radial-gradient(60% 60% at 70% 20%, rgba(39, 73, 216, .12), transparent 70%);
-    }
-
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { font-size: 16px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
-    body {
-      font-family: var(--body);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-      transition: background .4s ease, color .4s ease;
-    }
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
-    button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
-    ::selection { background: var(--accent); color: #fff; }
-
-    .container { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
-
-    /* ---------- nav ---------- */
-    nav { position: fixed; top: 18px; left: 0; right: 0; z-index: 100; display: flex; justify-content: center; padding: 0 18px; transition: transform .4s ease; }
-    nav .container {
-      width: 100%;
-      max-width: 1180px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 9px 12px 9px 16px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: var(--nav-bg);
-      -webkit-backdrop-filter: blur(18px) saturate(140%);
-      backdrop-filter: blur(18px) saturate(140%);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, .18);
-    }
-    nav .brand { display: flex; align-items: center; gap: 10px; }
-    nav .brand-icon { width: 26px; height: 26px; border-radius: 6px; }
-    nav .brand span { font-family: var(--display); font-size: 1.02rem; font-weight: 700; letter-spacing: -.02em; }
-    nav .nav-actions { display: flex; align-items: center; gap: 8px; }
-    nav .theme-toggle, nav .lang-toggle {
-      height: 34px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: transparent;
-      transition: border-color .2s, background .2s, color .2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    nav .theme-toggle { width: 34px; }
-    nav .theme-toggle:hover, nav .lang-toggle:hover { border-color: var(--line-strong); background: var(--surface); }
-    nav .theme-toggle svg { width: 15px; height: 15px; stroke: var(--text-secondary); }
-    nav .lang-toggle { padding: 0 12px; font-size: .76rem; font-weight: 600; color: var(--text-secondary); letter-spacing: .04em; display: inline-flex; align-items: center; text-decoration: none; }
-
     /* ---------- hero ---------- */
     .hero {
       position: relative;
@@ -517,10 +425,6 @@
     .deep-link-hint { margin-top: 22px; font-size: .78rem; color: var(--text-tertiary); }
     .deep-link-hint a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
 
-    footer { border-top: 1px solid var(--line); padding: 30px 0; }
-    footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    footer p { color: var(--text-tertiary); font-size: .74rem; letter-spacing: .02em; }
-    footer a { color: var(--text-secondary); }
 
     .fade-up { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.2, .7, .2, 1), transform .8s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0s); }
     .fade-up.visible { opacity: 1; transform: none; }
@@ -1003,19 +907,6 @@
     }
     requestAnimationFrame(() => { requestAnimationFrame(animateGauges) })
 
-    var THEME_META = document.querySelector('meta[name="theme-color"]')
-    function toggleTheme() {
-      var html = document.documentElement
-      var isLight = html.classList.toggle('light')
-      var icon = document.getElementById('theme-icon')
-      icon.innerHTML = isLight
-        ? '<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
-        : '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
-      THEME_META.content = isLight ? '#f5f5f5' : '#0d0d0d'
-      localStorage.setItem('theme', isLight ? 'light' : 'dark')
-    }
-    var SAVED_THEME = localStorage.getItem('theme')
-    if (SAVED_THEME === 'light') requestAnimationFrame(toggleTheme)
 
     var TRANSLATIONS = {
       es: {
