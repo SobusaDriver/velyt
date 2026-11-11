@@ -128,7 +128,7 @@
     nav .theme-toggle { width: 34px; }
     nav .theme-toggle:hover, nav .lang-toggle:hover { border-color: var(--line-strong); background: var(--surface); }
     nav .theme-toggle svg { width: 15px; height: 15px; stroke: var(--text-secondary); }
-    nav .lang-toggle { padding: 0 12px; font-size: .76rem; font-weight: 600; color: var(--text-secondary); letter-spacing: .04em; }
+    nav .lang-toggle { padding: 0 12px; font-size: .76rem; font-weight: 600; color: var(--text-secondary); letter-spacing: .04em; display: inline-flex; align-items: center; text-decoration: none; }
 
     /* ---------- hero ---------- */
     .hero {
@@ -585,6 +585,7 @@
     }
 
   </style>
+  <script src="assets/analytics.js" defer></script>
 </head>
 <body>
 
@@ -595,6 +596,7 @@
         <span>velyt</span>
       </a>
       <div class="nav-actions">
+        <a class="lang-toggle" href="calculadora/" id="nav-calc" data-cta="nav-calculadora">Cuota</a>
         <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
           <svg id="theme-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="Theme"><title>Toggle theme</title><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
@@ -606,7 +608,7 @@
   <div class="deep-link-redirect" id="deep-link-redirect">
     <h2 id="dl-title">Abriendo en velyt&hellip;</h2>
     <p id="dl-desc">Si la app no se abre autom&aacute;ticamente, toca el bot&oacute;n.</p>
-    <a class="btn" id="dl-btn" href="velyt://">Abrir app</a>
+    <a class="btn" id="dl-btn" href="velyt://" data-cta="deep-link">Abrir app</a>
   </div>
 
   <section class="hero" id="hero-section">
@@ -619,7 +621,7 @@
       <span class="hero-eyebrow"><img src="assets/favicon.png" alt="" width="18" height="18"> VELYT &middot; COLOMBIA</span>
       <h1 id="hero-title" class="hero-enter d1">Compra con la informaci&oacute;n<br>que el vendedor <span class="hl">prefiere ocultar</span>.</h1>
       <p id="hero-desc" class="hero-enter d2">Velyt cruza datos de m&uacute;ltiples fuentes para mostrarte el precio real, las fallas documentadas y el veh&iacute;culo que realmente necesitas. Sin vueltas.</p>
-      <a href="velyt://" class="hero-cta hero-enter" id="hero-cta" data-d="3">
+      <a href="velyt://" class="hero-cta hero-enter" id="hero-cta" data-d="3" data-cta="hero">
         <span id="cta-text">Encontrar mi pr&oacute;ximo carro</span>
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="CTA arrow"><title>CTA arrow</title><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
@@ -895,7 +897,7 @@
       <p id="cta-desc">&Uacute;nete a los compradores que ya descubrieron el precio real y las fallas documentadas antes de negociar.</p>
       <div class="app-buttons">
         <div class="store-btn-wrap">
-          <a href="https://apps.apple.com/co/app/velyt/id6778179192" target="_blank" rel="noopener noreferrer">
+          <a href="https://apps.apple.com/co/app/velyt/id6778179192?ct=web-landing" target="_blank" rel="noopener noreferrer" data-cta="badge-appstore">
             <img src="assets/app-store-badge.svg" alt="Download on the App Store" height="44">
           </a>
         </div>
@@ -907,6 +909,7 @@
         </div>
       </div>
       <p class="deep-link-hint" id="deep-link-text">&iquest;Ya tienes la app instalada? <a href="velyt://">&Aacute;brela aqu&iacute;</a></p>
+      <p class="deep-link-hint"><a href="calculadora/" id="calc-link" data-cta="cta-section-calculadora">Simula tu cuota mensual &rarr;</a></p>
     </div>
   </section>
 
@@ -1022,6 +1025,8 @@
         'stat2-label': 'Marketplaces',
         'stat3-label': 'Fuentes de precio',
         'deep-link-text': '\u00BFYa tienes la app instalada? <a href="velyt://">\u00C1brela aqu\u00ED</a>',
+        'nav-calc': 'Cuota',
+        'calc-link': 'Simula tu cuota mensual \u2192',
         'soon-label': 'Pr\u00F3ximamente',
         'dl-title': 'Abriendo en velyt\u2026',
         'dl-desc': 'Si la app no se abre autom\u00E1ticamente, toca el bot\u00F3n.',
@@ -1106,6 +1111,8 @@
         'stat2-label': 'Marketplaces',
         'stat3-label': 'Price sources',
         'deep-link-text': 'Already have the app installed? <a href="velyt://">Open here</a>',
+        'nav-calc': 'Payment',
+        'calc-link': 'Simulate your monthly payment \u2192',
         'soon-label': 'Coming soon',
         'dl-title': 'Opening in velyt\u2026',
         'dl-desc': "If the app doesn't open automatically, tap the button.",
@@ -1240,7 +1247,7 @@
       }, { passive: true })
     })()
 
-    var APP_STORE_URL = 'https://apps.apple.com/co/app/velyt/id6778179192'
+    var APP_STORE_URL = 'https://apps.apple.com/co/app/velyt/id6778179192?ct=web-landing'
     var FALLBACK_TIMEOUT = 500
 
     ;(() => {

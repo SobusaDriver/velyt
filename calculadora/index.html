@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Simulador de cuota de carro · velyt</title>
+  <meta name="description" content="Calcula la cuota mensual de tu carro: precio, cuota inicial y plazo. Gratis, sin cuenta y sin dar tus datos.">
+  <link rel="canonical" href="https://sobusadriver.github.io/velyt/calculadora/">
+  <meta property="og:title" content="Simulador de cuota · velyt">
+  <meta property="og:description" content="Calcula la cuota mensual de tu carro en segundos.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#06070a">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #06070a; --surface: rgba(255,255,255,.045); --line: rgba(255,255,255,.1);
+      --text: #f4f4f1; --text-secondary: #a3a7b0; --text-tertiary: #6d717a;
+      --accent: #3d6bff; --on-accent: #fff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh; padding: 28px 20px 64px;
+    }
+    .wrap { max-width: 560px; margin: 0 auto; display: grid; gap: 22px; }
+    a { color: inherit; }
+    .back { font-size: .82rem; color: var(--text-secondary); text-decoration: none; }
+    .back:hover { color: var(--text); }
+    h1 { font-family: "Space Grotesk", sans-serif; font-size: 1.85rem; line-height: 1.15; margin: 0; letter-spacing: -.02em; }
+    .lede { margin: 6px 0 0; color: var(--text-secondary); font-size: .95rem; line-height: 1.5; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: grid; gap: 18px; }
+    label { font-size: .78rem; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+    input {
+      width: 100%; background: rgba(0,0,0,.35); border: 1px solid var(--line); border-radius: 10px;
+      color: var(--text); font: inherit; font-size: 1.15rem; padding: 12px 14px;
+    }
+    input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      background: transparent; border: 1px solid var(--line); color: var(--text-secondary);
+      border-radius: 999px; padding: 7px 14px; font: inherit; font-size: .85rem; cursor: pointer;
+    }
+    .chip[aria-pressed="true"] { border-color: var(--accent); background: rgba(61,107,255,.16); color: var(--text); font-weight: 600; }
+    .result { display: grid; gap: 4px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+    .result strong { font-family: "Space Grotesk", sans-serif; font-size: 2.1rem; letter-spacing: -.02em; }
+    .result span { color: var(--text-secondary); font-size: .8rem; }
+    .rows { display: grid; gap: 10px; }
+    .row { display: flex; justify-content: space-between; gap: 12px; font-size: .9rem; }
+    .row dt { color: var(--text-secondary); }
+    .row dd { margin: 0; font-weight: 500; }
+    .note { color: var(--text-tertiary); font-size: .74rem; line-height: 1.5; margin: 0; }
+    .cta {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--accent); color: var(--on-accent); text-decoration: none;
+      border-radius: 999px; padding: 14px 22px; font-weight: 600; font-size: .95rem;
+    }
+    .cta:hover { filter: brightness(1.08); }
+    @media (prefers-reduced-motion: no-preference) { .cta { transition: filter .2s; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a class="back" href="../">&larr; velyt</a>
+    <header>
+      <h1>&iquest;Cu&aacute;nto pagar&iacute;as al mes?</h1>
+      <p class="lede">Precio, cuota inicial y plazo. Sin cuenta, sin tel&eacute;fono y sin correo.</p>
+    </header>
+
+    <section class="card">
+      <div>
+        <label for="precio">Precio del carro (COP)</label>
+        <input id="precio" type="text" inputmode="numeric" autocomplete="off" value="80000000" aria-describedby="precio-formato">
+        <p id="precio-formato" class="note" style="margin-top:6px">Ej.: 80.000.000</p>
+      </div>
+
+      <div>
+        <label id="inicial-label">Cuota inicial</label>
+        <div class="chips" role="group" aria-labelledby="inicial-label" id="inicial">
+          <button class="chip" type="button" data-pct="10" aria-pressed="false">10%</button>
+          <button class="chip" type="button" data-pct="20" aria-pressed="true">20%</button>
+          <button class="chip" type="button" data-pct="30" aria-pressed="false">30%</button>
+          <button class="chip" type="button" data-pct="40" aria-pressed="false">40%</button>
+        </div>
+      </div>
+
+      <div>
+        <label id="plazo-label">Plazo</label>
+        <div class="chips" role="group" aria-labelledby="plazo-label" id="plazo">
+          <button class="chip" type="button" data-months="36" aria-pressed="false">36 meses</button>
+          <button class="chip" type="button" data-months="48" aria-pressed="false">48 meses</button>
+          <button class="chip" type="button" data-months="60" aria-pressed="true">60 meses</button>
+          <button class="chip" type="button" data-months="72" aria-pressed="false">72 meses</button>
+        </div>
+      </div>
+
+      <div class="result" aria-live="polite">
+        <span>Cuota mensual estimada</span>
+        <strong id="cuota">&mdash;</strong>
+      </div>
+
+      <dl class="rows">
+        <div class="row"><dt>Cuota inicial</dt><dd id="inicial-monto">&mdash;</dd></div>
+        <div class="row"><dt>Monto financiado</dt><dd id="financiado">&mdash;</dd></div>
+        <div class="row"><dt>Intereses del cr&eacute;dito</dt><dd id="intereses">&mdash;</dd></div>
+        <div class="row"><dt>Total pagado</dt><dd id="total">&mdash;</dd></div>
+      </dl>
+
+      <p class="note" id="nota"></p>
+      <a class="cta" id="cta" data-cta="calculadora-appstore" href="https://apps.apple.com/co/app/velyt/id6778179192?ct=web-calculadora">Ver precios reales en la app</a>
+    </section>
+
+    <p class="note">Los precios de referencia y el historial de cada carro est&aacute;n en la app.
+      <a href="../">Conoce velyt</a>.</p>
+  </main>
+
+  <script src="../assets/financing.js"></script>
+  <script src="../assets/analytics.js" defer></script>
+  <script>
+    ;(() => {
+      const { simulateCredit, REFERENCE_ANNUAL_RATE_PCT } = window.VelytFinancing
+      const cop = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 })
+      const money = (value) => (value > 0 ? cop.format(value) : '—')
+      const priceInput = document.getElementById('precio')
+      const out = {
+        cuota: document.getElementById('cuota'),
+        inicial: document.getElementById('inicial-monto'),
+        financiado: document.getElementById('financiado'),
+        intereses: document.getElementById('intereses'),
+        total: document.getElementById('total'),
+      }
+
+      let downPct = 20
+      let months = 60
+
+      const priceOf = () => {
+        const digits = priceInput.value.replace(/[^\d]/g, '').slice(0, 12)
+        return digits ? parseInt(digits, 10) : 0
+      }
+
+      const render = () => {
+        const r = simulateCredit({
+          priceCop: priceOf(),
+          downPaymentPct: downPct,
+          months,
+          annualRatePct: REFERENCE_ANNUAL_RATE_PCT,
+        })
+        out.cuota.textContent = money(r.monthlyPaymentCop)
+        out.inicial.textContent = money(r.downPaymentCop)
+        out.financiado.textContent = money(r.financedCop)
+        out.intereses.textContent = money(r.totalInterestCop)
+        out.total.textContent = money(r.totalPaidCop)
+      }
+
+      priceInput.addEventListener('input', () => {
+        const digits = priceInput.value.replace(/[^\d]/g, '').slice(0, 12)
+        priceInput.value = digits ? parseInt(digits, 10).toLocaleString('es-CO') : ''
+        render()
+      })
+
+      document.getElementById('inicial').addEventListener('click', (event) => {
+        const button = event.target.closest('[data-pct]')
+        if (!button) return
+        downPct = parseInt(button.dataset.pct, 10)
+        for (const chip of document.querySelectorAll('#inicial .chip')) {
+          chip.setAttribute('aria-pressed', String(chip === button))
+        }
+        render()
+      })
+
+      document.getElementById('plazo').addEventListener('click', (event) => {
+        const button = event.target.closest('[data-months]')
+        if (!button) return
+        months = parseInt(button.dataset.months, 10)
+        for (const chip of document.querySelectorAll('#plazo .chip')) {
+          chip.setAttribute('aria-pressed', String(chip === button))
+        }
+        render()
+      })
+
+      document.getElementById('nota').textContent =
+        `Tasa de referencia ${REFERENCE_ANNUAL_RATE_PCT}% E.A. La entidad financiera define la tasa y la aprobación. No es una oferta.`
+
+      // Show the initial value formatted the same way as after the first keystroke.
+      priceInput.value = parseInt(priceInput.value, 10).toLocaleString('es-CO')
+      render()
+    })()
+  </script>
+</body>
+</html>
