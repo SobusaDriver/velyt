@@ -510,6 +510,10 @@
     .app-buttons { display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; }
     .store-btn-wrap img { height: 46px; transition: transform .2s, opacity .2s; }
     .store-btn-wrap:hover img { transform: translateY(-2px); opacity: .9; }
+    .store-btn-wrap.is-soon { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .store-btn-wrap.is-soon img { opacity: .45; cursor: not-allowed; }
+    .store-btn-wrap.is-soon:hover img { transform: none; opacity: .45; }
+    .soon-label { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
     .deep-link-hint { margin-top: 22px; font-size: .78rem; color: var(--text-tertiary); }
     .deep-link-hint a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
 
@@ -895,10 +899,11 @@
             <img src="assets/app-store-badge.svg" alt="Download on the App Store" height="44">
           </a>
         </div>
-        <div class="store-btn-wrap">
-          <a href="https://play.google.com/store/apps/details?id=com.velyt" target="_blank" rel="noopener noreferrer">
-            <img src="assets/google-play-badge.svg" alt="Get it on Google Play" height="44">
-          </a>
+        <div class="store-btn-wrap is-soon">
+          <span aria-disabled="true">
+            <img src="assets/google-play-badge.svg" alt="Google Play &mdash; pr&oacute;ximamente" height="44">
+          </span>
+          <span class="soon-label" id="soon-label">Pr&oacute;ximamente</span>
         </div>
       </div>
       <p class="deep-link-hint" id="deep-link-text">&iquest;Ya tienes la app instalada? <a href="velyt://">&Aacute;brela aqu&iacute;</a></p>
@@ -1017,6 +1022,7 @@
         'stat2-label': 'Marketplaces',
         'stat3-label': 'Fuentes de precio',
         'deep-link-text': '\u00BFYa tienes la app instalada? <a href="velyt://">\u00C1brela aqu\u00ED</a>',
+        'soon-label': 'Pr\u00F3ximamente',
         'dl-title': 'Abriendo en velyt\u2026',
         'dl-desc': 'Si la app no se abre autom\u00E1ticamente, toca el bot\u00F3n.',
         'hero-title': 'Compra con la informaci\u00F3n<br>que el vendedor <span class="hl">prefiere ocultar</span>.',
@@ -1100,6 +1106,7 @@
         'stat2-label': 'Marketplaces',
         'stat3-label': 'Price sources',
         'deep-link-text': 'Already have the app installed? <a href="velyt://">Open here</a>',
+        'soon-label': 'Coming soon',
         'dl-title': 'Opening in velyt\u2026',
         'dl-desc': "If the app doesn't open automatically, tap the button.",
         'hero-title': 'Buy with the information<br>the seller <span class="hl">prefers to hide</span>.',
@@ -1234,7 +1241,6 @@
     })()
 
     var APP_STORE_URL = 'https://apps.apple.com/co/app/velyt/id6778179192'
-    var PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.velyt'
     var FALLBACK_TIMEOUT = 500
 
     ;(() => {
@@ -1276,7 +1282,8 @@
           cta.href = 'velyt://'
           cta.addEventListener('click', () => {
             setTimeout(() => {
-              window.location.href = isIOS ? APP_STORE_URL : PLAY_STORE_URL
+              // No Android store listing yet: iOS falls back to the App Store, Android stays put.
+              if (isIOS) window.location.href = APP_STORE_URL
             }, FALLBACK_TIMEOUT)
           })
         }
@@ -1286,7 +1293,7 @@
             e.preventDefault()
             window.location.href = dlBtn.href
             setTimeout(() => {
-              window.location.href = isIOS ? APP_STORE_URL : PLAY_STORE_URL
+              if (isIOS) window.location.href = APP_STORE_URL
             }, FALLBACK_TIMEOUT)
           })
         }
