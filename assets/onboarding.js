@@ -1,0 +1,446 @@
+/* Web onboarding: the app's profiling questions, answered without an account.
+   Results are a limited shortlist; the report, peritaje and alerts live in the app. */
+(function () {
+  var CFG = window.VELYT_ONBOARDING
+  var MATCH = window.VelytQuickMatch
+  var STORAGE_KEY = "velyt:onboarding"
+  var APP_STORE = "https://apps.apple.com/co/app/velyt/id6778179192?ct=web-onboarding"
+  var DEEP_BASE = "https://sobusadriver.github.io/velyt/search/vehicle/"
+  var cop = new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0,
+  })
+
+  var el = function (id) {
+    return document.getElementById(id)
+  }
+  var state = { step: -1, answers: loadAnswers(), vehicles: null, matches: null, error: null }
+
+  function track(event, props) {
+    if (window.posthog) window.posthog.capture(event, props || {})
+  }
+
+  function loadAnswers() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY)
+      return raw ? JSON.parse(raw) : {}
+    } catch (e) {
+      return {}
+    }
+  }
+
+  function saveAnswers() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.answers))
+    } catch (e) {
+      /* private mode: the flow still works for this visit */
+    }
+  }
+
+  function priceLabel(min, max) {
+    if (!min && !max) return "Precio por confirmar"
+    var lo = Math.round(Math.min(min || max, max || min) / 1e6)
+    var hi = Math.round(Math.max(min || max, max || min) / 1e6)
+    return lo === hi ? "$" + lo + "M" : "$" + lo + "M – $" + hi + "M"
+  }
+
+  function answersForMatch() {
+    var a = state.answers
+    var budget = a.budget || {}
+    return {
+      passengerRange: a.passengerRange || null,
+      needsCargo: a.needsCargo === "YES" ? true : a.needsCargo === "NO" ? false : null,
+      vehicleTypes: a.vehicleTypes || [],
+      fuels: a.fuels || [],
+      terrainType: a.terrainType || null,
+      useContext: a.useContext || null,
+      budgetMinCop: (budget.min || 0) * 1e6,
+      budgetMaxCop: (budget.max || 0) * 1e6,
+    }
+  }
+
+  function progress() {
+    var total = CFG.steps.length
+    return state.step < 0 ? 0 : Math.round(((state.step + 1) / total) * 100)
+  }
+
+  function render() {
+    var root = el("flow")
+    el("progress-fill").style.width = progress() + "%"
+    if (state.step < 0) {
+      root.innerHTML = introHtml()
+      return
+    }
+    if (state.step >= CFG.steps.length) {
+      root.innerHTML =
+        state.matches === null
+          ? loadingHtml()
+          : state.error
+            ? errorHtml()
+            : resultsHtml()
+      if (state.matches === null && !state.error) fetchCatalog()
+      return
+    }
+    root.innerHTML = stepHtml(CFG.steps[state.step])
+  }
+
+  function introHtml() {
+    return (
+      '<section class="intro">' +
+      "<h1>Encuentra tu carro en 8 preguntas</h1>" +
+      '<p class="lede">Sin cuenta, sin teléfono y sin correo. Responde y te mostramos los carros que encajan con tu vida.</p>' +
+      '<p class="note">En la web ves una lista corta. El precio justo, el peritaje y las alertas están en la app.</p>' +
+      '<button class="btn" id="start" data-cta="onboarding-start">Empezar</button>' +
+      "</section>"
+    )
+  }
+
+  function stepHtml(step) {
+    var html =
+      '<section class="step">' +
+      '<p class="eyebrow">Pregunta ' +
+      (state.step + 1) +
+      " de " +
+      CFG.steps.length +
+      "</p>" +
+      "<h2>" +
+      step.title +
+      "</h2>" +
+      '<p class="lede">' +
+      step.subtitle +
+      "</p>"
+
+    if (step.type === "range") {
+      var budget = state.answers.budget || { min: step.defaultMin, max: step.defaultMax }
+      html +=
+        '<div class="budget">' +
+        '<label>Mínimo <strong id="budget-min-label">$' +
+        budget.min +
+        "M</strong></label>" +
+        '<input id="budget-min" type="range" min="' +
+        step.min +
+        '" max="' +
+        step.max +
+        '" step="' +
+        step.step +
+        '" value="' +
+        budget.min +
+        '">' +
+        '<label>Máximo <strong id="budget-max-label">$' +
+        budget.max +
+        "M</strong></label>" +
+        '<input id="budget-max" type="range" min="' +
+        step.min +
+        '" max="' +
+        step.max +
+        '" step="' +
+        step.step +
+        '" value="' +
+        budget.max +
+        '">' +
+        "</div>"
+    } else if (step.type === "multi") {
+      html += '<div class="options multi" role="group">'
+      step.options.forEach(function (opt) {
+        var selected = (state.answers[step.field] || []).indexOf(opt.value) >= 0
+        html += optionHtml(step, opt, selected)
+      })
+      html += "</div>"
+    } else {
+      html += '<div class="options" role="group">'
+      step.options.forEach(function (opt) {
+        var selected = state.answers[step.field] === opt.value
+        html += optionHtml(step, opt, selected)
+      })
+      html += "</div>"
+      if (step.field === "paymentMethod" && state.answers.paymentMethod === "CREDIT") {
+        html += paymentDetailHtml()
+      }
+    }
+
+    html += '<div class="actions">'
+    if (state.step > 0) html += '<button class="ghost" id="back">Atrás</button>'
+    if (step.type === "multi")
+      html += '<button class="ghost" id="skip">Sin preferencia</button>'
+    html +=
+      '<button class="btn" id="next"' +
+      (canContinue() ? "" : " disabled") +
+      ">" +
+      (state.step === CFG.steps.length - 1 ? "Ver resultados" : "Continuar") +
+      "</button>" +
+      "</div>" +
+      "</section>"
+    return html
+  }
+
+  function optionHtml(step, opt, selected) {
+    return (
+      '<button class="option' +
+      (selected ? " is-selected" : "") +
+      '" data-field="' +
+      step.field +
+      '" data-value="' +
+      opt.value +
+      '" aria-pressed="' +
+      selected +
+      '">' +
+      '<span class="option-icon">' +
+      (opt.icon || "") +
+      "</span>" +
+      '<span class="option-text"><strong>' +
+      opt.label +
+      "</strong>" +
+      (opt.desc ? "<small>" + opt.desc + "</small>" : "") +
+      "</span>" +
+      "</button>"
+    )
+  }
+
+  function paymentDetailHtml() {
+    var plan = state.answers.plan || { down: 20, months: 60 }
+    var downs = [10, 20, 30, 40]
+    var terms = [36, 48, 60, 72]
+    var html = '<div class="plan"><p class="note">Cuota inicial y plazo</p><div class="chips">'
+    downs.forEach(function (pct) {
+      html +=
+        '<button class="chip" data-plan="down" data-value="' +
+        pct +
+        '" aria-pressed="' +
+        (plan.down === pct) +
+        '">' +
+        pct +
+        "%</button>"
+    })
+    html += '</div><div class="chips">'
+    terms.forEach(function (m) {
+      html +=
+        '<button class="chip" data-plan="months" data-value="' +
+        m +
+        '" aria-pressed="' +
+        (plan.months === m) +
+        '">' +
+        m +
+        " meses</button>"
+    })
+    return html + "</div></div>"
+  }
+
+  function canContinue() {
+    var step = CFG.steps[state.step]
+    if (!step) return false
+    var value = state.answers[step.field]
+    if (step.type === "multi") return true
+    if (step.field === "budget") return true
+    return value !== undefined && value !== null && value !== ""
+  }
+
+  function loadingHtml() {
+    return '<section class="step"><p class="lede">Buscando carros que encajen contigo…</p></section>'
+  }
+
+  function errorHtml() {
+    return (
+      '<section class="step"><h2>No pudimos cargar el catálogo</h2>' +
+      '<p class="lede">Revisa tu conexión e inténtalo otra vez.</p>' +
+      '<div class="actions"><button class="ghost" id="retry">Reintentar</button>' +
+      '<a class="btn" href="' +
+      APP_STORE +
+      '" data-cta="onboarding-appstore-error">Abrir en la app</a></div></section>'
+    )
+  }
+
+  function resultsHtml() {
+    var matches = state.matches || []
+    var html =
+      '<section class="step">' +
+      "<h2>" +
+      (matches.length ? matches.length + " carros para ti" : "No encontramos carros con esos filtros") +
+      "</h2>" +
+      '<p class="note">Lista limitada: precio justo, peritaje e historial completo viven en la app.</p>'
+
+    if (!matches.length) {
+      html +=
+        '<div class="actions"><button class="ghost" id="edit-budget">Ajustar presupuesto</button>' +
+        '<button class="ghost" id="restart">Empezar de nuevo</button>' +
+        '<a class="btn" href="' + APP_STORE + '" data-cta="onboarding-appstore-empty">Abrir en la app</a></div></section>'
+      return html
+    }
+
+    html += '<div class="results">'
+    matches.forEach(function (vehicle) {
+      html +=
+        '<article class="car">' +
+        (vehicle.image_url
+          ? '<img src="' + vehicle.image_url + '" alt="" loading="lazy">'
+          : '<div class="car-noimg" aria-hidden="true">🚗</div>') +
+        "<h3>" +
+        [vehicle.make, vehicle.model].filter(Boolean).join(" ") +
+        "</h3>" +
+        '<p class="car-meta">' +
+        vehicle.year_range +
+        " · " +
+        [vehicle.body_type, vehicle.fuel_type, vehicle.seats + " puestos"]
+          .filter(Boolean)
+          .join(" · ") +
+        "</p>" +
+        '<p class="car-price">' +
+        priceLabel(vehicle.min_price_cop, vehicle.max_price_cop) +
+        "</p>" +
+        '<a class="ghost small" href="' +
+        DEEP_BASE +
+        vehicle.id +
+        '" data-cta="onboarding-open-vehicle">Ver en la app →</a>' +
+        "</article>"
+    })
+    html += "</div>"
+
+    html +=
+      '<div class="actions">' +
+      '<button class="ghost" id="restart">Empezar de nuevo</button>' +
+      '<a class="btn" href="' + APP_STORE + '" data-cta="onboarding-appstore">Continuar en la app</a>' +
+      "</div></section>"
+    return html
+  }
+
+  async function fetchCatalog() {
+    if (state.answers.budget === undefined) {
+      state.answers.budget = { min: 40, max: 100 }
+      saveAnswers()
+    }
+    try {
+      var select = [
+        "id",
+        "make",
+        "model",
+        "year_range",
+        "body_type",
+        "fuel_type",
+        "drivetrain",
+        "seats",
+        "has_cargo",
+        "is_commercial",
+        "min_price_cop",
+        "max_price_cop",
+        "image_url",
+      ].join(",")
+      var res = await fetch(
+        CFG.supabaseUrl + "/rest/v1/vehicles?select=" + select + "&limit=1000",
+        { headers: { apikey: CFG.supabaseKey, Authorization: "Bearer " + CFG.supabaseKey } },
+      )
+      if (!res.ok) throw new Error("catalog " + res.status)
+      state.vehicles = await res.json()
+      state.matches = MATCH.matchVehicles(state.vehicles, answersForMatch(), 12)
+      track("web_matches_viewed", {
+        matches: state.matches.length,
+        budget_min: state.answers.budget.min,
+        budget_max: state.answers.budget.max,
+        has_filters: (state.answers.vehicleTypes || []).length > 0,
+      })
+    } catch (e) {
+      state.error = true
+    }
+    render()
+  }
+
+  function bind() {
+    document.addEventListener("click", function (event) {
+      var target = event.target
+      if (!(target instanceof Element)) return
+      var option = target.closest(".option")
+      if (option) {
+        var step = CFG.steps[state.step]
+        var value = option.getAttribute("data-value")
+        if (step.type === "multi") {
+          var list = state.answers[step.field] || []
+          var next = list.indexOf(value) >= 0 ? list.filter(function (v) {
+            return v !== value
+          }) : list.concat([value])
+          state.answers[step.field] = next
+        } else {
+          state.answers[step.field] = value
+        }
+        saveAnswers()
+        track("web_onboarding_step", { step: step.field, value: value })
+        render()
+        return
+      }
+      var chip = target.closest(".chip[data-plan]")
+      if (chip) {
+        var plan = state.answers.plan || { down: 20, months: 60 }
+        plan[chip.getAttribute("data-plan")] = Number(chip.getAttribute("data-value"))
+        state.answers.plan = plan
+        saveAnswers()
+        render()
+        return
+      }
+      if (target.id === "start") {
+        state.step = hasAllAnswers() ? CFG.steps.length : 0
+        render()
+      } else if (target.id === "next") {
+        if (!canContinue()) return
+        state.step += 1
+        render()
+      } else if (target.id === "back") {
+        state.step = Math.max(0, state.step - 1)
+        render()
+      } else if (target.id === "skip") {
+        var current = CFG.steps[state.step]
+        state.answers[current.field] = []
+        saveAnswers()
+        state.step += 1
+        render()
+      } else if (target.id === "restart") {
+        state.answers = {}
+        state.matches = null
+        state.error = null
+        state.step = -1
+        try {
+          localStorage.removeItem(STORAGE_KEY)
+        } catch (e) {}
+        render()
+      } else if (target.id === "retry") {
+        state.error = null
+        state.matches = null
+        render()
+      } else if (target.id === "edit-budget") {
+        var budgetStep = CFG.steps.findIndex(function (s) {
+          return s.field === "budget"
+        })
+        state.step = budgetStep
+        render()
+      }
+    })
+
+    document.addEventListener("input", function (event) {
+      var target = event.target
+      if (!(target instanceof HTMLInputElement)) return
+      if (target.id !== "budget-min" && target.id !== "budget-max") return
+      var budget = state.answers.budget || { min: 40, max: 100 }
+      budget.min = Number(el("budget-min").value)
+      budget.max = Number(el("budget-max").value)
+      if (budget.min > budget.max) {
+        if (target.id === "budget-min") budget.max = budget.min
+        else budget.min = budget.max
+        el("budget-min").value = budget.min
+        el("budget-max").value = budget.max
+      }
+      state.answers.budget = budget
+      saveAnswers()
+      el("budget-min-label").textContent = "$" + budget.min + "M"
+      el("budget-max-label").textContent = "$" + budget.max + "M"
+    })
+  }
+
+  function hasAllAnswers() {
+    return CFG.steps.every(function (step) {
+      if (step.type === "range") return !!state.answers.budget
+      if (step.type === "multi") return Array.isArray(state.answers[step.field])
+      return state.answers[step.field] != null
+    })
+  }
+
+  if (!CFG || !MATCH) return
+  bind()
+  render()
+})()
