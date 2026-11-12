@@ -238,3 +238,6 @@ footer a { color: var(--text-secondary); }
 }
 .choice h3 { font-family: var(--display); font-size: 1rem; font-weight: 600; letter-spacing: -.01em; }
 .choice p { font-size: .82rem; color: var(--text-secondary); margin-top: 2px; }
+
+/* CTA inside a clickable card (landing web tools) */
+.prop-card .card-cta { margin-top: auto; font-size: .85rem; color: var(--text-secondary); text-decoration: underline; text-underline-offset: 3px; }
