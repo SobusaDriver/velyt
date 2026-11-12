@@ -38,7 +38,6 @@
       adjust: "Ajustar presupuesto",
       openApp: "Continuar en la app",
       viewInApp: "Ver en la app →",
-      plan: "Cuota inicial y plazo",
       months: "meses",
       fair: "Precio justo ~",
       match: "match",
@@ -64,7 +63,6 @@
       adjust: "Adjust budget",
       openApp: "Continue in the app",
       viewInApp: "Open in the app →",
-      plan: "Down payment and term",
       months: "months",
       fair: "Fair price ~",
       match: "match",
@@ -135,7 +133,6 @@
   function profileForMatch() {
     var a = state.answers
     var budget = a.budget || {}
-    var plan = a.plan || {}
     return {
       capacity: {
         passenger_range: a.passengerRange || null,
@@ -146,16 +143,16 @@
       preferences: {
         accepted_fuels: a.fuels || [],
         has_home_charger: null,
-        max_vehicle_age_years: null,
-        brand_preference: [],
+        max_vehicle_age_years: a.maxAge && a.maxAge !== "any" ? Number(a.maxAge) : null,
+        brand_preference: a.brands || [],
         use_context: a.useContext || null,
       },
       financials: {
         min_budget_cop: (budget.min || 0) * 1e6,
         max_budget_cop: (budget.max || 0) * 1e6,
-        payment_method: a.paymentMethod || null,
-        down_payment_pct: plan.down || null,
-        term_months: plan.months || null,
+        payment_method: null,
+        down_payment_pct: null,
+        term_months: null,
         down_payment_cop: null,
         max_monthly_cop: null,
       },
@@ -278,9 +275,6 @@
         html += choiceHtml(step, opt, selected)
       })
       html += "</div>"
-      if (step.field === "paymentMethod" && state.answers.paymentMethod === "CREDIT") {
-        html += planHtml()
-      }
     }
 
     html += "</div>" + navView(step)
@@ -307,41 +301,6 @@
       '<span class="choice-radio" aria-hidden="true"></span>' +
       "</button>"
     )
-  }
-
-  function planHtml() {
-    var plan = state.answers.plan || { down: 20, months: 60 }
-    var downs = [10, 20, 30, 40]
-    var terms = [36, 48, 60, 72]
-    var html = '<p class="ob-plan-label">' + t().plan + '</p><div class="chip-row">'
-    downs.forEach(function (pct) {
-      html +=
-        '<button class="chip' +
-        (plan.down === pct ? " on" : "") +
-        '" data-plan="down" data-value="' +
-        pct +
-        '" aria-pressed="' +
-        (plan.down === pct) +
-        '">' +
-        pct +
-        "%</button>"
-    })
-    html += '</div><div class="chip-row">'
-    terms.forEach(function (m) {
-      html +=
-        '<button class="chip' +
-        (plan.months === m ? " on" : "") +
-        '" data-plan="months" data-value="' +
-        m +
-        '" aria-pressed="' +
-        (plan.months === m) +
-        '">' +
-        m +
-        " " +
-        t().months +
-        "</button>"
-    })
-    return html + "</div>"
   }
 
   function navView(step) {
@@ -655,16 +614,6 @@
         }
         saveAnswers()
         track("web_onboarding_step", { step: step.field, value: value, lang: LANG })
-        render()
-        return
-      }
-
-      var chip = target.closest(".chip[data-plan]")
-      if (chip) {
-        var plan = state.answers.plan || { down: 20, months: 60 }
-        plan[chip.getAttribute("data-plan")] = Number(chip.getAttribute("data-value"))
-        state.answers.plan = plan
-        saveAnswers()
         render()
         return
       }

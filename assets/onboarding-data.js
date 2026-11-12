@@ -215,30 +215,70 @@ window.VELYT_ONBOARDING = {
     ]
    },
    {
-    "field": "paymentMethod",
+    "field": "maxAge",
     "type": "single",
-    "block": "a",
-    "emoji": "💳",
-    "title": "¿Cómo vas a pagarlo?",
-    "subtitle": "Con esto calculamos la cuota con tus números.",
+    "block": "b",
+    "emoji": "📅",
+    "title": "¿Qué tan antiguo puede ser el vehículo?",
+    "subtitle": "Desde cero kilómetros hasta el más antiguo que considerarías.",
     "options": [
      {
-      "value": "CREDIT",
-      "label": "Con crédito",
-      "desc": "Cuota inicial y cuota mensual.",
-      "icon": "💳"
+      "value": "1",
+      "label": "Cero kilómetros",
+      "desc": "Hasta 1 año de antigüedad",
+      "icon": "✨"
      },
      {
-      "value": "CASH",
-      "label": "De contado",
-      "desc": "Sin financiación ni intereses.",
-      "icon": "💵"
+      "value": "3",
+      "label": "Hasta 3 años",
+      "desc": "Casi nuevo, menor kilometraje",
+      "icon": "🚗"
      },
      {
-      "value": "UNSURE",
-      "label": "Aún no sé",
-      "desc": "Compara las dos opciones con tu presupuesto.",
-      "icon": "🤔"
+      "value": "5",
+      "label": "Hasta 5 años",
+      "desc": "Equilibrio entre precio y estado",
+      "icon": "🛞"
+     },
+     {
+      "value": "10",
+      "label": "Hasta 10 años",
+      "desc": "Más económico",
+      "icon": "🔧"
+     },
+     {
+      "value": "any",
+      "label": "Cualquier edad",
+      "desc": "Sin límite de antigüedad",
+      "icon": "♾️"
+     }
+    ]
+   },
+   {
+    "field": "brands",
+    "type": "multi",
+    "block": "b",
+    "emoji": "💎",
+    "title": "¿Qué tipo de marcas prefieres?",
+    "subtitle": "Elige un estilo de marca y filtraremos los resultados.",
+    "options": [
+     {
+      "value": "ESTABLISHED",
+      "label": "Tradicionales",
+      "desc": "Chevrolet, Renault, Toyota, Mazda y más",
+      "icon": "🏛️"
+     },
+     {
+      "value": "NEWCOMERS",
+      "label": "Nuevas",
+      "desc": "BYD, Chery, JAC, GWM y otras marcas emergentes",
+      "icon": "🚀"
+     },
+     {
+      "value": "LUXURY",
+      "label": "Lujo",
+      "desc": "BMW, Mercedes, Audi, Lexus, Volvo y más",
+      "icon": "💎"
      }
     ]
    }
@@ -455,30 +495,70 @@ window.VELYT_ONBOARDING = {
     ]
    },
    {
-    "field": "paymentMethod",
+    "field": "maxAge",
     "type": "single",
-    "block": "a",
-    "emoji": "💳",
-    "title": "How will you pay for it?",
-    "subtitle": "This is what we use to work out your payment.",
+    "block": "b",
+    "emoji": "📅",
+    "title": "How old can the vehicle be?",
+    "subtitle": "From brand new up to the oldest you'd consider.",
     "options": [
      {
-      "value": "CREDIT",
-      "label": "With credit",
-      "desc": "Down payment and monthly instalment.",
-      "icon": "💳"
+      "value": "1",
+      "label": "Brand new",
+      "desc": "Up to 1 year old",
+      "icon": "✨"
      },
      {
-      "value": "CASH",
-      "label": "Cash",
-      "desc": "No financing, no interest.",
-      "icon": "💵"
+      "value": "3",
+      "label": "Up to 3 years",
+      "desc": "Nearly new, lower mileage",
+      "icon": "🚗"
      },
      {
-      "value": "UNSURE",
-      "label": "Not sure yet",
-      "desc": "Compare both against your budget.",
-      "icon": "🤔"
+      "value": "5",
+      "label": "Up to 5 years",
+      "desc": "A balance of price and condition",
+      "icon": "🛞"
+     },
+     {
+      "value": "10",
+      "label": "Up to 10 years",
+      "desc": "More budget-friendly",
+      "icon": "🔧"
+     },
+     {
+      "value": "any",
+      "label": "Any age",
+      "desc": "No limit on vehicle age",
+      "icon": "♾️"
+     }
+    ]
+   },
+   {
+    "field": "brands",
+    "type": "multi",
+    "block": "b",
+    "emoji": "💎",
+    "title": "What kind of brands do you prefer?",
+    "subtitle": "Choose a brand style and we'll filter results to match.",
+    "options": [
+     {
+      "value": "ESTABLISHED",
+      "label": "Traditional",
+      "desc": "Chevrolet, Renault, Toyota, Mazda and more",
+      "icon": "🏛️"
+     },
+     {
+      "value": "NEWCOMERS",
+      "label": "Newcomers",
+      "desc": "BYD, Chery, JAC, GWM and other new players",
+      "icon": "🚀"
+     },
+     {
+      "value": "LUXURY",
+      "label": "Luxury",
+      "desc": "BMW, Mercedes, Audi, Lexus, Volvo and more",
+      "icon": "💎"
      }
     ]
    }

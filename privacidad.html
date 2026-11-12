@@ -62,7 +62,8 @@
     nav .lang-toggle { padding: 0 12px; font-size: .8rem; font-weight: 500; color: var(--text-secondary); }
     nav .lang-toggle:hover { color: var(--text); border-color: var(--border-hover); }
 
-    main { padding: 116px 0 64px; }
+    /* main also carries .container, whose `padding: 0 24px` would otherwise win */
+    main.container { padding-top: 116px; padding-bottom: 64px; }
     .doc { max-width: 720px; margin: 0 auto; }
     .doc h1 { font-family: 'DM Sans', sans-serif; font-size: clamp(1.9rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -.03em; margin-bottom: 6px; }
     .doc .updated { color: var(--text-tertiary); font-size: .82rem; margin-bottom: 26px; }
@@ -87,7 +88,7 @@
       *, *::before, *::after { transition-duration: 0.01ms; animation-duration: 0.01ms; }
     }
     @media (max-width: 640px) {
-      main { padding-top: 100px; }
+      main.container { padding-top: 100px; }
     }
   </style>
 </head>
@@ -111,57 +112,75 @@
   <main class="container">
 
     <!-- ============================== ESPAÑOL ============================== -->
-    <article class="doc" data-lang-block="es">
+        <article class="doc" data-lang-block="es">
       <h1>Política de privacidad</h1>
-      <p class="updated">Última actualización: 20 de septiembre de 2026</p>
-
+      <p class="updated">Última actualización: 12 de noviembre de 2026</p>
       <p>
         Esta política explica qué datos personales recopila la aplicación <strong>velyt</strong>
-        (en adelante, «velyt» o «la app»), con qué finalidad, con quién se comparten y cómo puedes
-        ejercer tus derechos. Aplica a la app móvil y a este sitio. Al usar velyt aceptas esta política.
+        («velyt» o «la app»), con qué finalidad, con quién se comparten y cómo puedes ejercer tus
+        derechos. Aplica a la app móvil y a este sitio. Al usar velyt aceptas esta política.
       </p>
 
       <h2>1. Datos que recopilamos</h2>
       <ul>
-        <li><strong>Datos de cuenta:</strong> tu correo electrónico. Si inicias sesión con Google o Apple,
-          también recibimos el nombre y la foto de perfil que ese proveedor comparte con la app.</li>
-        <li><strong>Perfil de preferencias:</strong> las respuestas que das durante la configuración inicial
-          (uso previsto, número de pasajeros, necesidad de carga, rango de presupuesto, tipo de terreno,
-          combustible y prioridades). Se guardan asociadas a tu cuenta para personalizar las recomendaciones
-          y la estimación de precios.</li>
-        <li><strong>Favoritos:</strong> los vehículos que guardas en tu lista.</li>
-        <li><strong>Datos técnicos mínimos:</strong> un token de sesión que se guarda de forma cifrada en el
-          almacenamiento seguro de tu dispositivo (Keychain en iOS, Keystore en Android) para mantener tu sesión.</li>
+        <li><strong>Datos de cuenta:</strong> tu correo electrónico. Si inicias sesión con Google o
+          Apple, también recibimos el nombre y la foto de perfil que ese proveedor comparte con la app.</li>
+        <li><strong>Perfil de preferencias:</strong> las respuestas de la configuración inicial (uso
+          previsto, pasajeros, necesidad de carga, presupuesto, terreno, tipo de carrocería, combustible,
+          antigüedad máxima y estilo de marca). Se guardan en tu cuenta para personalizar las
+          recomendaciones y la estimación de precios.</li>
+        <li><strong>Favoritos, búsquedas y alertas:</strong> los vehículos que guardas, los filtros que
+          guardas como búsqueda y los criterios de las alertas que activas.</li>
+        <li><strong>Notificaciones:</strong> si activas una alerta, guardamos el identificador de
+          notificaciones del dispositivo para enviártela. Puedes desactivarlas en cualquier momento.</li>
+        <li><strong>Peritaje por placa:</strong> cuando consultas un informe, guardamos la placa, el
+          número de documento del propietario y el VIN que ingresas, junto con el informe resultante.
+          El informe se conserva hasta 30 días para que puedas volver a verlo sin pagar otra consulta.</li>
+        <li><strong>Ubicación (opcional):</strong> solo la pedimos si activas «Solo anuncios cerca de mí».
+          La usamos en tu dispositivo, con precisión aproximada, para elegir la ciudad más cercana y
+          ordenar los anuncios por distancia. No la almacenamos ni la enviamos a nuestros servidores.</li>
+        <li><strong>Analítica y fallos:</strong> usamos PostHog para entender cómo se usa la app (pantallas
+          vistas, acciones) y para recibir informes de fallos. La repetición de sesión llega con textos,
+          campos e imágenes enmascarados, de modo que no se ven tus datos ni los de tus consultas.</li>
+        <li><strong>Datos técnicos mínimos:</strong> un token de sesión guardado de forma cifrada en el
+          almacenamiento seguro del dispositivo (Keychain en iOS, Keystore en Android).</li>
       </ul>
       <p>
-        No solicitamos ni accedemos a tu ubicación, contactos, cámara, micrófono ni fotos. No usamos
-        publicidad ni herramientas de analítica de terceros.
+        No accedemos a tus contactos, cámara, micrófono ni fotos. No usamos publicidad ni creamos
+        perfiles para anunciantes.
       </p>
 
       <h2>2. Cómo usamos tus datos</h2>
       <ul>
-        <li>Autenticarte y mantener tu sesión iniciada.</li>
-        <li>Generar recomendaciones de vehículos y estimaciones de precio ajustadas a tu perfil.</li>
-        <li>Guardar tu lista de favoritos y mostrarla entre tus dispositivos.</li>
-        <li>Prestar soporte y responder a tus solicitudes.</li>
+        <li>Para autenticarte y mantener tu sesión activa.</li>
+        <li>Para recomendar vehículos y estimar precios justos y cuotas según tu perfil.</li>
+        <li>Para guardar tus favoritos, búsquedas y alertas y enviarte las notificaciones que activaste.</li>
+        <li>Para consultar y mostrarte el peritaje de una placa y guardar el informe mientras esté vigente.</li>
+        <li>Para atender tus solicitudes de soporte.</li>
+        <li>Para medir el uso de la app y corregir fallos, a partir de datos de analítica agregados.</li>
       </ul>
-      <p>No vendemos ni alquilamos tus datos personales. No los usamos para publicidad.</p>
+      <p>No vendemos ni alquilamos tus datos personales, y no los usamos para publicidad.</p>
 
       <h2>3. Base legal</h2>
       <p>
-        Tratamos tus datos con base en tu consentimiento, que otorgas al crear la cuenta y completar el perfil,
-        conforme a la Ley 1581 de 2012 de Protección de Datos Personales de Colombia.
+        Tratamos tus datos con tu consentimiento, que otorgas al crear tu cuenta, completar tu perfil y
+        consultar un peritaje, y para cumplir obligaciones legales, conforme a la Ley 1581 de 2012 de
+        protección de datos personales de Colombia.
       </p>
 
       <h2>4. Con quién compartimos datos</h2>
       <ul>
-        <li><strong>Supabase:</strong> proveedor de infraestructura donde se alojan la base de datos
-          y la autenticación de velyt.</li>
+        <li><strong>Supabase:</strong> infraestructura donde se alojan la base de datos y la autenticación.</li>
         <li><strong>Google y Apple:</strong> si eliges iniciar sesión con ellos, gestionan la autenticación
           y nos comparten los datos básicos de tu perfil descritos arriba.</li>
-        <li><strong>Google Gemini (a través de una función de Supabase):</strong> se usa para redactar
-          resúmenes de vehículos. Solo se envían datos del vehículo (marca, modelo, año y especificaciones),
-          no datos personales.</li>
+        <li><strong>Google Gemini (a través de una función de Supabase):</strong> redacta resúmenes de
+          vehículos. Solo se envían datos del vehículo (marca, modelo, año y especificaciones), no datos
+          personales.</li>
+        <li><strong>Fuentes y proveedores de consulta:</strong> para el peritaje enviamos la placa, el
+          documento o el VIN a las fuentes públicas y proveedores autorizados que entregan los datos del
+          vehículo (RUNT, SOAT, SIMIT, secretarías de tránsito). Esa consulta es la que produce el informe.</li>
+        <li><strong>PostHog:</strong> recibe los eventos de uso, el identificador de tu cuenta y los
+          informes de fallos. No recibe placas, documentos ni el contenido de tus consultas.</li>
       </ul>
       <p>
         Algunos enlaces dentro de la app abren listados o sitios de terceros (marketplaces de vehículos).
@@ -170,43 +189,52 @@
 
       <h2>5. Conservación</h2>
       <p>
-        Conservamos tus datos mientras tu cuenta esté activa y durante el tiempo necesario para cumplir
-        obligaciones legales. Puedes solicitar la eliminación de tu cuenta y de tus datos en cualquier momento.
+        Conservamos los datos de tu cuenta mientras esté activa y los informes de peritaje hasta 30 días
+        desde la consulta. Puedes solicitar la eliminación de tu cuenta y de sus datos en cualquier
+        momento; también puedes borrar tus búsquedas y favoritos desde la app. Los registros de analítica
+        se conservan según los plazos de la herramienta y no se usan para identificarte.
       </p>
 
       <h2>6. Seguridad</h2>
       <p>
-        La información viaja cifrada mediante HTTPS/TLS, los tokens de sesión se almacenan en el
-        almacenamiento seguro del dispositivo y el acceso a los datos está restringido. Ningún sistema es
-        completamente infalible, por lo que no podemos garantizar seguridad absoluta.
+        Los datos viajan cifrados por HTTPS/TLS, el token de sesión se guarda en el almacenamiento seguro
+        del dispositivo y el acceso a cada registro está restringido a su dueño. Ningún sistema es
+        infalible, así que no podemos garantizar seguridad absoluta.
       </p>
 
       <h2>7. Tus derechos</h2>
       <p>
-        De acuerdo con la Ley 1581 de 2012, puedes conocer, actualizar, rectificar y suprimir tus datos
-        personales, revocar la autorización otorgada y presentar quejas ante la Superintendencia de Industria
-        y Comercio (SIC). Para ejercerlos, escríbenos a
-        <a href="mailto:contacto@velyt.co">contacto@velyt.co</a> y responderemos en los plazos legales.
+        Conforme a la Ley 1581 de 2012 puedes conocer, actualizar, rectificar y eliminar tus datos
+        personales, revocar la autorización que otorgaste y presentar quejas ante la Superintendencia de
+        Industria y Comercio (SIC). Para ejercerlos escribe a
+        <a href="mailto:contacto@velyt.co">contacto@velyt.co</a> y responderemos dentro de los plazos
+        legales. Puedes negar el permiso de ubicación o desactivar las notificaciones sin perder acceso
+        al resto de la app.
       </p>
 
       <h2>8. Menores de edad</h2>
-      <p>velyt está dirigida a personas adultas y no está pensada para menores de 14 años.</p>
+      <p>
+        velyt no está dirigida a menores de 18 años y no recopilamos datos de menores de forma
+        consciente. Si detectamos una cuenta de un menor, la eliminaremos.
+      </p>
 
       <h2>9. Cambios a esta política</h2>
       <p>
-        Podemos actualizar esta política para reflejar cambios en la app o en la ley. Publicaremos la versión
-        vigente en esta página con su fecha de actualización.
+        Podemos actualizar esta política para reflejar cambios en la app o en la ley. La versión vigente
+        se publica en esta página con su fecha de actualización.
       </p>
 
       <h2>10. Contacto</h2>
-      <p>Dudas o solicitudes sobre tus datos: <a href="mailto:contacto@velyt.co">contacto@velyt.co</a>.</p>
+      <p>
+        Dudas o solicitudes sobre tus datos:
+        <a href="mailto:contacto@velyt.co">contacto@velyt.co</a>.
+      </p>
     </article>
 
     <!-- ============================== ENGLISH ============================== -->
-    <article class="doc" data-lang-block="en">
+        <article class="doc" data-lang-block="en">
       <h1>Privacy Policy</h1>
-      <p class="updated">Last updated: September 20, 2026</p>
-
+      <p class="updated">Last updated: November 12, 2026</p>
       <p>
         This policy explains what personal data the <strong>velyt</strong> application (the “app”)
         collects, for what purpose, with whom it is shared, and how you can exercise your rights. It
@@ -217,31 +245,46 @@
       <ul>
         <li><strong>Account data:</strong> your email address. If you sign in with Google or Apple, we
           also receive the name and profile photo that provider shares with the app.</li>
-        <li><strong>Preference profile:</strong> the answers you give during setup (intended use, number
-          of passengers, cargo needs, budget range, terrain, fuel, and priorities). They are stored with
+        <li><strong>Preference profile:</strong> your setup answers (intended use, passengers, cargo
+          needs, budget, terrain, body type, fuel, maximum age and brand style). They are stored with
           your account to personalize recommendations and price estimates.</li>
-        <li><strong>Favorites:</strong> the vehicles you save to your list.</li>
-        <li><strong>Minimal technical data:</strong> a session token stored encrypted in your device’s
-          secure storage (Keychain on iOS, Keystore on Android) to keep you signed in.</li>
+        <li><strong>Favorites, searches and alerts:</strong> the vehicles you save, the filters you keep
+          as a search, and the criteria of the alerts you turn on.</li>
+        <li><strong>Notifications:</strong> if you turn on an alert we store the device’s push
+          notification token to send it. You can turn alerts off at any time.</li>
+        <li><strong>Plate report:</strong> when you run a report we store the plate, the owner’s document
+          number and the VIN you enter, together with the resulting report. The report is kept for up to
+          30 days so you can open it again without paying for another lookup.</li>
+        <li><strong>Location (optional):</strong> we only ask for it when you turn on “Only listings near
+          me”. It is used on your device, at low accuracy, to pick the nearest city and sort listings by
+          distance. We do not store it or send it to our servers.</li>
+        <li><strong>Analytics and crashes:</strong> we use PostHog to understand how the app is used
+          (screens viewed, actions) and to receive crash reports. Session replay arrives with text,
+          inputs and images masked, so neither your data nor your lookups are visible.</li>
+        <li><strong>Minimal technical data:</strong> a session token stored encrypted in the device’s
+          secure storage (Keychain on iOS, Keystore on Android).</li>
       </ul>
       <p>
-        We do not request or access your location, contacts, camera, microphone, or photos. We do not use
-        advertising or third-party analytics.
+        We do not access your contacts, camera, microphone or photos. We do not use advertising or build
+        profiles for advertisers.
       </p>
 
       <h2>2. How we use your data</h2>
       <ul>
         <li>To authenticate you and keep your session active.</li>
-        <li>To generate vehicle recommendations and price estimates tailored to your profile.</li>
-        <li>To save your favorites list and show it across your devices.</li>
+        <li>To recommend vehicles and estimate fair prices and monthly payments for your profile.</li>
+        <li>To save your favorites, searches and alerts and send the notifications you turned on.</li>
+        <li>To look up a plate report and keep it while it is still valid.</li>
         <li>To provide support and respond to your requests.</li>
+        <li>To measure app usage and fix bugs, from aggregated analytics data.</li>
       </ul>
       <p>We do not sell or rent your personal data, and we do not use it for advertising.</p>
 
       <h2>3. Legal basis</h2>
       <p>
-        We process your data based on your consent, given when you create your account and complete your
-        profile, under Colombia’s Law 1581 of 2012 on Personal Data Protection.
+        We process your data based on your consent, given when you create your account, complete your
+        profile and run a report, and to comply with legal obligations under Colombia’s Law 1581 of 2012
+        on Personal Data Protection.
       </p>
 
       <h2>4. Who we share data with</h2>
@@ -249,8 +292,13 @@
         <li><strong>Supabase:</strong> infrastructure provider hosting velyt’s database and authentication.</li>
         <li><strong>Google and Apple:</strong> if you choose to sign in with them, they handle
           authentication and share the basic profile data described above.</li>
-        <li><strong>Google Gemini (through a Supabase function):</strong> used to draft vehicle summaries.
-          Only vehicle data is sent (make, model, year, and specifications) — no personal data.</li>
+        <li><strong>Google Gemini (through a Supabase function):</strong> drafts vehicle summaries. Only
+          vehicle data is sent (make, model, year, and specifications) — no personal data.</li>
+        <li><strong>Lookup sources and providers:</strong> for a plate report we send the plate, document
+          or VIN to the public sources and authorized providers that return the vehicle’s records (RUNT,
+          SOAT, SIMIT, transit offices). That lookup is what produces the report.</li>
+        <li><strong>PostHog:</strong> receives usage events, your account identifier and crash reports.
+          It never receives plates, documents or the content of your lookups.</li>
       </ul>
       <p>
         Some links inside the app open third-party listings or sites (vehicle marketplaces). Those sites
@@ -259,14 +307,17 @@
 
       <h2>5. Retention</h2>
       <p>
-        We keep your data while your account is active and for as long as needed to meet legal obligations.
-        You may request deletion of your account and data at any time.
+        We keep your account data while your account is active and plate reports for up to 30 days after
+        the lookup. You may request deletion of your account and its data at any time, and you can delete
+        your searches and favorites from the app. Analytics records are kept according to the tool’s
+        retention window and are not used to identify you.
       </p>
 
       <h2>6. Security</h2>
       <p>
-        Data travels encrypted over HTTPS/TLS, session tokens are kept in the device’s secure storage, and
-        access to data is restricted. No system is fully infallible, so we cannot guarantee absolute security.
+        Data travels encrypted over HTTPS/TLS, the session token is kept in the device’s secure storage,
+        and access to each record is restricted to its owner. No system is fully infallible, so we cannot
+        guarantee absolute security.
       </p>
 
       <h2>7. Your rights</h2>
@@ -274,11 +325,16 @@
         Under Law 1581 of 2012 you may know, update, rectify, and delete your personal data, withdraw the
         authorization you granted, and file complaints with the Superintendencia de Industria y Comercio
         (SIC). To exercise these rights, write to
-        <a href="mailto:contacto@velyt.co">contacto@velyt.co</a> and we will respond within the legal timeframes.
+        <a href="mailto:contacto@velyt.co">contacto@velyt.co</a> and we will respond within the legal
+        timeframes. You can deny the location permission or turn notifications off without losing access
+        to the rest of the app.
       </p>
 
       <h2>8. Minors</h2>
-      <p>velyt is intended for adults and is not designed for children under 14.</p>
+      <p>
+        velyt is not directed to anyone under 18 and we do not knowingly collect data from minors. If we
+        detect a minor’s account we will delete it.
+      </p>
 
       <h2>9. Changes to this policy</h2>
       <p>
@@ -287,7 +343,10 @@
       </p>
 
       <h2>10. Contact</h2>
-      <p>Questions or requests about your data: <a href="mailto:contacto@velyt.co">contacto@velyt.co</a>.</p>
+      <p>
+        Questions or requests about your data:
+        <a href="mailto:contacto@velyt.co">contacto@velyt.co</a>.
+      </p>
     </article>
 
   </main>

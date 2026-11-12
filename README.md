@@ -84,9 +84,11 @@ Team ID `UHA77MWXMX`; Android fingerprint comes from the release keystore
 
 `privacidad.html` is the public privacy policy, linked from the landing footer.
 
-- Keep it in sync with what the app collects (account email + Google/Apple
-  profile, onboarding vehicle profile, saved favorites; Supabase backend; Gemini
-  for vehicle summaries).
+- Keep it in sync with what the app collects: account email + Google/Apple
+  profile, the 9-question vehicle profile, saved vehicles/searches/alerts, push
+  tokens, plate reports (plate, owner document, VIN, kept 30 days), on-demand
+  location (used on device, never stored), PostHog analytics with masked replay,
+  Supabase backend and Gemini for vehicle summaries. Last reviewed 2026-11-12.
 - Add the URL in App Store Connect (App Privacy) and Google Play (Store listing →
   Privacy policy): `https://sobusadriver.github.io/velyt/privacidad.html`.
 
@@ -113,7 +115,8 @@ site/
 
 ## Web onboarding
 
-`/onboarding/` asks the same eight profiling questions as the app (labels come from
+`/onboarding/` asks the same nine profiling questions as the app (including the
+vehicle age and brand-style steps) (labels come from
 `src/i18n/es.ts`), then calls the **same Postgres function the app uses**
 (`match_vehicles`) through Supabase's REST API with the publishable key, and shows
 the top **12 matches** with the match score and its reasons. Each card also shows a
@@ -133,9 +136,10 @@ never makes the claim wrong. The exact provenance stays here:
 
 | What the page says | Where it comes from |
 |---|---|
-| **2.400+ vehículos**, 114 marcas | `select count(*) from vehicles` → 2.464 at the time of writing |
+| **3.300+ vehículos**, 154 marcas | `select count(*) from vehicles` → 3.303 (1.801 modelos) at the time of writing |
+| **9 preguntas** | `PROFILING_STEP_IDS` in `src/domain/profilingGate.ts` (9 questions + confirm) |
 | **9+ portales** | the 9 scrapers in `src/services/listings/index.ts` (autocosmos, autoland, bellpi, wcar, carroya, delaespriellamotors, triplo, vendetunave, loscoches) |
-| **27.7k+ referencias de mercado** | `select count(*) from vehicle_prices` → 27.795 rows of Revista Motor |
+| **12.8k+ referencias de mercado** | `select count(*) from vehicle_prices` → 12.848 rows (9.276 Revista Motor + 3.572 Fasecolda, one per model-year after de-duplication) |
 
 Three rules that were easy to get wrong:
 
