@@ -134,14 +134,14 @@ never makes the claim wrong. The exact provenance stays here:
 | What the page says | Where it comes from |
 |---|---|
 | **2.400+ vehículos**, 114 marcas | `select count(*) from vehicles` → 2.464 at the time of writing |
-| **9 portales** | the 9 scrapers in `src/services/listings/index.ts` (autocosmos, autoland, bellpi, wcar, carroya, delaespriellamotors, triplo, vendetunave, loscoches) |
+| **9+ portales** | the 9 scrapers in `src/services/listings/index.ts` (autocosmos, autoland, bellpi, wcar, carroya, delaespriellamotors, triplo, vendetunave, loscoches) |
 | **27.7k+ referencias de mercado** | `select count(*) from vehicle_prices` → 27.795 rows of Revista Motor |
 
 Three rules that were easy to get wrong:
 
 - Marketplace listings are **not** valuation inputs. The fair price blends
   Revista Motor, Fasecolda and the catalog — see `docs/fair-price-estimator.md`.
-  The 9 portals are where the cars come from, not where the price comes from.
+  The 9+ portals are where the cars come from, not where the price comes from.
 - The peritaje reports accident data only where a public source records it (the
   national RUNT/SIMIT data does not include a national claims database), so the
   copy says "donde la fuente pública los registra".
