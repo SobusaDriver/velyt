@@ -43,6 +43,7 @@
       fair: "Precio justo ~",
       match: "match",
       navMine: "Mi carro",
+      navPrice: "Precio justo",
       navCalc: "Cuota",
     },
     en: {
@@ -68,6 +69,7 @@
       fair: "Fair price ~",
       match: "match",
       navMine: "My car",
+      navPrice: "Fair price",
       navCalc: "Payment",
     },
   }
@@ -620,8 +622,10 @@
 
   function applyNavLabels() {
     var mine = document.getElementById("nav-onboarding")
+    var price = document.getElementById("nav-price")
     var calc = document.getElementById("nav-calc")
     if (mine) mine.textContent = t().navMine
+    if (price) price.textContent = t().navPrice
     if (calc) calc.textContent = t().navCalc
   }
 

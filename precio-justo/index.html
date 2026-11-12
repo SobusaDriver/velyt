@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calculadora de precio justo · velyt</title>
+  <meta name="description" content="Estima el precio justo de un carro usado en Colombia con Revista Motor y el catálogo. Gratis y sin cuenta.">
+  <link rel="canonical" href="https://sobusadriver.github.io/velyt/precio-justo/">
+  <meta property="og:title" content="Calculadora de precio justo · velyt">
+  <meta property="og:description" content="Estima el precio justo de un carro usado con Revista Motor y el catálogo.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#06070a">
+  <link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css?v=3">
+  <script src="../assets/theme.js" defer></script>
+  <script src="../assets/analytics.js" defer></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Calculadora de precio justo velyt",
+      "url": "https://sobusadriver.github.io/velyt/precio-justo/",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "COP" }
+    }
+  </script>
+  <style>
+    .fp { max-width: 720px; margin: 0 auto; padding: 104px 20px 72px; display: grid; gap: 22px; }
+    .fp .panel {
+      display: grid; gap: 18px; padding: 24px;
+      border: 1px solid var(--line); border-radius: 20px; background: var(--surface);
+    }
+    .fp label, .fp .field-label {
+      display: block; margin-bottom: 7px; font-size: .78rem; color: var(--text-secondary);
+    }
+    .fp select, .fp input[type="number"] {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px;
+      background: var(--bg-soft); color: var(--text); font: inherit; font-size: 1rem;
+    }
+    .fp select:focus-visible, .fp input:focus-visible { outline: 2px solid var(--text); outline-offset: 1px; }
+    .fp .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+    .fp .result { display: grid; gap: 4px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+    .fp .result span { color: var(--text-secondary); font-size: .8rem; }
+    .fp .result strong { font-family: var(--display); font-size: 2.4rem; letter-spacing: -.03em; }
+    .fp .range { font-family: var(--display); font-size: 1.1rem; color: var(--text-secondary); }
+    .fp .rows { display: grid; gap: 10px; }
+    .fp .row { display: flex; justify-content: space-between; gap: 12px; font-size: .9rem; }
+    .fp .row dt { color: var(--text-secondary); }
+    .fp .row dd { margin: 0; font-family: var(--display); font-weight: 500; }
+    .fp .note { color: var(--text-tertiary); font-size: .74rem; line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <nav id="nav">
+    <div class="container">
+      <a href="../" class="brand">
+        <img src="../assets/favicon.png" alt="" class="brand-icon" width="30" height="30" loading="lazy">
+        <span>velyt</span>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="../onboarding/" id="nav-onboarding">Mi carro</a>
+        <a class="nav-link" href="../precio-justo/" id="nav-price" aria-current="page">Precio justo</a>
+        <a class="nav-link" href="../calculadora/" id="nav-calc">Cuota</a>
+      </div>
+      <div class="nav-actions">
+        <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
+          <svg id="theme-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="Tema"><title>Cambiar tema</title><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="fp">
+    <header>
+      <span class="section-label">Precio justo</span>
+      <h1 class="section-title">&iquest;Cu&aacute;nto vale realmente ese carro?</h1>
+      <p class="section-desc">Revista Motor m&aacute;s el cat&aacute;logo: el rango que deber&iacute;as pagar antes de negociar.</p>
+    </header>
+
+    <section class="panel">
+      <div class="grid">
+        <div>
+          <label for="marca">Marca</label>
+          <select id="marca"><option value="">Cargando…</option></select>
+        </div>
+        <div>
+          <label for="modelo">Modelo</label>
+          <select id="modelo" disabled><option value="">Elige una marca</option></select>
+        </div>
+        <div>
+          <label for="anio">Año</label>
+          <select id="anio" disabled><option value="">Elige un modelo</option></select>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div>
+          <label for="kms">Kilómetros</label>
+          <input id="kms" type="number" min="0" step="1000" inputmode="numeric" placeholder="Ej.: 45000">
+        </div>
+        <div>
+          <span class="field-label">Estado</span>
+          <div class="chip-row" role="group" id="condicion">
+            <button class="chip" type="button" data-condition="excellent" aria-pressed="false">Excelente</button>
+            <button class="chip on" type="button" data-condition="good" aria-pressed="true">Bueno</button>
+            <button class="chip" type="button" data-condition="fair" aria-pressed="false">Regular</button>
+            <button class="chip" type="button" data-condition="poor" aria-pressed="false">Malo</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="result" aria-live="polite">
+        <span>Precio justo estimado</span>
+        <strong id="estimado">&mdash;</strong>
+        <div class="range" id="rango"></div>
+      </div>
+
+      <dl class="rows">
+        <div class="row"><dt>Referencia Revista Motor</dt><dd id="revista">&mdash;</dd></div>
+        <div class="row"><dt>Catálogo</dt><dd id="catalogo">&mdash;</dd></div>
+        <div class="row"><dt>Confianza</dt><dd id="confianza">&mdash;</dd></div>
+      </dl>
+
+      <p class="note" id="nota">
+        Valores de referencia. El precio final depende del estado real, los kilómetros y la negociación.
+      </p>
+    </section>
+
+    <p class="note">
+      El peritaje y el historial completo viven en la app.
+      <a href="../onboarding/">Encuentra tu carro</a> o <a href="../calculadora/">simula la cuota</a>.
+    </p>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>velyt &mdash; Colombia &middot; Tu pr&oacute;ximo carro sin sorpresas</p>
+      <p><a href="../privacidad.html">Pol&iacute;tica de privacidad</a></p>
+    </div>
+  </footer>
+
+  <script src="../assets/fairprice.js?v=4"></script>
+  <script src="../assets/onboarding-data.js?v=4"></script>
+  <script src="../assets/fair-price.js?v=3"></script>
+</body>
+</html>
