@@ -133,7 +133,7 @@ skips the intro. No account, no email, nothing sent to a server.
 ## Copy claims
 
 The page never names a price source. It says **"referencias de mercado"** and
-**"27.7k+ precios de referencia"**, and always with a `+` so a growing database
+**"12.8k+ precios de referencia"**, and always with a `+` so a growing database
 never makes the claim wrong. The exact provenance stays here:
 
 | What the page says | Where it comes from |
