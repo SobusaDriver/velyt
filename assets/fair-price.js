@@ -158,31 +158,56 @@
     return sorted[Math.floor(sorted.length / 2)]
   }
 
-  async function revistaFor(make, model, year) {
+  var modifiersPromise = null
+
+  /** Brand adjustments the app applies (general row + per-brand rows). */
+  function modifiers() {
+    if (!modifiersPromise) {
+      modifiersPromise = fetch(
+        CFG.supabaseUrl + "/rest/v1/market_modifiers?select=brand,modifier_pct",
+        { headers: { apikey: CFG.supabaseKey, Authorization: "Bearer " + CFG.supabaseKey } },
+      )
+        .then(function (res) {
+          return res.ok ? res.json() : []
+        })
+        .catch(function () {
+          return []
+        })
+    }
+    return modifiersPromise
+  }
+
+  /** Per-year reference values for this model, split by guide. */
+  async function referencesFor(make, model, year) {
     var token = normalize(model).split(" ")[0]
-    if (!token) return null
+    if (!token) return { revista: null, fasecolda: null }
     var res = await fetch(
       CFG.supabaseUrl +
-        "/rest/v1/vehicle_prices?select=make,model,year,value_cop&make=ilike." +
+        "/rest/v1/vehicle_prices?select=make,model,year,value_cop,category&make=ilike." +
         encodeURIComponent(make) +
         "&year=eq." +
         year +
         "&limit=1000",
       { headers: { apikey: CFG.supabaseKey, Authorization: "Bearer " + CFG.supabaseKey } },
     )
-    if (!res.ok) return null
-    var rows = await res.json()
-    var values = rows
-      .filter(function (row) {
-        return normalize(row.model).indexOf(token) >= 0
-      })
-      .map(function (row) {
-        return Number(row.value_cop)
-      })
-      .filter(function (value) {
-        return value > 0
-      })
-    return median(values)
+    if (!res.ok) return { revista: null, fasecolda: null }
+    var rows = (await res.json()).filter(function (row) {
+      return normalize(row.model).indexOf(token) >= 0 && Number(row.value_cop) > 0
+    })
+    var pick = function (category) {
+      return median(
+        rows
+          .filter(function (row) {
+            return category === "FASECOLDA"
+              ? row.category === "FASECOLDA"
+              : row.category !== "FASECOLDA"
+          })
+          .map(function (row) {
+            return Number(row.value_cop)
+          }),
+      )
+    }
+    return { revista: pick("REVISTA"), fasecolda: pick("FASECOLDA") }
   }
 
   function confidenceLabel(value) {
@@ -214,8 +239,13 @@
       }),
     )
     var kms = Number(kmsInput.value)
-    var revista = await revistaFor(make, model, year)
+    var refs = await referencesFor(make, model, year)
+    var brandRows = await modifiers()
     if (mine !== requestId) return
+    var revista = refs.revista
+    var marketModifierPct = window.VelytBrandMods
+      ? window.VelytBrandMods.resolveBrandModifierPct(brandRows, make)
+      : undefined
 
     var estimate = EST.estimateFairPrice({
       make: make,
@@ -223,8 +253,10 @@
       condition: state.condition,
       kms: Number.isFinite(kms) && kms > 0 ? kms : undefined,
       revistaMotorPrice: revista || undefined,
+      fasecoldaPrice: refs.fasecolda || undefined,
       catalogMinPrice: Number.isFinite(minCatalog) ? minCatalog : undefined,
       catalogMaxPrice: maxCatalog > 0 ? maxCatalog : undefined,
+      marketModifierPct: marketModifierPct,
     })
 
     if (!estimate || estimate.estimatedPrice <= 0) {
@@ -239,6 +271,15 @@
       money.format(estimate.priceRangeLow) +
       " – " +
       money.format(estimate.priceRangeHigh)
+    var marcaRow = el("marca-row")
+    var marca = el("marca")
+    if (marketModifierPct != null && marketModifierPct !== 100) {
+      var delta = marketModifierPct - 100
+      marca.textContent = (delta > 0 ? "+" : "") + delta + " %"
+      marcaRow.hidden = false
+    } else {
+      marcaRow.hidden = true
+    }
     el("revista").textContent = revista ? money.format(revista) : "Sin dato"
     el("catalogo").textContent =
       Number.isFinite(minCatalog) && maxCatalog > 0

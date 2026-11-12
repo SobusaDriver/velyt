@@ -121,7 +121,9 @@ vehicle age and brand-style steps) (labels come from
 (`match_vehicles`) through Supabase's REST API with the publishable key, and shows
 the top **12 matches** with the match score and its reasons. Each card also shows a
 fair-price range computed by the app's own estimator (`fairprice.js`) from Revista
-Motor values (`vehicle_prices`, public) plus the catalog range. It is deliberately limited: no fair price, peritaje, alerts or saved
+Motor values (`vehicle_prices`, public), the Fasecolda reference rows and the
+catalog range, with the same brand market adjustment the app applies
+(`market_modifiers`, bundled as `brandmods.js`). It is deliberately limited: no fair price, peritaje, alerts or saved
 vehicles. Every card links to `/search/vehicle/<id>` (universal link into the app)
 and the page carries an App Store CTA tagged `ct=web-onboarding`.
 

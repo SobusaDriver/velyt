@@ -471,7 +471,7 @@
       }, 9999)
       var query =
         CFG.supabaseUrl +
-        "/rest/v1/vehicle_prices?select=make,model,year,value_cop&make=in.(" +
+        "/rest/v1/vehicle_prices?select=make,model,year,value_cop,category&make=in.(" +
         makes
           .map(function (make) {
             return '"' + make.replace(/"/g, "") + '"'
@@ -487,39 +487,63 @@
       rows = []
     }
 
+    // Brand adjustments, same table and rules the app applies.
+    var brandModifiers = []
+    try {
+      var modsRes = await fetch(CFG.supabaseUrl + "/rest/v1/market_modifiers?select=brand,modifier_pct", {
+        headers: { apikey: CFG.supabaseKey, Authorization: "Bearer " + CFG.supabaseKey },
+      })
+      if (modsRes.ok) brandModifiers = await modsRes.json()
+    } catch (e) {
+      brandModifiers = []
+    }
+
     matches.forEach(function (vehicle) {
       var year = subjectYear(vehicle.year_range)
       var model = normalizeModel(vehicle.model)
       var token = model.split(" ")[0]
-      var values = rows
-        .filter(function (row) {
-          return (
-            String(row.make).toLowerCase() === String(vehicle.make).toLowerCase() &&
-            Number(row.year) === year &&
-            token &&
-            normalizeModel(row.model).indexOf(token) >= 0
-          )
-        })
-        .map(function (row) {
+      var own = rows.filter(function (row) {
+        return (
+          String(row.make).toLowerCase() === String(vehicle.make).toLowerCase() &&
+          Number(row.year) === year &&
+          token &&
+          normalizeModel(row.model).indexOf(token) >= 0 &&
+          Number(row.value_cop) > 0
+        )
+      })
+      var medianOf = function (list) {
+        var values = list.map(function (row) {
           return Number(row.value_cop)
         })
-        .filter(function (value) {
-          return value > 0
-        })
-      var revista = values.length
-        ? values.sort(function (a, b) {
-            return a - b
-          })[Math.floor(values.length / 2)]
-        : undefined
+        return values.length
+          ? values.sort(function (a, b) {
+              return a - b
+            })[Math.floor(values.length / 2)]
+          : undefined
+      }
+      var revista = medianOf(
+        own.filter(function (row) {
+          return row.category !== "FASECOLDA"
+        }),
+      )
+      var fasecolda = medianOf(
+        own.filter(function (row) {
+          return row.category === "FASECOLDA"
+        }),
+      )
 
-      if (!revista && !vehicle.min_price_cop && !vehicle.max_price_cop) return
+      if (!revista && !fasecolda && !vehicle.min_price_cop && !vehicle.max_price_cop) return
       var estimate = window.VelytFairPrice.estimateFairPrice({
         make: vehicle.make,
         year: year,
         condition: "good",
         revistaMotorPrice: revista,
+        fasecoldaPrice: fasecolda,
         catalogMinPrice: vehicle.min_price_cop || undefined,
         catalogMaxPrice: vehicle.max_price_cop || undefined,
+        marketModifierPct: window.VelytBrandMods
+          ? window.VelytBrandMods.resolveBrandModifierPct(brandModifiers, vehicle.make)
+          : undefined,
       })
       if (estimate.estimatedPrice > 0) {
         vehicle.fairPrice = {
