@@ -101,10 +101,9 @@ window.VELYT_ONBOARDING = {
     "emoji": "💰",
     "title": "¿Cuál es tu rango de inversión?",
     "subtitle": "Arrastra los dos extremos para definir tu presupuesto mínimo y máximo en COP.",
-    "min": 20,
+    "min": 0,
     "max": 300,
     "step": 10,
-    "defaultMin": 40,
     "defaultMax": 100
    },
    {
@@ -342,10 +341,9 @@ window.VELYT_ONBOARDING = {
     "emoji": "💰",
     "title": "What is your investment range?",
     "subtitle": "Drag both ends to define your minimum and maximum budget in COP.",
-    "min": 20,
+    "min": 0,
     "max": 300,
     "step": 10,
-    "defaultMin": 40,
     "defaultMax": 100
    },
    {

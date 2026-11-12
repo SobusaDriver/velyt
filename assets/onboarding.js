@@ -220,7 +220,6 @@
   }
 
   function stepView(step) {
-    var total = STEPS().length
     var html =
       headView() +
       '<div class="ob-scroll">' +
@@ -242,22 +241,13 @@
       "</p>"
 
     if (step.type === "range") {
-      var budget = state.answers.budget || { min: step.defaultMin, max: step.defaultMax }
+      var budget = state.answers.budget || { min: 0, max: step.defaultMax }
+      var upTo = LANG === "es" ? "Hasta" : "Up to"
       html +=
         '<div class="ob-budget">' +
-        "<label>Mínimo <strong id=\"budget-min-label\">$" +
-        budget.min +
-        "M</strong></label>" +
-        '<input id="budget-min" type="range" min="' +
-        step.min +
-        '" max="' +
-        step.max +
-        '" step="' +
-        step.step +
-        '" value="' +
-        budget.min +
-        '">' +
-        "<label>Máximo <strong id=\"budget-max-label\">$" +
+        "<label>" +
+        upTo +
+        ' <strong id="budget-max-label">$' +
         budget.max +
         "M</strong></label>" +
         '<input id="budget-max" type="range" min="' +
@@ -577,7 +567,7 @@
   async function fetchMatches() {
     try {
       if (!state.answers.budget) {
-        state.answers.budget = { min: 40, max: 100 }
+        state.answers.budget = { min: 0, max: 100 }
         saveAnswers()
       }
       var res = await fetch(CFG.supabaseUrl + "/rest/v1/rpc/match_vehicles", {
@@ -663,6 +653,11 @@
 
       if (target.id === "next") {
         if (!canContinue()) return
+        var current = STEPS()[state.step]
+        if (current && current.type === "range" && !state.answers.budget) {
+          state.answers.budget = { min: 0, max: current.defaultMax }
+          saveAnswers()
+        }
         state.step += 1
         render()
       } else if (target.id === "back") {
@@ -694,20 +689,12 @@
     document.addEventListener("input", function (event) {
       var target = event.target
       if (!(target instanceof HTMLInputElement)) return
-      if (target.id !== "budget-min" && target.id !== "budget-max") return
-      var budget = state.answers.budget || { min: 40, max: 100 }
-      budget.min = Number(el("budget-min").value)
-      budget.max = Number(el("budget-max").value)
-      if (budget.min > budget.max) {
-        if (target.id === "budget-min") budget.max = budget.min
-        else budget.min = budget.max
-        el("budget-min").value = budget.min
-        el("budget-max").value = budget.max
-      }
-      state.answers.budget = budget
+      if (target.id !== "budget-max") return
+      var max = Number(target.value)
+      state.answers.budget = { min: 0, max: max }
       saveAnswers()
-      el("budget-min-label").textContent = "$" + budget.min + "M"
-      el("budget-max-label").textContent = "$" + budget.max + "M"
+      var label = el("budget-max-label")
+      if (label) label.textContent = "$" + max + "M"
     })
   }
 
