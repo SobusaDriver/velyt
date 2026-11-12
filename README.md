@@ -104,6 +104,7 @@ site/
 │   ├── site.css                 Shared shell: tokens, reset, nav, footer, buttons
 │   ├── theme.js                 Shared light/dark persistence (localStorage)
 │   ├── financing.js             Generated: src/domain/financing.ts (pnpm site:build)
+│   ├── fairprice.js             Generated: src/services/fairPriceEstimator.ts (pnpm site:build)
 │   ├── onboarding-data.js       Generated: ES questions + public Supabase config
 │   └── analytics.js             Generated: PostHog init, token from .env
 └── .well-known/                 Verification files (served from the root repo)
@@ -114,7 +115,9 @@ site/
 `/onboarding/` asks the same eight profiling questions as the app (labels come from
 `src/i18n/es.ts`), then calls the **same Postgres function the app uses**
 (`match_vehicles`) through Supabase's REST API with the publishable key, and shows
-the top **12 matches** with the match score and its reasons. It is deliberately limited: no fair price, peritaje, alerts or saved
+the top **12 matches** with the match score and its reasons. Each card also shows a
+fair-price range computed by the app's own estimator (`fairprice.js`) from Revista
+Motor values (`vehicle_prices`, public) plus the catalog range. It is deliberately limited: no fair price, peritaje, alerts or saved
 vehicles. Every card links to `/search/vehicle/<id>` (universal link into the app)
 and the page carries an App Store CTA tagged `ct=web-onboarding`.
 
