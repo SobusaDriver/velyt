@@ -243,13 +243,15 @@
     if (step.type === "range") {
       var budget = state.answers.budget || { min: 0, max: step.defaultMax }
       var upTo = LANG === "es" ? "Hasta" : "Up to"
+      var sliderValue = Math.min(budget.max, step.max)
+      var ceilingLabel = budget.max >= 1e9 ? "$" + step.max + "M+" : "$" + budget.max + "M"
       html +=
         '<div class="ob-budget">' +
         "<label>" +
         upTo +
-        ' <strong id="budget-max-label">$' +
-        budget.max +
-        "M</strong></label>" +
+        ' <strong id="budget-max-label">' +
+        ceilingLabel +
+        "</strong></label>" +
         '<input id="budget-max" type="range" min="' +
         step.min +
         '" max="' +
@@ -257,7 +259,7 @@
         '" step="' +
         step.step +
         '" value="' +
-        budget.max +
+        sliderValue +
         '">' +
         "</div>"
     } else {
@@ -690,11 +692,12 @@
       var target = event.target
       if (!(target instanceof HTMLInputElement)) return
       if (target.id !== "budget-max") return
-      var max = Number(target.value)
+      var value = Number(target.value)
+      var max = value >= 200 ? 1e9 : value
       state.answers.budget = { min: 0, max: max }
       saveAnswers()
       var label = el("budget-max-label")
-      if (label) label.textContent = "$" + max + "M"
+      if (label) label.textContent = value >= 200 ? "$200M+" : "$" + value + "M"
     })
   }
 
