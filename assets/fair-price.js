@@ -14,6 +14,7 @@
   })
 
   var state = { vehicles: [], condition: "good" }
+  var requestId = 0
   var makeSelect = el("marca")
   var modelSelect = el("modelo")
   var yearSelect = el("anio")
@@ -95,6 +96,12 @@
     )
   }
 
+  function rowsFor(make, modelKey) {
+    return state.vehicles.filter(function (v) {
+      return v.make === make && normalize(v.model) === modelKey
+    })
+  }
+
   function refreshModels() {
     var make = makeSelect.value
     if (!make) {
@@ -102,46 +109,44 @@
       fillSelect(yearSelect, [], "Elige un modelo")
       return
     }
-    var models = state.vehicles
-      .filter(function (v) {
-        return v.make === make
-      })
-      .map(function (v) {
-        return v.model
-      })
-      .filter(Boolean)
-      .filter(function (model, index, all) {
-        return all.indexOf(model) === index
-      })
-      .sort()
-    fillSelect(
-      modelSelect,
-      models.map(function (model) {
-        return { value: model, label: model }
-      }),
-      "Sin modelos",
-    )
+    var seen = {}
+    var models = []
+    state.vehicles.forEach(function (v) {
+      if (v.make !== make || !v.model) return
+      var key = normalize(v.model)
+      if (seen[key]) return
+      seen[key] = true
+      models.push({ value: key, label: v.model })
+    })
+    models.sort(function (a, b) {
+      return a.label.localeCompare(b.label)
+    })
+    fillSelect(modelSelect, models, "Sin modelos")
     refreshYears()
   }
 
   function refreshYears() {
-    var make = makeSelect.value
-    var model = modelSelect.value
-    var vehicle = state.vehicles.find(function (v) {
-      return v.make === make && v.model === model
-    })
-    if (!vehicle) {
+    var rows = rowsFor(makeSelect.value, modelSelect.value)
+    if (!rows.length) {
       fillSelect(yearSelect, [], "Elige un modelo")
       return
     }
-    var years = yearsOf(vehicle.year_range)
-      .sort(function (a, b) {
-        return b - a
+    var years = []
+    rows.forEach(function (v) {
+      yearsOf(v.year_range).forEach(function (year) {
+        if (years.indexOf(year) < 0) years.push(year)
       })
-      .map(function (year) {
+    })
+    years.sort(function (a, b) {
+      return b - a
+    })
+    fillSelect(
+      yearSelect,
+      years.map(function (year) {
         return { value: String(year), label: String(year) }
-      })
-    fillSelect(yearSelect, years, "Sin años")
+      }),
+      "Sin años",
+    )
     calculate()
   }
 
@@ -158,7 +163,7 @@
     if (!token) return null
     var res = await fetch(
       CFG.supabaseUrl +
-        "/rest/v1/vehicle_prices?select=make,model,year,value_cop&make=eq." +
+        "/rest/v1/vehicle_prices?select=make,model,year,value_cop&make=ilike." +
         encodeURIComponent(make) +
         "&year=eq." +
         year +
@@ -185,16 +190,32 @@
   }
 
   async function calculate() {
+    var mine = ++requestId
     var make = makeSelect.value
     var model = modelSelect.value
     var year = Number(yearSelect.value)
     if (!make || !model || !year) return
 
-    var vehicle = state.vehicles.find(function (v) {
-      return v.make === make && v.model === model
+    var rows = rowsFor(make, model)
+    var yearRows = rows.filter(function (v) {
+      return yearsOf(v.year_range).indexOf(year) >= 0
     })
+    var priced = yearRows.length ? yearRows : rows
+    var minCatalog = Math.min.apply(
+      null,
+      priced.map(function (v) {
+        return v.min_price_cop || Infinity
+      }),
+    )
+    var maxCatalog = Math.max.apply(
+      null,
+      priced.map(function (v) {
+        return v.max_price_cop || 0
+      }),
+    )
     var kms = Number(kmsInput.value)
     var revista = await revistaFor(make, model, year)
+    if (mine !== requestId) return
 
     var estimate = EST.estimateFairPrice({
       make: make,
@@ -202,8 +223,8 @@
       condition: state.condition,
       kms: Number.isFinite(kms) && kms > 0 ? kms : undefined,
       revistaMotorPrice: revista || undefined,
-      catalogMinPrice: vehicle && vehicle.min_price_cop ? vehicle.min_price_cop : undefined,
-      catalogMaxPrice: vehicle && vehicle.max_price_cop ? vehicle.max_price_cop : undefined,
+      catalogMinPrice: Number.isFinite(minCatalog) ? minCatalog : undefined,
+      catalogMaxPrice: maxCatalog > 0 ? maxCatalog : undefined,
     })
 
     if (!estimate || estimate.estimatedPrice <= 0) {
@@ -220,8 +241,8 @@
       money.format(estimate.priceRangeHigh)
     el("revista").textContent = revista ? money.format(revista) : "Sin dato"
     el("catalogo").textContent =
-      vehicle && vehicle.min_price_cop
-        ? money.format(vehicle.min_price_cop) + " – " + money.format(vehicle.max_price_cop)
+      Number.isFinite(minCatalog) && maxCatalog > 0
+        ? money.format(minCatalog) + " – " + money.format(maxCatalog)
         : "Sin dato"
     el("confianza").textContent = confidenceLabel(estimate.confidence)
 
