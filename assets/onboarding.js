@@ -168,14 +168,14 @@
         '">' +
         "</div>"
     } else if (step.type === "multi") {
-      html += '<div class="props-grid" role="group">'
+      html += '<div class="choices" role="group">'
       step.options.forEach(function (opt) {
         var selected = (state.answers[step.field] || []).indexOf(opt.value) >= 0
         html += optionHtml(step, opt, selected)
       })
       html += "</div>"
     } else {
-      html += '<div class="props-grid" role="group">'
+      html += '<div class="choices" role="group">'
       step.options.forEach(function (opt) {
         var selected = state.answers[step.field] === opt.value
         html += optionHtml(step, opt, selected)
@@ -202,16 +202,16 @@
 
   function optionHtml(step, opt, selected) {
     return (
-      '<button class="prop-card" data-field="' +
+      '<button class="choice" data-field="' +
       step.field +
       '" data-value="' +
       opt.value +
       '" aria-pressed="' +
       selected +
       '">' +
-      '<span class="icon-row"><span class="icon-mark">' +
+      '<span class="icon-mark">' +
       (opt.icon || "•") +
-      "</span></span>" +
+      "</span>" +
       "<h3>" +
       opt.label +
       "</h3>" +
@@ -388,7 +388,7 @@
     document.addEventListener("click", function (event) {
       var target = event.target
       if (!(target instanceof Element)) return
-      var option = target.closest(".prop-card[data-field]")
+      var option = target.closest(".choice[data-field]")
       if (option) {
         var step = CFG.steps[state.step]
         var value = option.getAttribute("data-value")
@@ -473,6 +473,26 @@
     })
   }
 
+  /** Where a reload should land: intro, the first unanswered step, or results. */
+  function resumeStep() {
+    var answers = state.answers || {}
+    if (Object.keys(answers).length === 0) return -1
+    if (hasAllAnswers()) return CFG.steps.length
+    for (var i = 0; i < CFG.steps.length; i++) {
+      var step = CFG.steps[i]
+      if (step.type === "range") {
+        if (!answers.budget) return i
+        continue
+      }
+      if (step.type === "multi") {
+        if (!Array.isArray(answers[step.field])) return i
+        continue
+      }
+      if (answers[step.field] == null) return i
+    }
+    return CFG.steps.length
+  }
+
   function hasAllAnswers() {
     return CFG.steps.every(function (step) {
       if (step.type === "range") return !!state.answers.budget
@@ -482,6 +502,7 @@
   }
 
   if (!CFG) return
+  state.step = resumeStep()
   bind()
   render()
 })()

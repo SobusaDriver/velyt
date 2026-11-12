@@ -29,8 +29,11 @@
     }
   </script>
   <style>
-    .onboarding { max-width: 960px; margin: 0 auto; padding: 128px 20px 72px; display: grid; gap: 22px; }
-    .onboarding .props-grid { margin-top: 26px; }
+    .onboarding { max-width: 720px; margin: 0 auto; padding: 128px 20px 72px; display: grid; gap: 22px; }
+    /* A wizard, not a landing section: same type, smaller scale. */
+    .onboarding .section-title { font-size: clamp(1.45rem, 4.4vw, 2rem); line-height: 1.16; }
+    .onboarding .choices { margin-top: 22px; }
+    .onboarding .chip.on { background: var(--accent); color: var(--on-accent); border-color: transparent; }
 
     .progress { height: 3px; border-radius: 999px; background: var(--line); overflow: hidden; }
     #progress-fill { display: block; height: 100%; width: 0; background: var(--accent); transition: width .25s ease; }
@@ -61,7 +64,7 @@
     </div>
   </nav>
 
-  <main>
+  <main class="onboarding">
     <div class="progress" role="progressbar" aria-label="Progreso" aria-valuemin="0" aria-valuemax="100"><span id="progress-fill"></span></div>
     <div id="flow" aria-live="polite"></div>
   </main>

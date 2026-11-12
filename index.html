@@ -447,6 +447,7 @@
     <h2 id="dl-title">Abriendo en velyt&hellip;</h2>
     <p id="dl-desc">Si la app no se abre autom&aacute;ticamente, toca el bot&oacute;n.</p>
     <a class="btn" id="dl-btn" href="velyt://" data-cta="deep-link">Abrir app</a>
+    <p><a href="/velyt/">Seguir en la web</a></p>
   </div>
 
   <section class="hero" id="hero-section">
@@ -1127,7 +1128,9 @@
             e.preventDefault()
             window.location.href = dlBtn.href
             setTimeout(() => {
-              if (isIOS) window.location.href = APP_STORE_URL
+              // No app handled the link: return to the site instead of trapping
+              // the visitor in the App Store.
+              window.location.href = "/velyt/"
             }, FALLBACK_TIMEOUT)
           })
         }

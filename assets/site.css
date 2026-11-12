@@ -211,3 +211,30 @@ footer a { color: var(--text-secondary); }
 @media (max-width: 1080px) {
   .props-grid { grid-template-columns: 1fr; }
 }
+
+/* Form choices: same tokens as the landing cards, but a control rather than a
+   marketing tile. Used by the onboarding answers. */
+.choices { display: grid; gap: 10px; }
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.choice:hover { border-color: var(--line-strong); }
+.choice[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.choice .icon-mark {
+  width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--line);
+  background: var(--accent-soft); display: grid; place-items: center; flex: none;
+}
+.choice h3 { font-family: var(--display); font-size: 1rem; font-weight: 600; letter-spacing: -.01em; }
+.choice p { font-size: .82rem; color: var(--text-secondary); margin-top: 2px; }
