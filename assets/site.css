@@ -241,3 +241,16 @@ footer a { color: var(--text-secondary); }
 
 /* CTA inside a clickable card (landing web tools) */
 .prop-card .card-cta { margin-top: auto; font-size: .85rem; color: var(--text-secondary); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Navbar shortcuts to the web tools */
+nav .nav-links { display: flex; align-items: center; gap: 2px; margin-left: auto; margin-right: 8px; }
+nav .nav-link {
+  padding: 6px 11px; border-radius: 999px; font-size: .8rem; font-weight: 600;
+  color: var(--text-secondary); text-decoration: none; white-space: nowrap;
+  transition: color .2s, background .2s;
+}
+nav .nav-link:hover { color: var(--text); background: var(--surface); }
+nav .nav-link[aria-current="page"] { color: var(--text); background: var(--surface-strong); }
+@media (max-width: 480px) {
+  nav .nav-link { padding: 6px 8px; font-size: .74rem; }
+}

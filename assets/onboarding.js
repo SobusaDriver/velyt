@@ -42,6 +42,8 @@
       months: "meses",
       fair: "Precio justo ~",
       match: "match",
+      navMine: "Mi carro",
+      navCalc: "Cuota",
     },
     en: {
       back: "← Back",
@@ -65,6 +67,8 @@
       months: "months",
       fair: "Fair price ~",
       match: "match",
+      navMine: "My car",
+      navCalc: "Payment",
     },
   }
 
@@ -610,7 +614,15 @@
     document.documentElement.lang = next === "es" ? "es-CO" : "en"
     var toggle = document.getElementById("lang-toggle")
     if (toggle) toggle.textContent = next === "es" ? "EN" : "ES"
+    applyNavLabels()
     render()
+  }
+
+  function applyNavLabels() {
+    var mine = document.getElementById("nav-onboarding")
+    var calc = document.getElementById("nav-calc")
+    if (mine) mine.textContent = t().navMine
+    if (calc) calc.textContent = t().navCalc
   }
 
   window.toggleLang = function () {
@@ -706,6 +718,7 @@
   document.documentElement.lang = LANG === "es" ? "es-CO" : "en"
   var toggle = document.getElementById("lang-toggle")
   if (toggle) toggle.textContent = LANG === "es" ? "EN" : "ES"
+  applyNavLabels()
   bind()
   render()
 })()
