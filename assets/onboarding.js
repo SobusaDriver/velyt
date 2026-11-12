@@ -2,7 +2,6 @@
    Results are a limited shortlist; the report, peritaje and alerts live in the app. */
 (function () {
   var CFG = window.VELYT_ONBOARDING
-  var MATCH = window.VelytQuickMatch
   var STORAGE_KEY = "velyt:onboarding"
   var APP_STORE = "https://apps.apple.com/co/app/velyt/id6778179192?ct=web-onboarding"
   var DEEP_BASE = "https://sobusadriver.github.io/velyt/search/vehicle/"
@@ -45,18 +44,45 @@
     return lo === hi ? "$" + lo + "M" : "$" + lo + "M – $" + hi + "M"
   }
 
-  function answersForMatch() {
+  var REASONS = {
+    topSeller: "Más vendido",
+    withinBudget: "Dentro de tu presupuesto",
+    overBudget: "Cerca de tu presupuesto",
+    terrainMatch: "Apto para tu terreno",
+    establishedBrand: "Marca establecida",
+    newcomerPick: "Marca nueva",
+    luxuryPick: "Gama alta",
+    recentModel: "Modelo reciente",
+  }
+
+  /** Same profile shape the app sends to `match_vehicles`. */
+  function profileForMatch() {
     var a = state.answers
     var budget = a.budget || {}
+    var plan = a.plan || {}
     return {
-      passengerRange: a.passengerRange || null,
-      needsCargo: a.needsCargo === "YES" ? true : a.needsCargo === "NO" ? false : null,
-      vehicleTypes: a.vehicleTypes || [],
-      fuels: a.fuels || [],
-      terrainType: a.terrainType || null,
-      useContext: a.useContext || null,
-      budgetMinCop: (budget.min || 0) * 1e6,
-      budgetMaxCop: (budget.max || 0) * 1e6,
+      capacity: {
+        passenger_range: a.passengerRange || null,
+        needs_cargo: a.needsCargo === "YES" ? true : a.needsCargo === "NO" ? false : null,
+        vehicle_type: a.vehicleTypes || [],
+      },
+      environment: { terrain_type: a.terrainType || null },
+      preferences: {
+        accepted_fuels: a.fuels || [],
+        has_home_charger: null,
+        max_vehicle_age_years: null,
+        brand_preference: [],
+        use_context: a.useContext || null,
+      },
+      financials: {
+        min_budget_cop: (budget.min || 0) * 1e6,
+        max_budget_cop: (budget.max || 0) * 1e6,
+        payment_method: a.paymentMethod || null,
+        down_payment_pct: plan.down || null,
+        term_months: plan.months || null,
+        down_payment_cop: null,
+        max_monthly_cop: null,
+      },
     }
   }
 
@@ -278,12 +304,23 @@
         [vehicle.make, vehicle.model].filter(Boolean).join(" ") +
         "</h3>" +
         '<p class="car-meta">' +
+        (vehicle.matchScore != null ? vehicle.matchScore + "% · " : "") +
         vehicle.year_range +
         " · " +
         [vehicle.body_type, vehicle.fuel_type, vehicle.seats + " puestos"]
           .filter(Boolean)
           .join(" · ") +
         "</p>" +
+        (vehicle.matchReasons && vehicle.matchReasons.length
+          ? '<p class="car-reasons">' +
+            vehicle.matchReasons
+              .slice(0, 3)
+              .map(function (reason) {
+                return REASONS[reason] || reason
+              })
+              .join(" · ") +
+            "</p>"
+          : "") +
         '<p class="car-price">' +
         priceLabel(vehicle.min_price_cop, vehicle.max_price_cop) +
         "</p>" +
@@ -309,28 +346,23 @@
       saveAnswers()
     }
     try {
-      var select = [
-        "id",
-        "make",
-        "model",
-        "year_range",
-        "body_type",
-        "fuel_type",
-        "drivetrain",
-        "seats",
-        "has_cargo",
-        "is_commercial",
-        "min_price_cop",
-        "max_price_cop",
-        "image_url",
-      ].join(",")
-      var res = await fetch(
-        CFG.supabaseUrl + "/rest/v1/vehicles?select=" + select + "&limit=1000",
-        { headers: { apikey: CFG.supabaseKey, Authorization: "Bearer " + CFG.supabaseKey } },
-      )
-      if (!res.ok) throw new Error("catalog " + res.status)
-      state.vehicles = await res.json()
-      state.matches = MATCH.matchVehicles(state.vehicles, answersForMatch(), 12)
+      var res = await fetch(CFG.supabaseUrl + "/rest/v1/rpc/match_vehicles", {
+        method: "POST",
+        headers: {
+          apikey: CFG.supabaseKey,
+          Authorization: "Bearer " + CFG.supabaseKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ profile: profileForMatch() }),
+      })
+      if (!res.ok) throw new Error("match " + res.status)
+      var data = await res.json()
+      state.matches = (data || []).slice(0, 12).map(function (row) {
+        return Object.assign({}, row.vehicle, {
+          matchScore: row.score,
+          matchReasons: row.reasons || [],
+        })
+      })
       track("web_matches_viewed", {
         matches: state.matches.length,
         budget_min: state.answers.budget.min,
@@ -440,7 +472,7 @@
     })
   }
 
-  if (!CFG || !MATCH) return
+  if (!CFG) return
   bind()
   render()
 })()
