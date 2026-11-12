@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <script>
+    // The 404 handler replays deep paths (e.g. /velyt/search/vehicle/x) on this
+    // page, where relative links would resolve under the deep path and 404.
+    if (location.pathname.indexOf("/velyt/") === 0) {
+      document.write('<base href="/velyt/">')
+    }
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title id="page-title">velyt — Tu próximo carro sin sorpresas</title>
