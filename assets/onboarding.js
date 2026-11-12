@@ -294,7 +294,8 @@
         ? matches.length + " carros para ti"
         : "No encontramos carros con esos filtros") +
       "</h2>" +
-      '<p class="section-desc">Lista limitada: precio justo, peritaje e historial completo viven en la app.</p>'
+      '<p class="section-desc">Precio justo estimado con Revista Motor y catálogo. El peritaje y el historial completo viven en la app.</p>' +
+      '<div class="actions"><button class="chip" id="restart">Repetir preguntas</button></div>'
 
     if (!matches.length) {
       html +=
@@ -329,6 +330,13 @@
         meta +
         "</div>" +
         (reasons ? '<div class="match-meta">' + reasons + "</div>" : "") +
+        (vehicle.fairPrice
+          ? '<div class="match-meta">Precio justo ~$' +
+            millions(vehicle.fairPrice.low) +
+            "M – $" +
+            millions(vehicle.fairPrice.high) +
+            "M</div>"
+          : "") +
         '<div class="match-meta"><a href="' +
         DEEP_BASE +
         vehicle.id +
@@ -343,10 +351,124 @@
 
     html +=
       '<div class="actions">' +
-      '<button class="chip" id="restart">Empezar de nuevo</button>' +
       '<a class="btn" href="' + APP_STORE + '" data-cta="onboarding-appstore">Continuar en la app</a>' +
       "</div></section>"
     return html
+  }
+
+  function firstYear(range) {
+    var start = parseInt(String(range || "").split("-")[0], 10)
+    return Number.isFinite(start) ? start : null
+  }
+
+  function lastYear(range) {
+    var parts = String(range || "").split("-")
+    var end = parseInt(parts[parts.length - 1], 10)
+    return Number.isFinite(end) ? end : null
+  }
+
+  /** The model year the estimate is quoted for: this year if the range covers it. */
+  function subjectYear(range) {
+    var start = firstYear(range)
+    var end = lastYear(range)
+    var now = new Date().getFullYear()
+    if (start && end) return Math.min(Math.max(now, start), end)
+    return end || now
+  }
+
+  function normalizeModel(value) {
+    return String(value || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim()
+  }
+
+  /**
+   * Fair price for each match, using the same estimator the app ships:
+   * Revista Motor (public `vehicle_prices`) plus the catalog range.
+   */
+  async function attachFairPrices(matches) {
+    if (!window.VelytFairPrice || !matches.length) return
+    var makes = matches
+      .map(function (v) {
+        return v.make
+      })
+      .filter(Boolean)
+      .filter(function (make, index, all) {
+        return all.indexOf(make) === index
+      })
+    if (!makes.length) return
+
+    var rows = []
+    try {
+      var year = matches.reduce(function (lowest, v) {
+        var y = firstYear(v.year_range)
+        return y && y < lowest ? y : lowest
+      }, 9999)
+      var query =
+        CFG.supabaseUrl +
+        "/rest/v1/vehicle_prices?select=make,model,year,value_cop&make=in.(" +
+        makes
+          .map(function (make) {
+            return '"' + make.replace(/"/g, "") + '"'
+          })
+          .join(",") +
+        ")&year=gte." +
+        year
+      var res = await fetch(query, {
+        headers: { apikey: CFG.supabaseKey, Authorization: "Bearer " + CFG.supabaseKey },
+      })
+      if (res.ok) rows = await res.json()
+    } catch (e) {
+      rows = []
+    }
+
+    matches.forEach(function (vehicle) {
+      var year = subjectYear(vehicle.year_range)
+      var model = normalizeModel(vehicle.model)
+      var token = model.split(" ")[0]
+      var values = rows
+        .filter(function (row) {
+          return (
+            String(row.make).toLowerCase() === String(vehicle.make).toLowerCase() &&
+            Number(row.year) === year &&
+            token &&
+            normalizeModel(row.model).indexOf(token) >= 0
+          )
+        })
+        .map(function (row) {
+          return Number(row.value_cop)
+        })
+        .filter(function (value) {
+          return value > 0
+        })
+      var revista = values.length
+        ? values.sort(function (a, b) {
+            return a - b
+          })[Math.floor(values.length / 2)]
+        : undefined
+
+      if (!revista && !vehicle.min_price_cop && !vehicle.max_price_cop) return
+      var estimate = window.VelytFairPrice.estimateFairPrice({
+        make: vehicle.make,
+        year: year,
+        condition: "good",
+        revistaMotorPrice: revista,
+        catalogMinPrice: vehicle.min_price_cop || undefined,
+        catalogMaxPrice: vehicle.max_price_cop || undefined,
+      })
+      if (estimate.estimatedPrice > 0) {
+        vehicle.fairPrice = {
+          low: estimate.priceRangeLow,
+          high: estimate.priceRangeHigh,
+          confidence: estimate.confidence,
+        }
+      }
+    })
+  }
+
+  function millions(value) {
+    return Math.round(value / 1e6)
   }
 
   async function fetchCatalog() {
@@ -372,6 +494,7 @@
           matchReasons: row.reasons || [],
         })
       })
+      await attachFairPrices(state.matches)
       track("web_matches_viewed", {
         matches: state.matches.length,
         budget_min: state.answers.budget.min,
