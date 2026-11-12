@@ -126,3 +126,88 @@ footer a { color: var(--text-secondary); }
   /* Typography wraps on its own; forced <br> breaks only make phones ragged. */
   h1 br, h2 br { display: none; }
 }
+
+/* ---------- shared page components (landing, onboarding, calculator) ---------- */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--display);
+  font-size: .64rem;
+  text-transform: uppercase;
+  letter-spacing: .24em;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  margin-bottom: 18px;
+}
+.section-label::before { content: ""; width: 18px; height: 1px; background: var(--accent); }
+.section-title {
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 3.6vw, 3.1rem);
+  font-weight: 700;
+  letter-spacing: -.04em;
+  line-height: 1.04;
+  margin-bottom: 18px;
+  text-wrap: balance;
+}
+.section-desc { color: var(--text-secondary); max-width: 520px; font-size: 1rem; line-height: 1.75; }
+
+.prop-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 30px 26px 32px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: linear-gradient(180deg, var(--surface), transparent);
+  transition: border-color .3s, transform .3s, background .3s;
+}
+.prop-card:hover { border-color: var(--line-strong); transform: translateY(-3px); background: linear-gradient(180deg, var(--surface-strong), transparent); }
+.prop-card .icon-row { display: flex; align-items: center; gap: 12px; }
+.prop-card .icon-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  border: 1px solid var(--line);
+  background: var(--accent-soft);
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  flex: none;
+}
+.prop-card h3 { font-family: var(--display); font-size: 1.06rem; font-weight: 600; letter-spacing: -.02em; line-height: 1.35; }
+.prop-card p { font-size: .89rem; color: var(--text-secondary); line-height: 1.7; }
+
+/* Selectable variant used by forms */
+.prop-card[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: linear-gradient(180deg, var(--accent-soft), transparent);
+}
+.prop-card { cursor: pointer; text-align: left; font: inherit; color: inherit; width: 100%; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: .8rem;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+}
+.chip.on { background: var(--text); color: var(--bg); border-color: transparent; }
+
+.match-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.match-card .match-name { font-family: var(--display); font-weight: 600; font-size: 1.05rem; letter-spacing: -.02em; }
+.match-card .match-meta { font-size: .78rem; color: var(--text-tertiary); margin-top: 2px; }
+.match-score { text-align: right; }
+.match-score b { font-family: var(--display); font-size: 2.3rem; line-height: 1; display: block; letter-spacing: -.04em; }
+.match-score span { font-size: .6rem; letter-spacing: .18em; color: var(--text-tertiary); text-transform: uppercase; }
+
+/* Reusable card grid (landing props, onboarding answers) */
+.props-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 54px; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+@media (max-width: 1080px) {
+  .props-grid { grid-template-columns: 1fr; }
+}

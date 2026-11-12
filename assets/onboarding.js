@@ -113,27 +113,28 @@
 
   function introHtml() {
     return (
-      '<section class="intro">' +
-      "<h1>Encuentra tu carro en 8 preguntas</h1>" +
-      '<p class="lede">Sin cuenta, sin teléfono y sin correo. Responde y te mostramos los carros que encajan con tu vida.</p>' +
-      '<p class="note">En la web ves una lista corta. El precio justo, el peritaje y las alertas están en la app.</p>' +
-      '<button class="btn" id="start" data-cta="onboarding-start">Empezar</button>' +
+      "<section>" +
+      '<span class="section-label">velyt · Colombia</span>' +
+      '<h1 class="section-title">Encuentra tu carro en 8 preguntas</h1>' +
+      '<p class="section-desc">Sin cuenta, sin teléfono y sin correo. Responde y te mostramos los carros que encajan con tu vida.</p>' +
+      '<p class="section-desc">En la web ves una lista corta. El precio justo, el peritaje y las alertas están en la app.</p>' +
+      '<div class="actions"><button class="btn" id="start" data-cta="onboarding-start">Empezar</button></div>' +
       "</section>"
     )
   }
 
   function stepHtml(step) {
     var html =
-      '<section class="step">' +
-      '<p class="eyebrow">Pregunta ' +
+      "<section>" +
+      '<span class="section-label">Pregunta ' +
       (state.step + 1) +
       " de " +
       CFG.steps.length +
-      "</p>" +
-      "<h2>" +
+      "</span>" +
+      '<h2 class="section-title">' +
       step.title +
       "</h2>" +
-      '<p class="lede">' +
+      '<p class="section-desc">' +
       step.subtitle +
       "</p>"
 
@@ -167,14 +168,14 @@
         '">' +
         "</div>"
     } else if (step.type === "multi") {
-      html += '<div class="options multi" role="group">'
+      html += '<div class="props-grid" role="group">'
       step.options.forEach(function (opt) {
         var selected = (state.answers[step.field] || []).indexOf(opt.value) >= 0
         html += optionHtml(step, opt, selected)
       })
       html += "</div>"
     } else {
-      html += '<div class="options" role="group">'
+      html += '<div class="props-grid" role="group">'
       step.options.forEach(function (opt) {
         var selected = state.answers[step.field] === opt.value
         html += optionHtml(step, opt, selected)
@@ -186,9 +187,8 @@
     }
 
     html += '<div class="actions">'
-    if (state.step > 0) html += '<button class="ghost" id="back">Atrás</button>'
-    if (step.type === "multi")
-      html += '<button class="ghost" id="skip">Sin preferencia</button>'
+    if (state.step > 0) html += '<button class="chip" id="back">Atrás</button>'
+    if (step.type === "multi") html += '<button class="chip" id="skip">Sin preferencia</button>'
     html +=
       '<button class="btn" id="next"' +
       (canContinue() ? "" : " disabled") +
@@ -202,23 +202,20 @@
 
   function optionHtml(step, opt, selected) {
     return (
-      '<button class="option' +
-      (selected ? " is-selected" : "") +
-      '" data-field="' +
+      '<button class="prop-card" data-field="' +
       step.field +
       '" data-value="' +
       opt.value +
       '" aria-pressed="' +
       selected +
       '">' +
-      '<span class="option-icon">' +
-      (opt.icon || "") +
-      "</span>" +
-      '<span class="option-text"><strong>' +
+      '<span class="icon-row"><span class="icon-mark">' +
+      (opt.icon || "•") +
+      "</span></span>" +
+      "<h3>" +
       opt.label +
-      "</strong>" +
-      (opt.desc ? "<small>" + opt.desc + "</small>" : "") +
-      "</span>" +
+      "</h3>" +
+      (opt.desc ? "<p>" + opt.desc + "</p>" : "") +
       "</button>"
     )
   }
@@ -227,10 +224,12 @@
     var plan = state.answers.plan || { down: 20, months: 60 }
     var downs = [10, 20, 30, 40]
     var terms = [36, 48, 60, 72]
-    var html = '<div class="plan"><p class="note">Cuota inicial y plazo</p><div class="chips">'
+    var html = '<p class="section-desc">Cuota inicial y plazo</p><div class="chip-row">'
     downs.forEach(function (pct) {
       html +=
-        '<button class="chip" data-plan="down" data-value="' +
+        '<button class="chip' +
+        (plan.down === pct ? " on" : "") +
+        '" data-plan="down" data-value="' +
         pct +
         '" aria-pressed="' +
         (plan.down === pct) +
@@ -238,10 +237,12 @@
         pct +
         "%</button>"
     })
-    html += '</div><div class="chips">'
+    html += '</div><div class="chip-row">'
     terms.forEach(function (m) {
       html +=
-        '<button class="chip" data-plan="months" data-value="' +
+        '<button class="chip' +
+        (plan.months === m ? " on" : "") +
+        '" data-plan="months" data-value="' +
         m +
         '" aria-pressed="' +
         (plan.months === m) +
@@ -249,7 +250,7 @@
         m +
         " meses</button>"
     })
-    return html + "</div></div>"
+    return html + "</div>"
   }
 
   function canContinue() {
@@ -262,14 +263,21 @@
   }
 
   function loadingHtml() {
-    return '<section class="step"><p class="lede">Buscando carros que encajen contigo…</p></section>'
+    return (
+      "<section>" +
+      '<span class="section-label">Buscando</span>' +
+      '<h2 class="section-title">Buscando carros que encajen contigo…</h2>' +
+      "</section>"
+    )
   }
 
   function errorHtml() {
     return (
-      '<section class="step"><h2>No pudimos cargar el catálogo</h2>' +
-      '<p class="lede">Revisa tu conexión e inténtalo otra vez.</p>' +
-      '<div class="actions"><button class="ghost" id="retry">Reintentar</button>' +
+      "<section>" +
+      '<span class="section-label">Error</span>' +
+      '<h2 class="section-title">No pudimos cargar el catálogo</h2>' +
+      '<p class="section-desc">Revisa tu conexión e inténtalo otra vez.</p>' +
+      '<div class="actions"><button class="chip" id="retry">Reintentar</button>' +
       '<a class="btn" href="' +
       APP_STORE +
       '" data-cta="onboarding-appstore-error">Abrir en la app</a></div></section>'
@@ -279,62 +287,63 @@
   function resultsHtml() {
     var matches = state.matches || []
     var html =
-      '<section class="step">' +
-      "<h2>" +
-      (matches.length ? matches.length + " carros para ti" : "No encontramos carros con esos filtros") +
+      "<section>" +
+      '<span class="section-label">Tus matches</span>' +
+      '<h2 class="section-title">' +
+      (matches.length
+        ? matches.length + " carros para ti"
+        : "No encontramos carros con esos filtros") +
       "</h2>" +
-      '<p class="note">Lista limitada: precio justo, peritaje e historial completo viven en la app.</p>'
+      '<p class="section-desc">Lista limitada: precio justo, peritaje e historial completo viven en la app.</p>'
 
     if (!matches.length) {
       html +=
-        '<div class="actions"><button class="ghost" id="edit-budget">Ajustar presupuesto</button>' +
-        '<button class="ghost" id="restart">Empezar de nuevo</button>' +
+        '<div class="actions"><button class="chip" id="edit-budget">Ajustar presupuesto</button>' +
+        '<button class="chip" id="restart">Empezar de nuevo</button>' +
         '<a class="btn" href="' + APP_STORE + '" data-cta="onboarding-appstore-empty">Abrir en la app</a></div></section>'
       return html
     }
 
     html += '<div class="results">'
     matches.forEach(function (vehicle) {
+      var meta = [
+        vehicle.year_range,
+        vehicle.body_type,
+        vehicle.fuel_type,
+        vehicle.seats ? vehicle.seats + " puestos" : null,
+      ]
+        .filter(Boolean)
+        .join(" · ")
+      var reasons = (vehicle.matchReasons || [])
+        .slice(0, 3)
+        .map(function (reason) {
+          return REASONS[reason] || reason
+        })
+        .join(" · ")
       html +=
-        '<article class="car">' +
-        (vehicle.image_url
-          ? '<img src="' + vehicle.image_url + '" alt="" loading="lazy">'
-          : '<div class="car-noimg" aria-hidden="true">🚗</div>') +
-        "<h3>" +
+        '<article class="match-card"><div>' +
+        '<div class="match-name">' +
         [vehicle.make, vehicle.model].filter(Boolean).join(" ") +
-        "</h3>" +
-        '<p class="car-meta">' +
-        (vehicle.matchScore != null ? vehicle.matchScore + "% · " : "") +
-        vehicle.year_range +
-        " · " +
-        [vehicle.body_type, vehicle.fuel_type, vehicle.seats + " puestos"]
-          .filter(Boolean)
-          .join(" · ") +
-        "</p>" +
-        (vehicle.matchReasons && vehicle.matchReasons.length
-          ? '<p class="car-reasons">' +
-            vehicle.matchReasons
-              .slice(0, 3)
-              .map(function (reason) {
-                return REASONS[reason] || reason
-              })
-              .join(" · ") +
-            "</p>"
-          : "") +
-        '<p class="car-price">' +
-        priceLabel(vehicle.min_price_cop, vehicle.max_price_cop) +
-        "</p>" +
-        '<a class="ghost small" href="' +
+        "</div>" +
+        '<div class="match-meta">' +
+        meta +
+        "</div>" +
+        (reasons ? '<div class="match-meta">' + reasons + "</div>" : "") +
+        '<div class="match-meta"><a href="' +
         DEEP_BASE +
         vehicle.id +
-        '" data-cta="onboarding-open-vehicle">Ver en la app →</a>' +
+        '" data-cta="onboarding-open-vehicle">Ver en la app →</a></div>' +
+        "</div>" +
+        '<div class="match-score"><b>' +
+        (vehicle.matchScore != null ? vehicle.matchScore : "—") +
+        "</b><span>match</span></div>" +
         "</article>"
     })
     html += "</div>"
 
     html +=
       '<div class="actions">' +
-      '<button class="ghost" id="restart">Empezar de nuevo</button>' +
+      '<button class="chip" id="restart">Empezar de nuevo</button>' +
       '<a class="btn" href="' + APP_STORE + '" data-cta="onboarding-appstore">Continuar en la app</a>' +
       "</div></section>"
     return html
@@ -379,7 +388,7 @@
     document.addEventListener("click", function (event) {
       var target = event.target
       if (!(target instanceof Element)) return
-      var option = target.closest(".option")
+      var option = target.closest(".prop-card[data-field]")
       if (option) {
         var step = CFG.steps[state.step]
         var value = option.getAttribute("data-value")
