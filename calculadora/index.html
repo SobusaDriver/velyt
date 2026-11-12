@@ -38,12 +38,13 @@
     .calc label, .calc .field-label {
       display: block; margin-bottom: 7px; font-size: .78rem; color: var(--text-secondary);
     }
-    .calc input {
+    .calc input, .calc select {
       width: 100%; padding: 13px 15px; border: 1px solid var(--line); border-radius: 12px;
       background: var(--bg-soft); color: var(--text); font-family: var(--display);
       font-weight: 600; font-size: 1.2rem;
     }
-    .calc input:focus-visible { outline: 2px solid var(--text); outline-offset: 1px; }
+    .calc select { font-size: 1rem; }
+    .calc input:focus-visible, .calc select:focus-visible { outline: 2px solid var(--text); outline-offset: 1px; }
     .calc .result { display: grid; gap: 4px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
     .calc .result span { color: var(--text-secondary); font-size: .8rem; }
     .calc .result strong { font-family: var(--display); font-size: 2.4rem; letter-spacing: -.03em; }
@@ -109,6 +110,14 @@
         </div>
       </div>
 
+      <div>
+        <label for="banco">Banco o financiera</label>
+        <select id="banco" aria-describedby="banco-nota">
+          <option value="">Tasa de referencia del mercado</option>
+        </select>
+        <p id="banco-nota" class="note" style="margin-top:6px">La tasa de cada entidad es el promedio de lo que desembols&oacute; el &uacute;ltimo mes.</p>
+      </div>
+
       <div class="result" aria-live="polite">
         <span>Cuota mensual estimada</span>
         <strong id="cuota">&mdash;</strong>
@@ -136,10 +145,14 @@
     </div>
   </footer>
 
+  <script src="../assets/supabase-config.js"></script>
   <script src="../assets/financing.js"></script>
+  <script src="../assets/bankrates.js"></script>
   <script>
     ;(() => {
       const { simulateCredit, REFERENCE_ANNUAL_RATE_PCT } = window.VelytFinancing
+      const RATES = window.VelytBankRates
+      const CFG = window.VELYT_CONFIG || {}
       const cop = new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 })
       const money = (value) => (value > 0 ? cop.format(value) : '—')
       const priceInput = document.getElementById('precio')
@@ -151,8 +164,54 @@
         total: document.getElementById('total'),
       }
 
+      const bankSelect = document.getElementById('banco')
+      const bankNote = document.getElementById('banco-nota')
+      const shortDate = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short' })
+      const longDate = new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'short', year: 'numeric' })
+
       let downPct = 20
       let months = 60
+      let banks = []
+      let chosen = null
+
+      /** The rate the whole page uses: the chosen entity, else the fallback. */
+      const activeRate = () => {
+        const bank = banks.find((b) => b.entity === chosen)
+        return bank ? RATES.rateForTerm(bank, months) : REFERENCE_ANNUAL_RATE_PCT
+      }
+
+      /** Label each entity with the rate it would apply at the current term. */
+      const fillBanks = () => {
+        const sorted = banks.slice().sort((a, b) => RATES.rateForTerm(a, months) - RATES.rateForTerm(b, months))
+        const options = sorted.map((bank) => {
+          const option = document.createElement('option')
+          option.value = bank.entity
+          option.textContent = bank.entity + ' · ' + RATES.formatRatePct(RATES.rateForTerm(bank, months))
+          return option
+        })
+        bankSelect.innerHTML = ''
+        const fallback = document.createElement('option')
+        fallback.value = ''
+        fallback.textContent = 'Tasa de referencia del mercado (' + REFERENCE_ANNUAL_RATE_PCT + '%)'
+        bankSelect.appendChild(fallback)
+        options.forEach((option) => bankSelect.appendChild(option))
+        if (!chosen && sorted.length > 0) chosen = sorted[0].entity
+        bankSelect.value = chosen || ''
+      }
+
+      const renderNote = () => {
+        const bank = banks.find((b) => b.entity === chosen)
+        if (!bank) {
+          bankNote.textContent =
+            'Tasa de referencia ' + REFERENCE_ANNUAL_RATE_PCT + '% E.A. No es una oferta: la entidad define la tasa y la aprobación.'
+          return
+        }
+        bankNote.textContent =
+          'Tasa ' + RATES.formatRatePct(RATES.rateForTerm(bank, months)) + ' E.A. de ' + bank.entity +
+          ', el promedio de lo que desembolsó entre ' + shortDate.format(new Date(bank.sampleFrom + 'T12:00:00')) +
+          ' y ' + longDate.format(new Date(bank.sampleTo + 'T12:00:00')) +
+          ' (Superintendencia Financiera). No es una oferta: la entidad define la tasa y la aprobación.'
+      }
 
       const priceOf = () => {
         const digits = priceInput.value.replace(/[^\d]/g, '').slice(0, 12)
@@ -164,13 +223,14 @@
           priceCop: priceOf(),
           downPaymentPct: downPct,
           months,
-          annualRatePct: REFERENCE_ANNUAL_RATE_PCT,
+          annualRatePct: activeRate(),
         })
         out.cuota.textContent = money(r.monthlyPaymentCop)
         out.inicial.textContent = money(r.downPaymentCop)
         out.financiado.textContent = money(r.financedCop)
         out.intereses.textContent = money(r.totalInterestCop)
         out.total.textContent = money(r.totalPaidCop)
+        renderNote()
       }
 
       priceInput.addEventListener('input', () => {
@@ -198,14 +258,37 @@
           chip.setAttribute('aria-pressed', String(chip === button))
           chip.classList.toggle('on', chip === button)
         }
+        if (banks.length > 0) fillBanks()
         render()
       })
 
       document.getElementById('nota').textContent =
-        `Tasa de referencia ${REFERENCE_ANNUAL_RATE_PCT}% E.A. La entidad financiera define la tasa y la aprobación. No es una oferta.`
+        'Cuota calculada con amortización francesa, sin seguros ni otros cobros. La entidad financiera define la tasa final y la aprobación. No es una oferta.'
+
+      bankSelect.addEventListener('change', () => {
+        chosen = bankSelect.value || null
+        render()
+      })
+
+      // Rates are optional: the page works with the reference rate if the fetch fails.
+      const loadBanks = async () => {
+        if (!CFG.supabaseUrl || !RATES) return
+        const url =
+          CFG.supabaseUrl +
+          '/rest/v1/bank_rates_latest?select=entity,entity_type,rate_avg,rate_up_to_60,rate_over_60,credits,max_term_months,sample_from,sample_to&order=rate_avg'
+        const res = await fetch(url, {
+          headers: { apikey: CFG.supabaseKey, Authorization: 'Bearer ' + CFG.supabaseKey },
+        })
+        if (!res.ok) return
+        banks = (await res.json()).map(RATES.fromRow)
+        if (banks.length === 0) return
+        fillBanks()
+        render()
+      }
 
       priceInput.value = parseInt(priceInput.value, 10).toLocaleString('es-CO')
       render()
+      loadBanks().catch(() => {})
     })()
   </script>
 </body>
