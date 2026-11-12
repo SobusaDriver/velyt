@@ -126,6 +126,7 @@
       <dl class="rows">
         <div class="row"><dt>Cuota inicial</dt><dd id="inicial-monto">&mdash;</dd></div>
         <div class="row"><dt>Monto financiado</dt><dd id="financiado">&mdash;</dd></div>
+        <div class="row" id="seguro-row"><dt>Seguro de vida / mes</dt><dd id="seguro">&mdash;</dd></div>
         <div class="row"><dt>Intereses del cr&eacute;dito</dt><dd id="intereses">&mdash;</dd></div>
         <div class="row"><dt>Total pagado</dt><dd id="total">&mdash;</dd></div>
       </dl>
@@ -160,6 +161,8 @@
         cuota: document.getElementById('cuota'),
         inicial: document.getElementById('inicial-monto'),
         financiado: document.getElementById('financiado'),
+        seguro: document.getElementById('seguro'),
+        seguroRow: document.getElementById('seguro-row'),
         intereses: document.getElementById('intereses'),
         total: document.getElementById('total'),
       }
@@ -228,6 +231,8 @@
         out.cuota.textContent = money(r.monthlyPaymentCop)
         out.inicial.textContent = money(r.downPaymentCop)
         out.financiado.textContent = money(r.financedCop)
+        out.seguro.textContent = money(r.lifeInsuranceCop)
+        out.seguroRow.hidden = r.lifeInsuranceCop <= 0
         out.intereses.textContent = money(r.totalInterestCop)
         out.total.textContent = money(r.totalPaidCop)
         renderNote()
@@ -263,7 +268,7 @@
       })
 
       document.getElementById('nota').textContent =
-        'Cuota calculada con amortización francesa, sin seguros ni otros cobros. La entidad financiera define la tasa final y la aprobación. No es una oferta.'
+        'Cuota calculada con amortización francesa; incluye el seguro de vida de $1.435 por millón financiado y no otros cobros. La entidad define la tasa final y la aprobación. No es una oferta.'
 
       bankSelect.addEventListener('change', () => {
         chosen = bankSelect.value || null
