@@ -1,5 +1,5 @@
-/* Web onboarding: the app's profiling questions, answered without an account.
-   Results are a limited shortlist; the report, peritaje and alerts live in the app. */
+/* Web onboarding: the app's carousel (progress, block pill, emoji, options).
+   Answers live in localStorage; matches come from the app's match_vehicles RPC. */
 (function () {
   var CFG = window.VELYT_ONBOARDING
   var STORAGE_KEY = "velyt:onboarding"
@@ -14,7 +14,81 @@
   var el = function (id) {
     return document.getElementById(id)
   }
-  var state = { step: -1, answers: loadAnswers(), vehicles: null, matches: null, error: null }
+
+  var LANG = localStorage.getItem("lang") === "en" ? "en" : "es"
+  var STEPS = function () {
+    return CFG.steps[LANG]
+  }
+  var STR = {
+    es: {
+      back: "← Atrás",
+      next: "Siguiente →",
+      finish: "Ver resultados",
+      repeat: "Repetir preguntas",
+      search: "Buscando carros que encajen contigo…",
+      errorTitle: "No pudimos cargar el catálogo",
+      errorDesc: "Revisa tu conexión e inténtalo otra vez.",
+      retry: "Reintentar",
+      results: "Tus matches",
+      resultsCount: function (n) {
+        return n ? n + " carros para ti" : "No encontramos carros con esos filtros"
+      },
+      limited:
+        "Precio justo estimado con Revista Motor y catálogo. El peritaje y el historial completo viven en la app.",
+      adjust: "Ajustar presupuesto",
+      openApp: "Continuar en la app",
+      viewInApp: "Ver en la app →",
+      plan: "Cuota inicial y plazo",
+      months: "meses",
+      fair: "Precio justo ~",
+      match: "match",
+    },
+    en: {
+      back: "← Back",
+      next: "Next →",
+      finish: "See results",
+      repeat: "Start over",
+      search: "Finding cars that fit you…",
+      errorTitle: "We couldn't load the catalog",
+      errorDesc: "Check your connection and try again.",
+      retry: "Retry",
+      results: "Your matches",
+      resultsCount: function (n) {
+        return n ? n + " cars for you" : "No cars match those filters"
+      },
+      limited:
+        "Fair price estimated from Revista Motor and the catalog. The inspection and full history live in the app.",
+      adjust: "Adjust budget",
+      openApp: "Continue in the app",
+      viewInApp: "Open in the app →",
+      plan: "Down payment and term",
+      months: "months",
+      fair: "Fair price ~",
+      match: "match",
+    },
+  }
+
+  var REASONS = {
+    topSeller: { es: "Más vendido", en: "Top seller" },
+    withinBudget: { es: "Dentro de tu presupuesto", en: "Within budget" },
+    overBudget: { es: "Cerca de tu presupuesto", en: "Near your budget" },
+    terrainMatch: { es: "Apto para tu terreno", en: "Fits your terrain" },
+    establishedBrand: { es: "Marca establecida", en: "Established brand" },
+    newcomerPick: { es: "Marca nueva", en: "Newcomer brand" },
+    luxuryPick: { es: "Gama alta", en: "Premium" },
+    recentModel: { es: "Modelo reciente", en: "Recent model" },
+  }
+
+  var state = {
+    step: 0,
+    answers: loadAnswers(),
+    matches: null,
+    error: null,
+  }
+
+  function t() {
+    return STR[LANG]
+  }
 
   function track(event, props) {
     if (window.posthog) window.posthog.capture(event, props || {})
@@ -37,22 +111,18 @@
     }
   }
 
-  function priceLabel(min, max) {
-    if (!min && !max) return "Precio por confirmar"
-    var lo = Math.round(Math.min(min || max, max || min) / 1e6)
-    var hi = Math.round(Math.max(min || max, max || min) / 1e6)
-    return lo === hi ? "$" + lo + "M" : "$" + lo + "M – $" + hi + "M"
+  function compact(value) {
+    if (!value) return "$0"
+    if (value >= 1e6) {
+      var millions = value / 1e6
+      var text = Number.isInteger(millions) ? String(millions) : millions.toFixed(1).replace(".", ",")
+      return "$" + text + "M"
+    }
+    return "$" + Math.round(value / 1e3) + "k"
   }
 
-  var REASONS = {
-    topSeller: "Más vendido",
-    withinBudget: "Dentro de tu presupuesto",
-    overBudget: "Cerca de tu presupuesto",
-    terrainMatch: "Apto para tu terreno",
-    establishedBrand: "Marca establecida",
-    newcomerPick: "Marca nueva",
-    luxuryPick: "Gama alta",
-    recentModel: "Modelo reciente",
+  function millions(value) {
+    return Math.round(value / 1e6)
   }
 
   /** Same profile shape the app sends to `match_vehicles`. */
@@ -86,63 +156,96 @@
     }
   }
 
-  function progress() {
-    var total = CFG.steps.length
-    return state.step < 0 ? 0 : Math.round(((state.step + 1) / total) * 100)
+  function hasAllAnswers() {
+    return STEPS().every(function (step) {
+      if (step.type === "range") return !!state.answers.budget
+      if (step.type === "multi") return Array.isArray(state.answers[step.field])
+      return state.answers[step.field] != null
+    })
+  }
+
+  function resumeStep() {
+    var answers = state.answers || {}
+    if (Object.keys(answers).length === 0) return 0
+    if (hasAllAnswers()) return STEPS().length
+    for (var i = 0; i < STEPS().length; i++) {
+      var step = STEPS()[i]
+      if (step.type === "range") {
+        if (!answers.budget) return i
+        continue
+      }
+      if (step.type === "multi") {
+        if (!Array.isArray(answers[step.field])) return i
+        continue
+      }
+      if (answers[step.field] == null) return i
+    }
+    return STEPS().length
+  }
+
+  function canContinue() {
+    var step = STEPS()[state.step]
+    if (!step) return false
+    if (step.type === "multi") return true
+    if (step.type === "range") return true
+    return state.answers[step.field] != null
   }
 
   function render() {
     var root = el("flow")
-    el("progress-fill").style.width = progress() + "%"
-    if (state.step < 0) {
-      root.innerHTML = introHtml()
-      return
-    }
-    if (state.step >= CFG.steps.length) {
+    if (!root) return
+    if (state.step >= STEPS().length) {
       root.innerHTML =
-        state.matches === null
-          ? loadingHtml()
-          : state.error
-            ? errorHtml()
-            : resultsHtml()
-      if (state.matches === null && !state.error) fetchCatalog()
+        state.matches === null ? loadingView() : state.error ? errorView() : resultsView()
+      if (state.matches === null && !state.error) void fetchMatches()
       return
     }
-    root.innerHTML = stepHtml(CFG.steps[state.step])
+    root.innerHTML = stepView(STEPS()[state.step])
   }
 
-  function introHtml() {
+  function headView() {
+    var total = STEPS().length
+    var progress = state.step >= total ? 100 : Math.round(((state.step + 1) / total) * 100)
     return (
-      "<section>" +
-      '<span class="section-label">velyt · Colombia</span>' +
-      '<h1 class="section-title">Encuentra tu carro en 8 preguntas</h1>' +
-      '<p class="section-desc">Sin cuenta, sin teléfono y sin correo. Responde y te mostramos los carros que encajan con tu vida.</p>' +
-      '<p class="section-desc">En la web ves una lista corta. El precio justo, el peritaje y las alertas están en la app.</p>' +
-      '<div class="actions"><button class="btn" id="start" data-cta="onboarding-start">Empezar</button></div>' +
-      "</section>"
+      '<div class="ob-head">' +
+      '<div class="ob-track"><span class="ob-fill" style="width:' +
+      progress +
+      '%"></span></div>' +
+      '<div class="ob-count">' +
+      Math.min(state.step + 1, total) +
+      " / " +
+      total +
+      "</div></div>"
     )
   }
 
-  function stepHtml(step) {
+  function stepView(step) {
+    var total = STEPS().length
     var html =
-      "<section>" +
-      '<span class="section-label">Pregunta ' +
-      (state.step + 1) +
-      " de " +
-      CFG.steps.length +
-      "</span>" +
-      '<h2 class="section-title">' +
+      headView() +
+      '<div class="ob-scroll">' +
+      '<div class="ob-emoji" aria-hidden="true">' +
+      (step.emoji || "•") +
+      "</div>" +
+      '<div class="ob-block">' +
+      CFG.blocks[LANG].prefix +
+      " " +
+      step.block.toUpperCase() +
+      " · " +
+      CFG.blocks[LANG][step.block] +
+      "</div>" +
+      '<h1 class="ob-title">' +
       step.title +
-      "</h2>" +
-      '<p class="section-desc">' +
+      "</h1>" +
+      '<p class="ob-sub">' +
       step.subtitle +
       "</p>"
 
     if (step.type === "range") {
       var budget = state.answers.budget || { min: step.defaultMin, max: step.defaultMax }
       html +=
-        '<div class="budget">' +
-        '<label>Mínimo <strong id="budget-min-label">$' +
+        '<div class="ob-budget">' +
+        "<label>Mínimo <strong id=\"budget-min-label\">$" +
         budget.min +
         "M</strong></label>" +
         '<input id="budget-min" type="range" min="' +
@@ -154,7 +257,7 @@
         '" value="' +
         budget.min +
         '">' +
-        '<label>Máximo <strong id="budget-max-label">$' +
+        "<label>Máximo <strong id=\"budget-max-label\">$" +
         budget.max +
         "M</strong></label>" +
         '<input id="budget-max" type="range" min="' +
@@ -167,40 +270,26 @@
         budget.max +
         '">' +
         "</div>"
-    } else if (step.type === "multi") {
-      html += '<div class="choices" role="group">'
-      step.options.forEach(function (opt) {
-        var selected = (state.answers[step.field] || []).indexOf(opt.value) >= 0
-        html += optionHtml(step, opt, selected)
-      })
-      html += "</div>"
     } else {
       html += '<div class="choices" role="group">'
       step.options.forEach(function (opt) {
-        var selected = state.answers[step.field] === opt.value
-        html += optionHtml(step, opt, selected)
+        var selected =
+          step.type === "multi"
+            ? (state.answers[step.field] || []).indexOf(opt.value) >= 0
+            : state.answers[step.field] === opt.value
+        html += choiceHtml(step, opt, selected)
       })
       html += "</div>"
       if (step.field === "paymentMethod" && state.answers.paymentMethod === "CREDIT") {
-        html += paymentDetailHtml()
+        html += planHtml()
       }
     }
 
-    html += '<div class="actions">'
-    if (state.step > 0) html += '<button class="chip" id="back">Atrás</button>'
-    if (step.type === "multi") html += '<button class="chip" id="skip">Sin preferencia</button>'
-    html +=
-      '<button class="btn" id="next"' +
-      (canContinue() ? "" : " disabled") +
-      ">" +
-      (state.step === CFG.steps.length - 1 ? "Ver resultados" : "Continuar") +
-      "</button>" +
-      "</div>" +
-      "</section>"
+    html += "</div>" + navView(step)
     return html
   }
 
-  function optionHtml(step, opt, selected) {
+  function choiceHtml(step, opt, selected) {
     return (
       '<button class="choice" data-field="' +
       step.field +
@@ -209,22 +298,24 @@
       '" aria-pressed="' +
       selected +
       '">' +
-      '<span class="icon-mark">' +
+      '<span class="icon-mark" aria-hidden="true">' +
       (opt.icon || "•") +
       "</span>" +
-      "<h3>" +
+      '<span class="choice-text"><strong>' +
       opt.label +
-      "</h3>" +
-      (opt.desc ? "<p>" + opt.desc + "</p>" : "") +
+      "</strong>" +
+      (opt.desc ? "<small>" + opt.desc + "</small>" : "") +
+      "</span>" +
+      '<span class="choice-radio" aria-hidden="true"></span>' +
       "</button>"
     )
   }
 
-  function paymentDetailHtml() {
+  function planHtml() {
     var plan = state.answers.plan || { down: 20, months: 60 }
     var downs = [10, 20, 30, 40]
     var terms = [36, 48, 60, 72]
-    var html = '<p class="section-desc">Cuota inicial y plazo</p><div class="chip-row">'
+    var html = '<p class="ob-plan-label">' + t().plan + '</p><div class="chip-row">'
     downs.forEach(function (pct) {
       html +=
         '<button class="chip' +
@@ -248,77 +339,89 @@
         (plan.months === m) +
         '">' +
         m +
-        " meses</button>"
+        " " +
+        t().months +
+        "</button>"
     })
     return html + "</div>"
   }
 
-  function canContinue() {
-    var step = CFG.steps[state.step]
-    if (!step) return false
-    var value = state.answers[step.field]
-    if (step.type === "multi") return true
-    if (step.field === "budget") return true
-    return value !== undefined && value !== null && value !== ""
-  }
-
-  function loadingHtml() {
+  function navView(step) {
+    var isLast = state.step === STEPS().length - 1
+    var ready = canContinue()
     return (
-      "<section>" +
-      '<span class="section-label">Buscando</span>' +
-      '<h2 class="section-title">Buscando carros que encajen contigo…</h2>' +
-      "</section>"
+      '<div class="ob-nav">' +
+      (state.step > 0
+        ? '<button class="ob-back" id="back">' + t().back + "</button>"
+        : "<span></span>") +
+      '<button class="ob-next" id="next"' +
+      (ready ? "" : " disabled") +
+      ">" +
+      (isLast ? t().finish : t().next) +
+      "</button></div>"
     )
   }
 
-  function errorHtml() {
+  function loadingView() {
     return (
-      "<section>" +
-      '<span class="section-label">Error</span>' +
-      '<h2 class="section-title">No pudimos cargar el catálogo</h2>' +
-      '<p class="section-desc">Revisa tu conexión e inténtalo otra vez.</p>' +
-      '<div class="actions"><button class="chip" id="retry">Reintentar</button>' +
-      '<a class="btn" href="' +
-      APP_STORE +
-      '" data-cta="onboarding-appstore-error">Abrir en la app</a></div></section>'
+      headView() +
+      '<div class="ob-scroll"><h1 class="ob-title">' +
+      t().search +
+      "</h1></div>"
     )
   }
 
-  function resultsHtml() {
+  function errorView() {
+    return (
+      headView() +
+      '<div class="ob-scroll"><h1 class="ob-title">' +
+      t().errorTitle +
+      '</h1><p class="ob-sub">' +
+      t().errorDesc +
+      '</p><div class="ob-actions"><button class="chip" id="retry">' +
+      t().retry +
+      "</button></div></div>"
+    )
+  }
+
+  function resultsView() {
     var matches = state.matches || []
     var html =
-      "<section>" +
-      '<span class="section-label">Tus matches</span>' +
-      '<h2 class="section-title">' +
-      (matches.length
-        ? matches.length + " carros para ti"
-        : "No encontramos carros con esos filtros") +
-      "</h2>" +
-      '<p class="section-desc">Precio justo estimado con Revista Motor y catálogo. El peritaje y el historial completo viven en la app.</p>' +
-      '<div class="actions"><button class="chip" id="restart">Repetir preguntas</button></div>'
+      '<div class="ob-scroll"><h1 class="ob-title">' +
+      t().resultsCount(matches.length) +
+      '</h1><p class="ob-sub">' +
+      t().limited +
+      "</p>"
 
     if (!matches.length) {
       html +=
-        '<div class="actions"><button class="chip" id="edit-budget">Ajustar presupuesto</button>' +
-        '<button class="chip" id="restart">Empezar de nuevo</button>' +
-        '<a class="btn" href="' + APP_STORE + '" data-cta="onboarding-appstore-empty">Abrir en la app</a></div></section>'
+        '<div class="ob-actions"><button class="chip" id="edit-budget">' +
+        t().adjust +
+        '</button><button class="chip" id="restart">' +
+        t().repeat +
+        '</button><a class="btn" href="' +
+        APP_STORE +
+        '" data-cta="onboarding-appstore-empty">' +
+        t().openApp +
+        "</a></div></div>"
       return html
     }
 
+    html += '<div class="ob-actions"><button class="chip" id="restart">' + t().repeat + "</button></div>"
     html += '<div class="results">'
     matches.forEach(function (vehicle) {
       var meta = [
         vehicle.year_range,
         vehicle.body_type,
         vehicle.fuel_type,
-        vehicle.seats ? vehicle.seats + " puestos" : null,
+        vehicle.seats ? vehicle.seats + " " + (LANG === "es" ? "puestos" : "seats") : null,
       ]
         .filter(Boolean)
         .join(" · ")
       var reasons = (vehicle.matchReasons || [])
         .slice(0, 3)
         .map(function (reason) {
-          return REASONS[reason] || reason
+          return (REASONS[reason] || {})[LANG] || reason
         })
         .join(" · ")
       html +=
@@ -331,7 +434,9 @@
         "</div>" +
         (reasons ? '<div class="match-meta">' + reasons + "</div>" : "") +
         (vehicle.fairPrice
-          ? '<div class="match-meta">Precio justo ~$' +
+          ? '<div class="match-meta">' +
+            t().fair +
+            "$" +
             millions(vehicle.fairPrice.low) +
             "M – $" +
             millions(vehicle.fairPrice.high) +
@@ -340,19 +445,25 @@
         '<div class="match-meta"><a href="' +
         DEEP_BASE +
         vehicle.id +
-        '" data-cta="onboarding-open-vehicle">Ver en la app →</a></div>' +
+        '" data-cta="onboarding-open-vehicle">' +
+        t().viewInApp +
+        "</a></div>" +
         "</div>" +
         '<div class="match-score"><b>' +
         (vehicle.matchScore != null ? vehicle.matchScore : "—") +
-        "</b><span>match</span></div>" +
+        "</b><span>" +
+        t().match +
+        "</span></div>" +
         "</article>"
     })
     html += "</div>"
-
     html +=
-      '<div class="actions">' +
-      '<a class="btn" href="' + APP_STORE + '" data-cta="onboarding-appstore">Continuar en la app</a>' +
-      "</div></section>"
+      '<div class="ob-actions ob-actions-end"><a class="btn" href="' +
+      APP_STORE +
+      '" data-cta="onboarding-appstore">' +
+      t().openApp +
+      "</a></div>"
+    html += "</div>"
     return html
   }
 
@@ -367,7 +478,6 @@
     return Number.isFinite(end) ? end : null
   }
 
-  /** The model year the estimate is quoted for: this year if the range covers it. */
   function subjectYear(range) {
     var start = firstYear(range)
     var end = lastYear(range)
@@ -383,10 +493,7 @@
       .trim()
   }
 
-  /**
-   * Fair price for each match, using the same estimator the app ships:
-   * Revista Motor (public `vehicle_prices`) plus the catalog range.
-   */
+  /** Fair price from the app's estimator: Revista Motor plus the catalog range. */
   async function attachFairPrices(matches) {
     if (!window.VelytFairPrice || !matches.length) return
     var makes = matches
@@ -467,16 +574,12 @@
     })
   }
 
-  function millions(value) {
-    return Math.round(value / 1e6)
-  }
-
-  async function fetchCatalog() {
-    if (state.answers.budget === undefined) {
-      state.answers.budget = { min: 40, max: 100 }
-      saveAnswers()
-    }
+  async function fetchMatches() {
     try {
+      if (!state.answers.budget) {
+        state.answers.budget = { min: 40, max: 100 }
+        saveAnswers()
+      }
       var res = await fetch(CFG.supabaseUrl + "/rest/v1/rpc/match_vehicles", {
         method: "POST",
         headers: {
@@ -497,9 +600,9 @@
       await attachFairPrices(state.matches)
       track("web_matches_viewed", {
         matches: state.matches.length,
+        lang: LANG,
         budget_min: state.answers.budget.min,
         budget_max: state.answers.budget.max,
-        has_filters: (state.answers.vehicleTypes || []).length > 0,
       })
     } catch (e) {
       state.error = true
@@ -507,28 +610,47 @@
     render()
   }
 
+  function setLang(next) {
+    LANG = next
+    try {
+      localStorage.setItem("lang", next)
+    } catch (e) {}
+    document.documentElement.lang = next === "es" ? "es-CO" : "en"
+    var toggle = document.getElementById("lang-toggle")
+    if (toggle) toggle.textContent = next === "es" ? "EN" : "ES"
+    render()
+  }
+
+  window.toggleLang = function () {
+    setLang(LANG === "es" ? "en" : "es")
+  }
+
   function bind() {
     document.addEventListener("click", function (event) {
       var target = event.target
       if (!(target instanceof Element)) return
-      var option = target.closest(".choice[data-field]")
-      if (option) {
-        var step = CFG.steps[state.step]
-        var value = option.getAttribute("data-value")
+
+      var choice = target.closest(".choice[data-field]")
+      if (choice) {
+        var step = STEPS()[state.step]
+        var value = choice.getAttribute("data-value")
         if (step.type === "multi") {
           var list = state.answers[step.field] || []
-          var next = list.indexOf(value) >= 0 ? list.filter(function (v) {
-            return v !== value
-          }) : list.concat([value])
-          state.answers[step.field] = next
+          state.answers[step.field] =
+            list.indexOf(value) >= 0
+              ? list.filter(function (v) {
+                  return v !== value
+                })
+              : list.concat([value])
         } else {
           state.answers[step.field] = value
         }
         saveAnswers()
-        track("web_onboarding_step", { step: step.field, value: value })
+        track("web_onboarding_step", { step: step.field, value: value, lang: LANG })
         render()
         return
       }
+
       var chip = target.closest(".chip[data-plan]")
       if (chip) {
         var plan = state.answers.plan || { down: 20, months: 60 }
@@ -538,27 +660,19 @@
         render()
         return
       }
-      if (target.id === "start") {
-        state.step = hasAllAnswers() ? CFG.steps.length : 0
-        render()
-      } else if (target.id === "next") {
+
+      if (target.id === "next") {
         if (!canContinue()) return
         state.step += 1
         render()
       } else if (target.id === "back") {
         state.step = Math.max(0, state.step - 1)
         render()
-      } else if (target.id === "skip") {
-        var current = CFG.steps[state.step]
-        state.answers[current.field] = []
-        saveAnswers()
-        state.step += 1
-        render()
       } else if (target.id === "restart") {
         state.answers = {}
         state.matches = null
         state.error = null
-        state.step = -1
+        state.step = 0
         try {
           localStorage.removeItem(STORAGE_KEY)
         } catch (e) {}
@@ -568,10 +682,11 @@
         state.matches = null
         render()
       } else if (target.id === "edit-budget") {
-        var budgetStep = CFG.steps.findIndex(function (s) {
+        state.step = STEPS().findIndex(function (s) {
           return s.field === "budget"
         })
-        state.step = budgetStep
+        state.matches = null
+        state.error = null
         render()
       }
     })
@@ -596,36 +711,11 @@
     })
   }
 
-  /** Where a reload should land: intro, the first unanswered step, or results. */
-  function resumeStep() {
-    var answers = state.answers || {}
-    if (Object.keys(answers).length === 0) return -1
-    if (hasAllAnswers()) return CFG.steps.length
-    for (var i = 0; i < CFG.steps.length; i++) {
-      var step = CFG.steps[i]
-      if (step.type === "range") {
-        if (!answers.budget) return i
-        continue
-      }
-      if (step.type === "multi") {
-        if (!Array.isArray(answers[step.field])) return i
-        continue
-      }
-      if (answers[step.field] == null) return i
-    }
-    return CFG.steps.length
-  }
-
-  function hasAllAnswers() {
-    return CFG.steps.every(function (step) {
-      if (step.type === "range") return !!state.answers.budget
-      if (step.type === "multi") return Array.isArray(state.answers[step.field])
-      return state.answers[step.field] != null
-    })
-  }
-
   if (!CFG) return
   state.step = resumeStep()
+  document.documentElement.lang = LANG === "es" ? "es-CO" : "en"
+  var toggle = document.getElementById("lang-toggle")
+  if (toggle) toggle.textContent = LANG === "es" ? "EN" : "ES"
   bind()
   render()
 })()

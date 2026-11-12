@@ -2,229 +2,500 @@
 window.VELYT_ONBOARDING = {
  "supabaseUrl": "https://rmnxliaaettsrcutvrpl.supabase.co",
  "supabaseKey": "sb_publishable_sYeynBH8z4lJ7KREhs7Eug_IBcFoRxp",
- "steps": [
-  {
-   "field": "useContext",
-   "type": "single",
-   "title": "¿Para qué usarás el vehículo?",
-   "subtitle": "Esto elimina vehículos de trabajo (pickups sencillas, chasis cabinados) si buscas uso personal.",
-   "options": [
-    {
-     "value": "PERSONAL",
-     "label": "Uso personal",
-     "desc": "Cotidiano, familiar, ocio",
-     "icon": "🏠"
-    },
-    {
-     "value": "COMMERCIAL",
-     "label": "Trabajo / comercial",
-     "desc": "Transporte empresarial, carga, acarreo",
-     "icon": "🏢"
-    },
-    {
-     "value": "NO_PREFERENCE",
-     "label": "Sin preferencia",
-     "desc": "Muéstrame todo",
-     "icon": "🔄"
-    }
-   ]
+ "steps": {
+  "es": [
+   {
+    "field": "useContext",
+    "type": "single",
+    "block": "a",
+    "emoji": "🏢",
+    "title": "¿Para qué usarás el vehículo?",
+    "subtitle": "Esto elimina vehículos de trabajo (pickups sencillas, chasis cabinados) si buscas uso personal.",
+    "options": [
+     {
+      "value": "PERSONAL",
+      "label": "Uso personal",
+      "desc": "Cotidiano, familiar, ocio",
+      "icon": "🏠"
+     },
+     {
+      "value": "COMMERCIAL",
+      "label": "Trabajo / comercial",
+      "desc": "Transporte empresarial, carga, acarreo",
+      "icon": "🏢"
+     },
+     {
+      "value": "NO_PREFERENCE",
+      "label": "Sin preferencia",
+      "desc": "Muéstrame todo",
+      "icon": "🔄"
+     }
+    ]
+   },
+   {
+    "field": "passengerRange",
+    "type": "single",
+    "block": "a",
+    "emoji": "👥",
+    "title": "¿Cuántos pasajeros viajarán regularmente?",
+    "subtitle": "Incluye al conductor en el conteo total de personas.",
+    "options": [
+     {
+      "value": "1_2",
+      "label": "Uno o dos",
+      "desc": "Conductor y un acompañante",
+      "icon": "👤"
+     },
+     {
+      "value": "3_5",
+      "label": "Tres a cinco",
+      "desc": "Familia pequeña o grupo habitual",
+      "icon": "👨‍👩‍👧"
+     },
+     {
+      "value": "6_7",
+      "label": "Seis a siete",
+      "desc": "Familia grande o van ejecutiva",
+      "icon": "👨‍👩‍👧‍👦"
+     },
+     {
+      "value": "8_PLUS",
+      "label": "Ocho o más",
+      "desc": "Transporte colectivo o comercial",
+      "icon": "🚐"
+     }
+    ]
+   },
+   {
+    "field": "needsCargo",
+    "type": "single",
+    "block": "a",
+    "emoji": "📦",
+    "title": "¿Necesitas transportar carga voluminosa o pesada frecuentemente?",
+    "subtitle": "Esto determinará si necesitas un platón, van de carga o baúl estándar.",
+    "options": [
+     {
+      "value": "NO",
+      "label": "No",
+      "desc": "Un baúl estándar es suficiente",
+      "icon": "🧳"
+     },
+     {
+      "value": "YES",
+      "label": "Sí, con frecuencia",
+      "desc": "Necesito un platón o van de carga",
+      "icon": "📦"
+     },
+     {
+      "value": "NULL",
+      "label": "Sin preferencia",
+      "desc": "Muéstrame todo",
+      "icon": "🔄"
+     }
+    ]
+   },
+   {
+    "field": "budget",
+    "type": "range",
+    "block": "a",
+    "emoji": "💰",
+    "title": "¿Cuál es tu rango de inversión?",
+    "subtitle": "Arrastra los dos extremos para definir tu presupuesto mínimo y máximo en COP.",
+    "min": 20,
+    "max": 300,
+    "step": 10,
+    "defaultMin": 40,
+    "defaultMax": 100
+   },
+   {
+    "field": "terrainType",
+    "type": "single",
+    "block": "b",
+    "emoji": "🛣️",
+    "title": "¿En qué tipo de vías lo usarás principalmente?",
+    "subtitle": "El terreno define el tipo de tracción y suspensión que necesitas.",
+    "options": [
+     {
+      "value": "URBAN_ASPHALT",
+      "label": "100% Asfalto urbano",
+      "desc": "Ciudad / malla vial",
+      "icon": "🏙️"
+     },
+     {
+      "value": "PAVED_HIGHWAY",
+      "label": "Vías intermunicipales",
+      "desc": "Carreteras pavimentadas",
+      "icon": "🛣️"
+     },
+     {
+      "value": "UNPAVED",
+      "label": "Caminos destapados",
+      "desc": "Vías sin pavimentar",
+      "icon": "🪨"
+     },
+     {
+      "value": "HEAVY_OFF_ROAD",
+      "label": "Trocha pesada",
+      "desc": "Terreno extremo",
+      "icon": "⛰️"
+     }
+    ]
+   },
+   {
+    "field": "vehicleTypes",
+    "type": "multi",
+    "block": "b",
+    "emoji": "🚗",
+    "title": "¿Qué tipo de vehículo prefieres?",
+    "subtitle": "El tipo de carrocería afecta comodidad, espacio y capacidad de terreno.",
+    "options": [
+     {
+      "value": "SEDAN",
+      "label": "Sedán",
+      "desc": "Cómodo y eficiente",
+      "icon": "🚗"
+     },
+     {
+      "value": "HATCHBACK",
+      "label": "Hatchback",
+      "desc": "Compacto y ágil",
+      "icon": "🎯"
+     },
+     {
+      "value": "SUV",
+      "label": "SUV",
+      "desc": "Espacioso y versátil",
+      "icon": "🏔️"
+     },
+     {
+      "value": "PICKUP",
+      "label": "Pickup",
+      "desc": "Trabajo y carga",
+      "icon": "🛻"
+     },
+     {
+      "value": "VAN",
+      "label": "Van",
+      "desc": "Espacio para pasajeros y carga",
+      "icon": "🚐"
+     }
+    ]
+   },
+   {
+    "field": "fuels",
+    "type": "multi",
+    "block": "b",
+    "emoji": "⛽",
+    "title": "¿Qué tipo de motorización estás dispuesto a considerar?",
+    "subtitle": "Puedes seleccionar varias opciones. Esto amplía o reduce el catálogo.",
+    "options": [
+     {
+      "value": "GASOLINE",
+      "label": "Gasolina",
+      "desc": "Más disponibilidad",
+      "icon": "⛽"
+     },
+     {
+      "value": "DIESEL",
+      "label": "Diésel",
+      "desc": "Mayor torque y eficiencia",
+      "icon": "🛢️"
+     },
+     {
+      "value": "HYBRID",
+      "label": "Híbrido",
+      "desc": "Ahorro en ciudad",
+      "icon": "🔋"
+     },
+     {
+      "value": "ELECTRIC",
+      "label": "Eléctrico",
+      "desc": "Cero emisiones",
+      "icon": "⚡"
+     }
+    ]
+   },
+   {
+    "field": "paymentMethod",
+    "type": "single",
+    "block": "a",
+    "emoji": "💳",
+    "title": "¿Cómo vas a pagarlo?",
+    "subtitle": "Con esto calculamos tu cuota real, no una genérica.",
+    "options": [
+     {
+      "value": "CREDIT",
+      "label": "Con crédito",
+      "desc": "Cuota inicial y cuota mensual.",
+      "icon": "💳"
+     },
+     {
+      "value": "CASH",
+      "label": "De contado",
+      "desc": "Sin financiación ni intereses.",
+      "icon": "💵"
+     },
+     {
+      "value": "UNSURE",
+      "label": "Aún no sé",
+      "desc": "Compara las dos opciones con tu presupuesto.",
+      "icon": "🤔"
+     }
+    ]
+   }
+  ],
+  "en": [
+   {
+    "field": "useContext",
+    "type": "single",
+    "block": "a",
+    "emoji": "🏢",
+    "title": "How will you use the vehicle?",
+    "subtitle": "This removes work-specific vehicles (single-cab pickups, chassis cabs) from your results.",
+    "options": [
+     {
+      "value": "PERSONAL",
+      "label": "Personal use",
+      "desc": "Daily driver, family, leisure",
+      "icon": "🏠"
+     },
+     {
+      "value": "COMMERCIAL",
+      "label": "Work / commercial",
+      "desc": "Business transport, cargo, hauling",
+      "icon": "🏢"
+     },
+     {
+      "value": "NO_PREFERENCE",
+      "label": "No preference",
+      "desc": "Show me everything",
+      "icon": "🔄"
+     }
+    ]
+   },
+   {
+    "field": "passengerRange",
+    "type": "single",
+    "block": "a",
+    "emoji": "👥",
+    "title": "How many passengers will travel regularly?",
+    "subtitle": "Include the driver in the total count of people.",
+    "options": [
+     {
+      "value": "1_2",
+      "label": "One or two",
+      "desc": "Driver and one passenger",
+      "icon": "👤"
+     },
+     {
+      "value": "3_5",
+      "label": "Three to five",
+      "desc": "Small family or regular group",
+      "icon": "👨‍👩‍👧"
+     },
+     {
+      "value": "6_7",
+      "label": "Six to seven",
+      "desc": "Large family or executive van",
+      "icon": "👨‍👩‍👧‍👦"
+     },
+     {
+      "value": "8_PLUS",
+      "label": "Eight or more",
+      "desc": "Collective or commercial transport",
+      "icon": "🚐"
+     }
+    ]
+   },
+   {
+    "field": "needsCargo",
+    "type": "single",
+    "block": "a",
+    "emoji": "📦",
+    "title": "Do you need to transport bulky or heavy cargo frequently?",
+    "subtitle": "This will determine if you need a flatbed, cargo van, or standard trunk.",
+    "options": [
+     {
+      "value": "NO",
+      "label": "No",
+      "desc": "A standard trunk is enough",
+      "icon": "🧳"
+     },
+     {
+      "value": "YES",
+      "label": "Yes, frequently",
+      "desc": "I need a flatbed or cargo van",
+      "icon": "📦"
+     },
+     {
+      "value": "NULL",
+      "label": "No preference",
+      "desc": "Show me everything",
+      "icon": "🔄"
+     }
+    ]
+   },
+   {
+    "field": "budget",
+    "type": "range",
+    "block": "a",
+    "emoji": "💰",
+    "title": "What is your investment range?",
+    "subtitle": "Drag both ends to define your minimum and maximum budget in COP.",
+    "min": 20,
+    "max": 300,
+    "step": 10,
+    "defaultMin": 40,
+    "defaultMax": 100
+   },
+   {
+    "field": "terrainType",
+    "type": "single",
+    "block": "b",
+    "emoji": "🛣️",
+    "title": "What type of roads will you mainly use?",
+    "subtitle": "The terrain defines the traction and suspension type you need.",
+    "options": [
+     {
+      "value": "URBAN_ASPHALT",
+      "label": "100% Urban asphalt",
+      "desc": "City / road grid",
+      "icon": "🏙️"
+     },
+     {
+      "value": "PAVED_HIGHWAY",
+      "label": "Paved highways",
+      "desc": "Paved interstate roads",
+      "icon": "🛣️"
+     },
+     {
+      "value": "UNPAVED",
+      "label": "Unpaved roads",
+      "desc": "Dirt tracks",
+      "icon": "🪨"
+     },
+     {
+      "value": "HEAVY_OFF_ROAD",
+      "label": "Heavy off-road",
+      "desc": "Extreme terrain",
+      "icon": "⛰️"
+     }
+    ]
+   },
+   {
+    "field": "vehicleTypes",
+    "type": "multi",
+    "block": "b",
+    "emoji": "🚗",
+    "title": "What type of vehicle do you prefer?",
+    "subtitle": "Body type affects comfort, cargo space, and terrain capability.",
+    "options": [
+     {
+      "value": "SEDAN",
+      "label": "Sedan",
+      "desc": "Comfortable and efficient",
+      "icon": "🚗"
+     },
+     {
+      "value": "HATCHBACK",
+      "label": "Hatchback",
+      "desc": "Compact and agile",
+      "icon": "🎯"
+     },
+     {
+      "value": "SUV",
+      "label": "SUV",
+      "desc": "Spacious and capable",
+      "icon": "🏔️"
+     },
+     {
+      "value": "PICKUP",
+      "label": "Pickup",
+      "desc": "Work and cargo hauling",
+      "icon": "🛻"
+     },
+     {
+      "value": "VAN",
+      "label": "Van",
+      "desc": "Passenger and cargo space",
+      "icon": "🚐"
+     }
+    ]
+   },
+   {
+    "field": "fuels",
+    "type": "multi",
+    "block": "b",
+    "emoji": "⛽",
+    "title": "What type of powertrain do you consider?",
+    "subtitle": "You can select multiple options. This broadens or narrows the catalog.",
+    "options": [
+     {
+      "value": "GASOLINE",
+      "label": "Gasoline",
+      "desc": "More availability",
+      "icon": "⛽"
+     },
+     {
+      "value": "DIESEL",
+      "label": "Diesel",
+      "desc": "More torque and efficiency",
+      "icon": "🛢️"
+     },
+     {
+      "value": "HYBRID",
+      "label": "Hybrid",
+      "desc": "City savings",
+      "icon": "🔋"
+     },
+     {
+      "value": "ELECTRIC",
+      "label": "Electric",
+      "desc": "Zero emissions",
+      "icon": "⚡"
+     }
+    ]
+   },
+   {
+    "field": "paymentMethod",
+    "type": "single",
+    "block": "a",
+    "emoji": "💳",
+    "title": "How will you pay for it?",
+    "subtitle": "This is what we use for your real monthly payment.",
+    "options": [
+     {
+      "value": "CREDIT",
+      "label": "With credit",
+      "desc": "Down payment and monthly instalment.",
+      "icon": "💳"
+     },
+     {
+      "value": "CASH",
+      "label": "Cash",
+      "desc": "No financing, no interest.",
+      "icon": "💵"
+     },
+     {
+      "value": "UNSURE",
+      "label": "Not sure yet",
+      "desc": "Compare both against your budget.",
+      "icon": "🤔"
+     }
+    ]
+   }
+  ]
+ },
+ "blocks": {
+  "es": {
+   "prefix": "Bloque",
+   "a": "Tu perfil",
+   "b": "Tu vehículo"
   },
-  {
-   "field": "passengerRange",
-   "type": "single",
-   "title": "¿Cuántos pasajeros viajarán regularmente?",
-   "subtitle": "Incluye al conductor en el conteo total de personas.",
-   "options": [
-    {
-     "value": "1_2",
-     "label": "Uno o dos",
-     "desc": "Conductor y un acompañante",
-     "icon": "👤"
-    },
-    {
-     "value": "3_5",
-     "label": "Tres a cinco",
-     "desc": "Familia pequeña o grupo habitual",
-     "icon": "👨‍👩‍👧"
-    },
-    {
-     "value": "6_7",
-     "label": "Seis a siete",
-     "desc": "Familia grande o van ejecutiva",
-     "icon": "👨‍👩‍👧‍👦"
-    },
-    {
-     "value": "8_PLUS",
-     "label": "Ocho o más",
-     "desc": "Transporte colectivo o comercial",
-     "icon": "🚐"
-    }
-   ]
-  },
-  {
-   "field": "needsCargo",
-   "type": "single",
-   "title": "¿Necesitas transportar carga voluminosa o pesada frecuentemente?",
-   "subtitle": "Esto determinará si necesitas un platón, van de carga o baúl estándar.",
-   "options": [
-    {
-     "value": "NO",
-     "label": "No",
-     "desc": "Un baúl estándar es suficiente",
-     "icon": "🧳"
-    },
-    {
-     "value": "YES",
-     "label": "Sí, con frecuencia",
-     "desc": "Necesito un platón o van de carga",
-     "icon": "📦"
-    },
-    {
-     "value": "NULL",
-     "label": "Sin preferencia",
-     "desc": "Muéstrame todo",
-     "icon": "🔄"
-    }
-   ]
-  },
-  {
-   "field": "budget",
-   "type": "range",
-   "title": "¿Cuál es tu rango de inversión?",
-   "subtitle": "Arrastra los dos extremos para definir tu presupuesto mínimo y máximo en COP.",
-   "min": 20,
-   "max": 300,
-   "step": 10,
-   "defaultMin": 40,
-   "defaultMax": 100
-  },
-  {
-   "field": "terrainType",
-   "type": "single",
-   "title": "¿En qué tipo de vías lo usarás principalmente?",
-   "subtitle": "El terreno define el tipo de tracción y suspensión que necesitas.",
-   "options": [
-    {
-     "value": "URBAN_ASPHALT",
-     "label": "100% Asfalto urbano",
-     "desc": "Ciudad / malla vial",
-     "icon": "🏙️"
-    },
-    {
-     "value": "PAVED_HIGHWAY",
-     "label": "Vías intermunicipales",
-     "desc": "Carreteras pavimentadas",
-     "icon": "🛣️"
-    },
-    {
-     "value": "UNPAVED",
-     "label": "Caminos destapados",
-     "desc": "Vías sin pavimentar",
-     "icon": "🪨"
-    },
-    {
-     "value": "HEAVY_OFF_ROAD",
-     "label": "Trocha pesada",
-     "desc": "Terreno extremo",
-     "icon": "⛰️"
-    }
-   ]
-  },
-  {
-   "field": "vehicleTypes",
-   "type": "multi",
-   "title": "¿Qué tipo de vehículo prefieres?",
-   "subtitle": "El tipo de carrocería afecta comodidad, espacio y capacidad de terreno.",
-   "options": [
-    {
-     "value": "SEDAN",
-     "label": "Sedán",
-     "desc": "Cómodo y eficiente",
-     "icon": "🚗"
-    },
-    {
-     "value": "HATCHBACK",
-     "label": "Hatchback",
-     "desc": "Compacto y ágil",
-     "icon": "🎯"
-    },
-    {
-     "value": "SUV",
-     "label": "SUV",
-     "desc": "Espacioso y versátil",
-     "icon": "🏔️"
-    },
-    {
-     "value": "PICKUP",
-     "label": "Pickup",
-     "desc": "Trabajo y carga",
-     "icon": "🛻"
-    },
-    {
-     "value": "VAN",
-     "label": "Van",
-     "desc": "Espacio para pasajeros y carga",
-     "icon": "🚐"
-    }
-   ]
-  },
-  {
-   "field": "fuels",
-   "type": "multi",
-   "title": "¿Qué tipo de motorización estás dispuesto a considerar?",
-   "subtitle": "Puedes seleccionar varias opciones. Esto amplía o reduce el catálogo.",
-   "options": [
-    {
-     "value": "GASOLINE",
-     "label": "Gasolina",
-     "desc": "Más disponibilidad",
-     "icon": "⛽"
-    },
-    {
-     "value": "DIESEL",
-     "label": "Diésel",
-     "desc": "Mayor torque y eficiencia",
-     "icon": "🛢️"
-    },
-    {
-     "value": "HYBRID",
-     "label": "Híbrido",
-     "desc": "Ahorro en ciudad",
-     "icon": "🔋"
-    },
-    {
-     "value": "ELECTRIC",
-     "label": "Eléctrico",
-     "desc": "Cero emisiones",
-     "icon": "⚡"
-    }
-   ]
-  },
-  {
-   "field": "paymentMethod",
-   "type": "single",
-   "title": "¿Cómo vas a pagarlo?",
-   "subtitle": "Con esto calculamos tu cuota real, no una genérica.",
-   "options": [
-    {
-     "value": "CREDIT",
-     "label": "Con crédito",
-     "desc": "Cuota inicial y cuota mensual.",
-     "icon": "💳"
-    },
-    {
-     "value": "CASH",
-     "label": "De contado",
-     "desc": "Sin financiación ni intereses.",
-     "icon": "💵"
-    },
-    {
-     "value": "UNSURE",
-     "label": "Aún no sé",
-     "desc": "Compara las dos opciones con tu presupuesto.",
-     "icon": "🤔"
-    }
-   ]
+  "en": {
+   "prefix": "Block",
+   "a": "Your profile",
+   "b": "Your vehicle"
   }
- ]
+ }
 }

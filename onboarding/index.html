@@ -7,7 +7,7 @@
   <meta name="description" content="Responde 8 preguntas y ve los carros que encajan con tu vida. Sin cuenta, sin teléfono y sin correo.">
   <link rel="canonical" href="https://sobusadriver.github.io/velyt/onboarding/">
   <meta property="og:title" content="Encuentra tu carro · velyt">
-  <meta property="og:description" content="8 preguntas, sin cuenta. Resultados limitados en la web; el peritaje completo vive en la app.">
+  <meta property="og:description" content="8 preguntas, sin cuenta. Lista corta en la web; el peritaje completo vive en la app.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#06070a">
   <link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon.png">
@@ -17,33 +17,81 @@
   <link rel="stylesheet" href="../assets/site.css">
   <script src="../assets/theme.js" defer></script>
   <script src="../assets/analytics.js" defer></script>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Encuentra tu carro · velyt",
-      "url": "https://sobusadriver.github.io/velyt/onboarding/",
-      "applicationCategory": "ShoppingApplication",
-      "operatingSystem": "Web",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "COP" }
-    }
-  </script>
   <style>
-    .onboarding { max-width: 720px; margin: 0 auto; padding: 128px 20px 72px; display: grid; gap: 22px; }
-    /* A wizard, not a landing section: same type, smaller scale. */
-    .onboarding .section-title { font-size: clamp(1.45rem, 4.4vw, 2rem); line-height: 1.16; }
-    .onboarding .choices { margin-top: 22px; }
-    .onboarding .chip.on { background: var(--accent); color: var(--on-accent); border-color: transparent; }
+    /* The app's profiling carousel, on the site's own palette: monochrome
+       controls, no brand blue. */
+    .ob {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 104px 20px 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .ob-head { display: flex; align-items: center; gap: 12px; padding-top: 8px; }
+    .ob-track { flex: 1; height: 6px; border-radius: 3px; background: var(--surface-strong); overflow: hidden; }
+    .ob-fill { display: block; height: 100%; background: var(--text); transition: width .25s ease; }
+    .ob-count { font-size: .8rem; color: var(--text-secondary); font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; }
 
-    .progress { height: 3px; border-radius: 999px; background: var(--line); overflow: hidden; }
-    #progress-fill { display: block; height: 100%; width: 0; background: var(--accent); transition: width .25s ease; }
+    .ob-scroll { flex: 1; overflow-y: auto; padding: 26px 0 24px; }
+    .ob-emoji {
+      width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 22px;
+      display: grid; place-items: center; font-size: 52px; line-height: 1;
+      background: var(--surface-strong);
+    }
+    .ob-block {
+      display: inline-block; border-radius: 20px; padding: 4px 12px; margin-bottom: 14px;
+      background: var(--surface-strong); color: var(--text-secondary);
+      font-size: .7rem; letter-spacing: .04em; text-transform: uppercase; font-weight: 600;
+    }
+    .ob-title {
+      font-family: var(--display); font-size: clamp(1.6rem, 5vw, 2rem); font-weight: 700;
+      letter-spacing: -.02em; line-height: 1.12; margin: 0 0 8px;
+    }
+    .ob-sub { color: var(--text-secondary); font-size: 1rem; line-height: 1.5; margin: 0 0 24px; }
+    .ob-plan-label { color: var(--text-secondary); font-size: .82rem; margin: 20px 0 8px; }
 
-    .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 24px; }
-    .budget { display: grid; gap: 10px; margin-top: 24px; }
-    .budget label { font-size: .82rem; color: var(--text-secondary); display: flex; justify-content: space-between; }
-    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    .ob .choices { margin-top: 0; }
+    .ob .choice { background: var(--surface); }
+    .ob .choice[aria-pressed="true"] { border-color: var(--text); background: var(--surface-strong); }
+    .ob .choice .icon-mark { background: transparent; }
+    .choice-text { display: grid; gap: 2px; flex: 1; }
+    .choice-text strong { font-family: var(--display); font-size: 1rem; font-weight: 600; }
+    .choice-text small { color: var(--text-secondary); font-size: .82rem; }
+    .choice-radio {
+      width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--line);
+      margin-left: auto; flex: none;
+    }
+    .choice[aria-pressed="true"] .choice-radio {
+      border-color: var(--text); background: var(--text); box-shadow: inset 0 0 0 3px var(--bg);
+    }
 
-    .results { display: grid; gap: 12px; margin-top: 26px; }
+    .ob-budget { display: grid; gap: 10px; }
+    .ob-budget label { display: flex; justify-content: space-between; font-size: .82rem; color: var(--text-secondary); }
+    .ob input[type="range"] { width: 100%; accent-color: var(--text); }
+
+    .ob-nav {
+      position: sticky; bottom: 0; display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 14px 0 calc(14px + env(safe-area-inset-bottom));
+      background: var(--bg); border-top: 1px solid var(--line);
+    }
+    .ob-back {
+      background: none; border: none; color: var(--text-secondary); font: inherit;
+      padding: 12px 8px; cursor: pointer;
+    }
+    .ob-next {
+      background: var(--text); color: var(--bg); border: none; border-radius: 999px;
+      padding: 14px 26px; font-family: var(--display); font-weight: 600; font-size: 1rem;
+      cursor: pointer; min-width: 168px;
+    }
+    .ob-next[disabled] { opacity: .35; cursor: not-allowed; }
+
+    .ob-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 0 0 10px; }
+    .ob-actions-end { margin: 22px 0 8px; }
+    .ob .btn { background: var(--text); color: var(--bg); }
+    .ob .chip.on { background: var(--text); color: var(--bg); border-color: transparent; }
+
+    .results { display: grid; gap: 12px; margin-top: 18px; }
     .match-meta a { text-decoration: underline; text-underline-offset: 3px; }
   </style>
 </head>
@@ -55,18 +103,16 @@
         <span>velyt</span>
       </a>
       <div class="nav-actions">
-        <a class="lang-toggle" href="../calculadora/">Cuota</a>
-        <a class="lang-toggle" href="./" aria-current="page">Mi carro</a>
-        <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
-          <svg id="theme-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="Tema"><title>Cambiar tema</title><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <svg id="theme-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="Theme"><title>Toggle theme</title><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
+        <button type="button" class="lang-toggle" id="lang-toggle" onclick="toggleLang()">EN</button>
       </div>
     </div>
   </nav>
 
-  <main class="onboarding">
-    <div class="progress" role="progressbar" aria-label="Progreso" aria-valuemin="0" aria-valuemax="100"><span id="progress-fill"></span></div>
-    <div id="flow" aria-live="polite"></div>
+  <main class="ob">
+    <div id="flow"></div>
   </main>
 
   <footer>
@@ -76,8 +122,8 @@
     </div>
   </footer>
 
-  <script src="../assets/onboarding-data.js"></script>
   <script src="../assets/fairprice.js"></script>
+  <script src="../assets/onboarding-data.js"></script>
   <script src="../assets/onboarding.js"></script>
 </body>
 </html>
