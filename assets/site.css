@@ -208,6 +208,10 @@ footer a { color: var(--text-secondary); }
 /* Reusable card grid (landing props, onboarding answers) */
 .props-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 54px; }
 .btn[disabled] { opacity: .45; cursor: not-allowed; }
+/* Four FAQ answers read better in two rows of two. */
+@media (min-width: 1081px) {
+  #faq .props-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 1080px) {
   .props-grid { grid-template-columns: 1fr; }
 }

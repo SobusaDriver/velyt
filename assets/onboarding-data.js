@@ -72,7 +72,7 @@ window.VELYT_ONBOARDING = {
     "block": "a",
     "emoji": "📦",
     "title": "¿Necesitas transportar carga voluminosa o pesada frecuentemente?",
-    "subtitle": "Esto determinará si necesitas un platón, van de carga o baúl estándar.",
+    "subtitle": "Así sabemos si necesitas platón, van de carga o baúl normal.",
     "options": [
      {
       "value": "NO",
@@ -186,7 +186,7 @@ window.VELYT_ONBOARDING = {
     "block": "b",
     "emoji": "⛽",
     "title": "¿Qué tipo de motorización estás dispuesto a considerar?",
-    "subtitle": "Puedes seleccionar varias opciones. Esto amplía o reduce el catálogo.",
+    "subtitle": "Marca todas las que apliquen.",
     "options": [
      {
       "value": "GASOLINE",
@@ -220,7 +220,7 @@ window.VELYT_ONBOARDING = {
     "block": "a",
     "emoji": "💳",
     "title": "¿Cómo vas a pagarlo?",
-    "subtitle": "Con esto calculamos tu cuota real, no una genérica.",
+    "subtitle": "Con esto calculamos la cuota con tus números.",
     "options": [
      {
       "value": "CREDIT",
@@ -312,7 +312,7 @@ window.VELYT_ONBOARDING = {
     "block": "a",
     "emoji": "📦",
     "title": "Do you need to transport bulky or heavy cargo frequently?",
-    "subtitle": "This will determine if you need a flatbed, cargo van, or standard trunk.",
+    "subtitle": "So we know whether you need a flatbed, a cargo van or a normal trunk.",
     "options": [
      {
       "value": "NO",
@@ -426,7 +426,7 @@ window.VELYT_ONBOARDING = {
     "block": "b",
     "emoji": "⛽",
     "title": "What type of powertrain do you consider?",
-    "subtitle": "You can select multiple options. This broadens or narrows the catalog.",
+    "subtitle": "Pick every fuel you would accept.",
     "options": [
      {
       "value": "GASOLINE",
@@ -460,7 +460,7 @@ window.VELYT_ONBOARDING = {
     "block": "a",
     "emoji": "💳",
     "title": "How will you pay for it?",
-    "subtitle": "This is what we use for your real monthly payment.",
+    "subtitle": "This is what we use to work out your payment.",
     "options": [
      {
       "value": "CREDIT",

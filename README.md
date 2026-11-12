@@ -127,16 +127,26 @@ skips the intro. No account, no email, nothing sent to a server.
 
 ## Copy claims
 
-The landing page says **"10+ fuentes de precio"** and **"11 marketplaces"**. Both
-are marketing claims:
+Every number on the landing page comes from the database or the code, and this
+note keeps the trail:
 
-- price sources: the estimator blends 3 references (Revista Motor, Fasecolda,
-  catalog). Marketplace prices are inflated and are **not** valuation inputs — see
-  `docs/fair-price-estimator.md`.
-- marketplaces: 9 ingested adapters + MercadoLibre and Facebook open-market links.
+| Claim | Where it comes from |
+|---|---|
+| **2.464 vehículos**, 114 marcas | `select count(*) from vehicles` |
+| **9 portales** | the 9 scrapers in `src/services/listings/index.ts` (autocosmos, autoland, bellpi, wcar, carroya, delaespriellamotors, triplo, vendetunave, loscoches) |
+| **27.795 precios de Revista Motor** | `select count(*) from vehicle_prices` |
 
-Change these numbers only in `index.html` (`#src1`, `#src2`, the two gauges, and the
-`es`/`en` translation maps), and keep this note in sync.
+Two rules that were easy to get wrong:
+
+- Marketplace listings are **not** valuation inputs. The fair price blends
+  Revista Motor, Fasecolda and the catalog — see `docs/fair-price-estimator.md`.
+  The 9 portals are where the cars come from, not where the price comes from.
+- The peritaje reports accident data only where a public source records it (the
+  national RUNT/SIMIT data does not include a national claims database), so the
+  copy says "donde la fuente pública los registra".
+
+Change these numbers only in `index.html` (`#src1`, `#src2`, the three gauges, and
+the `es`/`en` translation maps) and keep this table in sync.
 
 ## Analytics and install attribution
 

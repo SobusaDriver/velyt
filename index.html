@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-CO">
 <head>
   <script>
     // The 404 handler replays deep paths (e.g. /velyt/search/vehicle/x) on this
@@ -11,7 +11,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title id="page-title">velyt — Tu próximo carro sin sorpresas</title>
-  <meta name="description" id="meta-desc" content="Compra con la información que el vendedor prefiere ocultar. Precio real, fallas documentadas, el vehículo que realmente necesitas.">
+  <meta name="description" id="meta-desc" content="Mira el precio justo de un carro usado en Colombia, los carros que encajan con tu perfil y el informe por placa antes de comprar. Gratis y sin cuenta.">
   <meta name="theme-color" content="#0d0d0d">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -24,7 +24,7 @@
   <link rel="canonical" href="https://sobusadriver.github.io/velyt/">
 
   <meta property="og:title" content="velyt — Tu próximo carro sin sorpresas">
-  <meta property="og:description" content="Precio real multicruzado, fallas documentadas, el vehículo que realmente necesitas. Compra informado.">
+  <meta property="og:description" content="Precio justo con fuente, carros que encajan con tu perfil e informe por placa. Gratis y sin cuenta.">
   <meta property="og:url" content="https://sobusadriver.github.io/velyt/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="velyt">
@@ -42,7 +42,7 @@
   <meta name="twitter:image" content="https://sobusadriver.github.io/velyt/assets/og-image.png">
   <meta name="twitter:image:alt" content="velyt — compra con la información que el vendedor prefiere ocultar">
 
-  <link rel="stylesheet" href="assets/site.css?v=3">
+  <link rel="stylesheet" href="assets/site.css?v=4">
   <script src="assets/theme.js" defer></script>
   <style>
     /* ---------- hero ---------- */
@@ -430,6 +430,34 @@
 
   </style>
   <script src="assets/analytics.js" defer></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Velyt es gratis",
+          "acceptedAnswer": { "@type": "Answer", "text": "Sí. Las tres herramientas web funcionan sin crear cuenta y sin dejar tu teléfono o correo. La app también es gratis." }
+        },
+        {
+          "@type": "Question",
+          "name": "De dónde sale el precio justo",
+          "acceptedAnswer": { "@type": "Answer", "text": "De 27.795 registros de Revista Motor para la misma marca, modelo y año, cruzados con el rango del catálogo y los listados de los 9 portales. En cada ficha ves el rango y el dato de referencia." }
+        },
+        {
+          "@type": "Question",
+          "name": "Qué revisa el informe por placa",
+          "acceptedAnswer": { "@type": "Answer", "text": "SOAT, RUNT, multas en SIMIT, gravámenes y limitaciones al dominio, más los registros públicos del vehículo. Cada dato lleva su fuente." }
+        },
+        {
+          "@type": "Question",
+          "name": "Sirve si estoy fuera de Bogotá",
+          "acceptedAnswer": { "@type": "Answer", "text": "El match y el precio justo funcionan en todo el país. El impuesto vehicular en línea cubre Bogotá y Sabanagrande; para el resto te enlazamos a la secretaría de tu departamento." }
+        }
+      ]
+    }
+  </script>
 </head>
 <body>
 
@@ -469,35 +497,35 @@
     <div class="hero-content">
       <span class="hero-eyebrow"><img src="assets/favicon.png" alt="" width="18" height="18"> VELYT &middot; COLOMBIA</span>
       <h1 id="hero-title" class="hero-enter d1">Compra con la informaci&oacute;n<br>que el vendedor <span class="hl">prefiere ocultar</span>.</h1>
-      <p id="hero-desc" class="hero-enter d2">Velyt cruza datos de m&uacute;ltiples fuentes para mostrarte el precio real, las fallas documentadas y el veh&iacute;culo que realmente necesitas. Sin vueltas.</p>
-      <a href="velyt://" class="hero-cta hero-enter" id="hero-cta" data-d="3" data-cta="hero">
-        <span id="cta-text">Encontrar mi pr&oacute;ximo carro</span>
+      <p id="hero-desc" class="hero-enter d2">Velyt revisa 9 portales de carros y 27.795 precios de Revista Motor para decirte qu&eacute; vale ese modelo, qu&eacute; le falla y cu&aacute;l te sirve seg&uacute;n c&oacute;mo vives.</p>
+      <a href="onboarding/" class="hero-cta hero-enter" id="hero-cta" data-d="3" data-cta="hero-wizard">
+        <span id="cta-text">Responde 8 preguntas</span>
         <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="CTA arrow"><title>CTA arrow</title><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <p class="hero-sub hero-enter" id="hero-sub-note" data-d="4">Menos de 2 minutos &middot; Sin registro &middot; Solo Colombia</p>
-      <p class="hero-enter deep-link-hint" data-d="5"><a href="onboarding/" id="hero-onboarding" data-cta="hero-onboarding">O responde 8 preguntas y mira los matches sin la app &rarr;</a></p>
+      <p class="hero-sub hero-enter" id="hero-sub-note" data-d="4">Unos 2 minutos &middot; Sin cuenta</p>
+      <p class="hero-enter deep-link-hint" data-d="5"><a href="https://apps.apple.com/co/app/velyt/id6778179192?ct=web-hero" id="hero-onboarding" data-cta="hero-appstore">Prefiero la app: desc&aacute;rgala en el App Store &rarr;</a></p>
 
       <div class="gauge-cluster">
         <div class="gauge">
           <div class="gauge-circle">
             <svg viewBox="0 0 80 80" role="img" aria-label="Vehicles gauge"><title>Vehicles gauge</title><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="vehicles" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
-            <span class="value">3000+</span>
+            <span class="value">2.464</span>
           </div>
           <div class="gauge-label" id="stat1-label">Veh&iacute;culos</div>
         </div>
         <div class="gauge">
           <div class="gauge-circle">
             <svg viewBox="0 0 80 80" role="img" aria-label="Marketplaces gauge"><title>Marketplaces gauge</title><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="marketplaces" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
-            <span class="value">11</span>
+            <span class="value">9</span>
           </div>
-          <div class="gauge-label" id="stat2-label">Marketplaces</div>
+          <div class="gauge-label" id="stat2-label">Portales de carros</div>
         </div>
         <div class="gauge">
           <div class="gauge-circle">
             <svg viewBox="0 0 80 80" role="img" aria-label="Price sources gauge"><title>Price sources gauge</title><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="sources" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
-            <span class="value">10+</span>
+            <span class="value">27.7k</span>
           </div>
-          <div class="gauge-label" id="stat3-label">Fuentes de precio</div>
+          <div class="gauge-label" id="stat3-label">Precios de Revista Motor</div>
         </div>
       </div>
 
@@ -516,7 +544,7 @@
     <div class="container">
       <span class="section-label" id="wt-label">Sin instalar nada</span>
       <h2 class="section-title" id="wt-title">Prueba Velyt en la web.</h2>
-      <p class="section-desc" id="wt-desc">Dos herramientas abiertas, sin cuenta y sin dar tus datos.</p>
+      <p class="section-desc" id="wt-desc">Tres herramientas que corren en el navegador, sin cuenta.</p>
       <div class="props-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
         <a class="prop-card fade-up" href="onboarding/" data-cta="web-matches">
           <div class="icon-row">
@@ -586,25 +614,25 @@
           <span class="step-num">01</span>
           <h3 id="tl1-title">Cu&eacute;ntanos tu d&iacute;a a d&iacute;a</h3>
           <p id="tl1-desc">Pasajeros, presupuesto, terreno, combustible, prioridades. Respondes unas preguntas y listo.</p>
-          <div class="step-meta" id="tl1-meta">Toma &lt; 2 min &middot; Sin registro</div>
+          <div class="step-meta" id="tl1-meta">8 preguntas, menos de 2 minutos</div>
         </div>
         <div class="tl-step fade-up">
           <span class="step-num">02</span>
           <h3 id="tl2-title">Velyt encuentra tus opciones</h3>
           <p id="tl2-desc">Buscamos entre miles de veh&iacute;culos para mostrarte solo los que realmente te sirven, ordenados del mejor al peor para ti.</p>
-          <div class="step-meta" id="tl2-meta">Sin anuncios &middot; Sin sesgos</div>
+          <div class="step-meta" id="tl2-meta">Ordenados por lo que te sirve</div>
         </div>
         <div class="tl-step fade-up">
           <span class="step-num">03</span>
           <h3 id="tl3-title">Ve el precio real y las fallas</h3>
           <p id="tl3-desc">Por cada opci&oacute;n ves el precio multicruzado, los problemas documentados, el historial por a&ntilde;o y qu&eacute; revisar antes de comprar.</p>
-          <div class="step-meta" id="tl3-meta">Datos reales &middot; Sin rodeos</div>
+          <div class="step-meta" id="tl3-meta">Cada precio con su fuente</div>
         </div>
         <div class="tl-step fade-up">
           <span class="step-num">04</span>
           <h3 id="tl4-title">Decide con confianza</h3>
           <p id="tl4-desc">Compara hasta 3 veh&iacute;culos lado a lado, revisa listados en vivo del mercado y comparte con tu familia para decidir juntos.</p>
-          <div class="step-meta" id="tl4-meta">Compara &middot; Comparte &middot; Decide</div>
+          <div class="step-meta" id="tl4-meta">Hasta 3 carros lado a lado</div>
         </div>
       </div>
     </div>
@@ -614,7 +642,7 @@
     <div class="container">
       <span class="section-label" id="s3-label">Chequeo vehicular</span>
       <h2 class="section-title" id="s3-title">El historial completo,<br>antes de firmar.</h2>
-      <p class="section-desc" id="s3-desc">Con solo la placa, Velyt cruza RUNT, SOAT, multas y siniestros y te entrega un informe verificable en un toque.</p>
+      <p class="section-desc" id="s3-desc">Con solo la placa, Velyt consulta RUNT, SOAT y SIMIT, y te entrega un informe con la fuente de cada dato.</p>
       <div class="checks-grid">
         <div class="prop-card fade-up">
           <div class="icon-row">
@@ -635,7 +663,7 @@
             <span class="icon-mark">&#128737;&#65039;</span>
             <h3 id="s3c3-title">Historial y siniestralidad</h3>
           </div>
-          <p id="s3c3-p">Accidentes reportados y el historial registrado del veh&iacute;culo.</p>
+          <p id="s3c3-p">Accidentes reportados donde la fuente p&uacute;blica los registra, y el historial del veh&iacute;culo.</p>
         </div>
         <div class="prop-card fade-up">
           <div class="icon-row">
@@ -671,7 +699,7 @@
 
         <div class="flow-panel">
           <div class="flow-view active" id="flow-1" role="tabpanel" aria-labelledby="tab-1">
-            <h3 id="f1-title">Nueve preguntas, cero formularios eternos</h3>
+            <h3 id="f1-title">Tu perfil en menos de dos minutos</h3>
             <p class="flow-caption" id="f1-cap">Presupuesto, terreno, uso y prioridades.</p>
             <div class="chip-row">
               <span class="chip on">SUV</span>
@@ -770,7 +798,32 @@
       </div>
       <p class="cases-note" id="s5-note">Ejemplos armados con datos de RUNT, SOAT y marketplaces. No son testimonios de clientes.</p>
       <div class="sources-strip">
-        <span>RUNT</span><span>SOAT</span><span id="src1">11 marketplaces</span><span id="src2">10+ fuentes de precio</span>
+        <span>RUNT</span><span>SOAT</span><span id="src1">9 portales de carros</span><span id="src2">27.795 precios de Revista Motor</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="container">
+      <span class="section-label" id="faq-label">Preguntas</span>
+      <h2 class="section-title" id="faq-title">Lo que suele frenar la compra.</h2>
+      <div class="props-grid">
+        <div class="prop-card fade-up">
+          <h3 id="faq1-q">Velyt es gratis</h3>
+          <p id="faq1-a">Sí. Las tres herramientas web funcionan sin crear cuenta y sin dejar tu teléfono o correo. La app también es gratis.</p>
+        </div>
+        <div class="prop-card fade-up">
+          <h3 id="faq2-q">De dónde sale el precio justo</h3>
+          <p id="faq2-a">De 27.795 registros de Revista Motor para la misma marca, modelo y año, cruzados con el rango del catálogo y los listados de los 9 portales. En cada ficha ves el rango y el dato de referencia.</p>
+        </div>
+        <div class="prop-card fade-up">
+          <h3 id="faq3-q">Qué revisa el informe por placa</h3>
+          <p id="faq3-a">SOAT, RUNT, multas en SIMIT, gravámenes y limitaciones al dominio, más los registros públicos del vehículo. Cada dato lleva su fuente.</p>
+        </div>
+        <div class="prop-card fade-up">
+          <h3 id="faq4-q">Sirve si estoy fuera de Bogotá</h3>
+          <p id="faq4-a">El match y el precio justo funcionan en todo el país. El impuesto vehicular en línea cubre Bogotá y Sabanagrande; para el resto te enlazamos a la secretaría de tu departamento.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -793,6 +846,7 @@
         </div>
       </div>
       <p class="deep-link-hint" id="deep-link-text">&iquest;Ya tienes la app instalada? <a href="velyt://">&Aacute;brela aqu&iacute;</a></p>
+      <p class="deep-link-hint"><a href="onboarding/" id="cta-wizard" data-cta="cta-section-wizard">O responde 8 preguntas aqu&iacute; mismo &rarr;</a></p>
       <p class="deep-link-hint"><a href="calculadora/" id="calc-link" data-cta="cta-section-calculadora">Simula tu cuota mensual &rarr;</a></p>
     </div>
   </section>
@@ -890,17 +944,28 @@
 
     var TRANSLATIONS = {
       es: {
-        'cta-text': 'Encontrar mi pr\u00F3ximo carro',
-        'hero-sub-note': 'Menos de 2 minutos \u00B7 Sin registro \u00B7 Solo Colombia',
+        'cta-text': 'Responde 8 preguntas',
+        'cta-wizard': 'O responde 8 preguntas aqu\u00ED mismo \u2192',
+        'faq-label': 'Preguntas',
+        'faq-title': 'Lo que suele frenar la compra.',
+        'faq1-q': 'Velyt es gratis',
+        'faq2-q': 'De d\u00F3nde sale el precio justo',
+        'faq3-q': 'Qu\u00E9 revisa el informe por placa',
+        'faq4-q': 'Sirve si estoy fuera de Bogot\u00E1',
+        'faq1-a': 'S\u00ED. Las tres herramientas web funcionan sin crear cuenta y sin dejar tu tel\u00E9fono o correo. La app tambi\u00E9n es gratis.',
+        'faq2-a': 'De 27.795 registros de Revista Motor para la misma marca, modelo y a\u00F1o, cruzados con el rango del cat\u00E1logo y los listados de los 9 portales. En cada ficha ves el rango y el dato de referencia.',
+        'faq3-a': 'SOAT, RUNT, multas en SIMIT, grav\u00E1menes y limitaciones al dominio, m\u00E1s los registros p\u00FAblicos del veh\u00EDculo. Cada dato lleva su fuente.',
+        'faq4-a': 'El match y el precio justo funcionan en todo el pa\u00EDs. El impuesto vehicular en l\u00EDnea cubre Bogot\u00E1 y Sabanagrande; para el resto te enlazamos a la secretar\u00EDa de tu departamento.',
+        'hero-sub-note': 'Unos 2 minutos \u00B7 Sin cuenta',
         'stat1-label': 'Veh\u00EDculos',
-        'stat2-label': 'Marketplaces',
-        'stat3-label': 'Fuentes de precio',
+        'stat2-label': 'Portales de carros',
+        'stat3-label': 'Precios de Revista Motor',
         'deep-link-text': '\u00BFYa tienes la app instalada? <a href="velyt://">\u00C1brela aqu\u00ED</a>',
         'calc-link': 'Simula tu cuota mensual \u2192',
-        'hero-onboarding': 'O responde 8 preguntas y mira los matches sin la app \u2192',
+        'hero-onboarding': 'Prefiero la app: desc\u00E1rgala en el App Store \u2192',
         'wt-label': 'Sin instalar nada',
         'wt-title': 'Prueba Velyt en la web.',
-        'wt-desc': 'Dos herramientas abiertas, sin cuenta y sin dar tus datos.',
+        'wt-desc': 'Tres herramientas que corren en el navegador, sin cuenta.',
         'wt1-title': 'Encuentra tu carro',
         'wt1-p': 'Responde 8 preguntas y mira los carros que encajan contigo, con precio justo estimado.',
         'wt1-cta': 'Empezar \u2192',
@@ -917,7 +982,7 @@
         'dl-title': 'Abriendo en velyt\u2026',
         'dl-desc': 'Si la app no se abre autom\u00E1ticamente, toca el bot\u00F3n.',
         'hero-title': 'Compra con la informaci\u00F3n<br>que el vendedor <span class="hl">prefiere ocultar</span>.',
-        'hero-desc': 'Velyt cruza datos de m\u00FAltiples fuentes para mostrarte el precio real, las fallas documentadas y el veh\u00EDculo que realmente necesitas. Sin vueltas.',
+        'hero-desc': 'Velyt revisa 9 portales de carros y 27.795 precios de Revista Motor para decirte qu\u00E9 vale ese modelo, qu\u00E9 le falla y cu\u00E1l te sirve seg\u00FAn c\u00F3mo vives.',
         's1-label': 'Por qu\u00E9 velyt',
         's1-title': 'La informaci\u00F3n que necesitas<br>para negociar con confianza.',
         's1-desc': 'No compres basado en corazonadas. Compra con datos reales.',
@@ -931,16 +996,16 @@
         's2-title': 'Cuatro pasos para comprar informado.',
         'tl1-title': 'Cu\u00E9ntanos tu d\u00EDa a d\u00EDa',
         'tl1-desc': 'Pasajeros, presupuesto, terreno, combustible, prioridades. Respondes unas preguntas y listo.',
-        'tl1-meta': 'Toma < 2 min \u00B7 Sin registro',
+        'tl1-meta': '8 preguntas, menos de 2 minutos',
         'tl2-title': 'Velyt encuentra tus opciones',
         'tl2-desc': 'Buscamos entre miles de veh\u00EDculos para mostrarte solo los que realmente te sirven, ordenados del mejor al peor para ti.',
-        'tl2-meta': 'Sin anuncios \u00B7 Sin sesgos',
+        'tl2-meta': 'Ordenados por lo que te sirve',
         'tl3-title': 'Ve el precio real y las fallas',
         'tl3-desc': 'Por cada opci\u00F3n ves el precio multicruzado, los problemas documentados, el historial por a\u00F1o y qu\u00E9 revisar antes de comprar.',
-        'tl3-meta': 'Datos reales \u00B7 Sin rodeos',
+        'tl3-meta': 'Cada precio con su fuente',
         'tl4-title': 'Decide con confianza',
         'tl4-desc': 'Compara hasta 3 veh\u00EDculos lado a lado, revisa listados en vivo del mercado y comparte con tu familia para decidir juntos.',
-        'tl4-meta': 'Compara \u00B7 Comparte \u00B7 Decide',
+        'tl4-meta': 'Hasta 3 carros lado a lado',
         's3-label': 'Chequeo vehicular',
         's3-title': 'El historial completo,<br>antes de firmar.',
         's3-desc': 'Con solo la placa, Velyt cruza RUNT, SOAT, multas y siniestros y te entrega un informe verificable en un toque.',
@@ -949,14 +1014,14 @@
         's3c2-title': 'Multas y alertas',
         's3c2-p': 'Multas en cobro coactivo y alertas pendientes sobre la placa.',
         's3c3-title': 'Historial y siniestralidad',
-        's3c3-p': 'Accidentes reportados y el historial registrado del veh\u00EDculo.',
+        's3c3-p': 'Accidentes reportados donde la fuente p\u00FAblica los registra, y el historial del veh\u00EDculo.',
         's3c4-title': 'Propietario y restricciones',
         's3c4-p': 'N\u00FAmero de due\u00F1os, grav\u00E1menes, restricciones y n\u00FAmeros regrabados.',
         's4-label': 'El flujo',
         's4-title': 'As\u00ED se ve una compra informada.',
         's4-desc': 'Cuatro pantallas, un solo hilo: de tu perfil al informe del veh\u00EDculo.',
         'fl1': 'Tu perfil', 'fl2': 'Tus opciones', 'fl3': 'El informe', 'fl4': 'La decisi\u00F3n',
-        'f1-title': 'Nueve preguntas, cero formularios eternos',
+        'f1-title': 'Tu perfil en menos de dos minutos',
         'f1-cap': 'Presupuesto, terreno, uso y prioridades.',
         'f1c1': 'Autom\u00E1tico', 'f1c2': '5 puestos', 'f1c3': 'Gasolina',
         'f1-foot': 'Toma menos de 2 minutos y no pide registro.',
@@ -984,24 +1049,35 @@
         's5-note': 'Ejemplos armados con datos de RUNT, SOAT y marketplaces. No son testimonios de clientes.',
         'src1': '11 marketplaces', 'src2': '10+ fuentes de precio',
         'cta-title': 'Empieza ahora, es gratis.',
-        'cta-desc': '\u00DAnete a los compradores que ya descubrieron el precio real y las fallas documentadas antes de negociar.',
+        'cta-desc': 'Instala la app o resuelve tus dudas aqu\u00ED mismo, en el navegador.',
         'footer-text': 'velyt \u2014 Colombia \u00B7 Tu pr\u00F3ximo carro sin sorpresas',
         'footer-privacy': '<a href="privacidad.html">Pol\u00EDtica de privacidad</a>',
         'page-title': 'velyt \u2014 Tu pr\u00F3ximo carro sin sorpresas',
-        'meta-desc': 'Compra con la informaci\u00F3n que el vendedor prefiere ocultar. Precio real, fallas documentadas, el veh\u00EDculo que realmente necesitas.',
+        'meta-desc': 'Mira el precio justo de un carro usado en Colombia, los carros que encajan con tu perfil y el informe por placa antes de comprar. Gratis y sin cuenta.',
       },
       en: {
-        'cta-text': 'Find my next car',
-        'hero-sub-note': 'Less than 2 minutes \u00B7 No sign-up \u00B7 Colombia only',
+        'cta-text': 'Answer 8 questions',
+        'cta-wizard': 'Or answer 8 questions right here \u2192',
+        'faq-label': 'Questions',
+        'faq-title': 'What usually stops the purchase.',
+        'faq1-q': 'Is Velyt free',
+        'faq2-q': 'Where does the fair price come from',
+        'faq3-q': 'What does the plate report check',
+        'faq4-q': 'Does it work outside Bogot\u00E1',
+        'faq1-a': 'Yes. The three web tools work without an account and without leaving your phone or email. The app is free too.',
+        'faq2-a': 'From 27,795 Revista Motor records for the same make, model and year, cross-checked against the catalog range and listings from the 9 marketplaces. Each car page shows the range and the reference figure.',
+        'faq3-a': 'SOAT, RUNT, SIMIT fines, liens and ownership restrictions, plus the vehicle\u2019s public records. Every figure carries its source.',
+        'faq4-a': 'The match and the fair price work nationwide. Vehicle tax online covers Bogot\u00E1 and Sabanagrande; for the rest we link you to your department\u2019s office.',
+        'hero-sub-note': 'About 2 minutes \u00B7 No account',
         'stat1-label': 'Vehicles',
-        'stat2-label': 'Marketplaces',
-        'stat3-label': 'Price sources',
+        'stat2-label': 'Car marketplaces',
+        'stat3-label': 'Revista Motor prices',
         'deep-link-text': 'Already have the app installed? <a href="velyt://">Open here</a>',
         'calc-link': 'Simulate your monthly payment \u2192',
-        'hero-onboarding': 'Or answer 8 questions and see your matches without the app \u2192',
+        'hero-onboarding': 'I\u2019d rather use the app: get it on the App Store \u2192',
         'wt-label': 'No install needed',
         'wt-title': 'Try Velyt on the web.',
-        'wt-desc': 'Two open tools, no account and no personal data.',
+        'wt-desc': 'Three tools that run in the browser, no account.',
         'wt1-title': 'Find your car',
         'wt1-p': 'Answer 8 questions and see the cars that fit you, with an estimated fair price.',
         'wt1-cta': 'Start \u2192',
@@ -1018,7 +1094,7 @@
         'dl-title': 'Opening in velyt\u2026',
         'dl-desc': "If the app doesn't open automatically, tap the button.",
         'hero-title': 'Buy with the information<br>the seller <span class="hl">prefers to hide</span>.',
-        'hero-desc': 'Velyt cross-references data from multiple sources to show you the real price, documented issues, and the vehicle you actually need. Straightforward.',
+        'hero-desc': 'Velyt checks 9 car marketplaces and 27,795 Revista Motor price records, then tells you what that model is worth, what goes wrong with it, and which car fits how you live.',
         's1-label': 'Why velyt',
         's1-title': 'The information you need<br>to negotiate with confidence.',
         's1-desc': "Don't buy on gut feeling. Buy with real data.",
@@ -1032,16 +1108,16 @@
         's2-title': 'Four steps to buy informed.',
         'tl1-title': 'Tell us about your daily life',
         'tl1-desc': 'Passengers, budget, terrain, fuel, priorities. Answer a few questions and you\u2019re done.',
-        'tl1-meta': 'Takes < 2 min \u00B7 No sign-up',
+        'tl1-meta': '8 questions, under 2 minutes',
         'tl2-title': 'Velyt finds your options',
         'tl2-desc': 'We search through thousands of vehicles to show you only the ones that work for you, ranked from best to worst.',
-        'tl2-meta': 'No ads \u00B7 No bias',
+        'tl2-meta': 'Ordered by what fits you',
         'tl3-title': 'See the real price and issues',
         'tl3-desc': 'For each match you get multi-sourced pricing, documented problems, year-by-year history, and what to check before buying.',
-        'tl3-meta': 'Real data \u00B7 No fluff',
+        'tl3-meta': 'Every price with its source',
         'tl4-title': 'Decide with confidence',
         'tl4-desc': 'Compare up to 3 vehicles side by side, browse live market listings, and share with your family to decide together.',
-        'tl4-meta': 'Compare \u00B7 Share \u00B7 Decide',
+        'tl4-meta': 'Up to 3 cars side by side',
         's3-label': 'Vehicle check',
         's3-title': 'The full history,<br>before you sign.',
         's3-desc': 'With just the plate, Velyt cross-checks RUNT, SOAT, fines and accidents and hands you a verifiable report in one tap.',
@@ -1050,14 +1126,14 @@
         's3c2-title': 'Fines and alerts',
         's3c2-p': 'Coactive fines and pending alerts on the plate.',
         's3c3-title': 'History and accident records',
-        's3c3-p': 'Accident reports and the vehicle\u2019s recorded history.',
+        's3c3-p': 'Accident reports where the public source records them, plus the vehicle\u2019s history.',
         's3c4-title': 'Owner and restrictions',
         's3c4-p': 'Owner count, liens, restrictions and re-stamped numbers.',
         's4-label': 'The flow',
         's4-title': 'This is what an informed purchase looks like.',
         's4-desc': 'Four screens, one thread: from your profile to the vehicle report.',
         'fl1': 'Your profile', 'fl2': 'Your options', 'fl3': 'The report', 'fl4': 'The call',
-        'f1-title': 'Nine questions, no endless form',
+        'f1-title': 'Your profile in under two minutes',
         'f1-cap': 'Budget, terrain, use and priorities.',
         'f1c1': 'Automatic', 'f1c2': '5 seats', 'f1c3': 'Gasoline',
         'f1-foot': 'Takes under 2 minutes and needs no sign-up.',
@@ -1085,11 +1161,11 @@
         's5-note': 'Examples built from RUNT, SOAT and marketplace data. They are not customer testimonials.',
         'src1': '11 marketplaces', 'src2': '10+ price sources',
         'cta-title': "Start now, it's free.",
-        'cta-desc': 'Join the buyers who already discovered the real price and documented issues before negotiating.',
+        'cta-desc': 'Install the app, or settle it right here in the browser.',
         'footer-text': 'velyt \u2014 Colombia \u00B7 Your next car, no surprises',
         'footer-privacy': '<a href="privacidad.html">Privacy policy</a>',
         'page-title': 'velyt \u2014 Your next car, no surprises',
-        'meta-desc': 'Buy with the information sellers prefer to hide. Real price, documented issues, the vehicle you actually need.',
+        'meta-desc': 'See the fair price of a used car in Colombia, the cars that fit your profile, and the plate report before you buy. Free, no account.',
       }
     }
     var CURRENT_LANG = 'es'
@@ -1185,9 +1261,9 @@
       }
 
       if (isIOS || isAndroid) {
-        const cta = document.querySelector('.hero-cta')
+        // The hero CTA opens the web wizard; only app links use the scheme.
+        const cta = document.querySelector('a[href="velyt://"].hero-cta')
         if (cta) {
-          cta.href = 'velyt://'
           cta.addEventListener('click', () => {
             setTimeout(() => {
               // No Android store listing yet: iOS falls back to the App Store, Android stays put.
