@@ -127,16 +127,17 @@ skips the intro. No account, no email, nothing sent to a server.
 
 ## Copy claims
 
-Every number on the landing page comes from the database or the code, and this
-note keeps the trail:
+The page never names a price source. It says **"referencias de mercado"** and
+**"27.7k+ precios de referencia"**, and always with a `+` so a growing database
+never makes the claim wrong. The exact provenance stays here:
 
-| Claim | Where it comes from |
+| What the page says | Where it comes from |
 |---|---|
-| **2.464 vehículos**, 114 marcas | `select count(*) from vehicles` |
+| **2.400+ vehículos**, 114 marcas | `select count(*) from vehicles` → 2.464 at the time of writing |
 | **9 portales** | the 9 scrapers in `src/services/listings/index.ts` (autocosmos, autoland, bellpi, wcar, carroya, delaespriellamotors, triplo, vendetunave, loscoches) |
-| **27.795 precios de Revista Motor** | `select count(*) from vehicle_prices` |
+| **27.7k+ referencias de mercado** | `select count(*) from vehicle_prices` → 27.795 rows of Revista Motor |
 
-Two rules that were easy to get wrong:
+Three rules that were easy to get wrong:
 
 - Marketplace listings are **not** valuation inputs. The fair price blends
   Revista Motor, Fasecolda and the catalog — see `docs/fair-price-estimator.md`.
@@ -144,6 +145,8 @@ Two rules that were easy to get wrong:
 - The peritaje reports accident data only where a public source records it (the
   national RUNT/SIMIT data does not include a national claims database), so the
   copy says "donde la fuente pública los registra".
+- Source names (Revista Motor, Fasecolda) stay in the docs and in the code. The
+  UI shows "Guía oficial" / "Guía de mercado" and "Referencia de mercado".
 
 Change these numbers only in `index.html` (`#src1`, `#src2`, the three gauges, and
 the `es`/`en` translation maps) and keep this table in sync.
