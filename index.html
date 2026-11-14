@@ -2,6 +2,7 @@
 <html lang="es-CO">
 <head>
   <script>
+    document.documentElement.classList.add('js')
     // The 404 handler replays deep paths (e.g. /velyt/search/vehicle/x) on this
     // page, where relative links would resolve under the deep path and 404.
     if (location.pathname.indexOf("/velyt/") === 0) {
@@ -14,11 +15,12 @@
   <meta name="description" id="meta-desc" content="Mira el precio justo de un carro usado en Colombia, los carros que encajan con tu perfil y el informe por placa antes de comprar. Gratis y sin cuenta.">
   <meta name="theme-color" content="#0d0d0d">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="velyt">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800;9..40,900&amp;family=Inter:wght@400;500;600&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Instrument+Serif:ital@0;1&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="canonical" href="https://sobusadriver.github.io/velyt/">
@@ -42,7 +44,7 @@
   <meta name="twitter:image" content="https://sobusadriver.github.io/velyt/assets/og-image.png">
   <meta name="twitter:image:alt" content="velyt — el carro, con datos y su fuente">
 
-  <link rel="stylesheet" href="assets/site.css?v=4">
+  <link rel="stylesheet" href="assets/site.css?v=6">
   <script src="assets/theme.js" defer></script>
   <style>
     /* ---------- hero ---------- */
@@ -108,8 +110,8 @@
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
       font-family: var(--display);
-      font-size: .64rem;
-      letter-spacing: .22em;
+      font-size: .7rem;
+      letter-spacing: .2em;
       color: var(--text-secondary);
       margin-bottom: 24px;
     }
@@ -178,11 +180,11 @@
       display: grid;
       place-items: center;
       font-family: var(--display);
-      font-size: .58rem;
+      font-size: .7rem;
       font-weight: 700;
       letter-spacing: -.02em;
     }
-    .gauge-label { font-size: .62rem; text-transform: uppercase; letter-spacing: .16em; color: var(--text-tertiary); max-width: 74px; line-height: 1.4; }
+    .gauge-label { font-size: .7rem; text-transform: uppercase; letter-spacing: .16em; color: var(--text-tertiary); max-width: 96px; line-height: 1.4; }
 
     .hero-device {
       position: absolute;
@@ -233,14 +235,14 @@
       backdrop-filter: blur(16px);
       box-shadow: 0 18px 40px rgba(0, 0, 0, .4);
       font-family: var(--display);
-      font-size: .68rem;
+      font-size: .7rem;
       letter-spacing: .08em;
       color: #f4f4f1;
       white-space: nowrap;
     }
     .device-chip b { font-size: 1.05rem; letter-spacing: -.02em; }
     .chip-score { top: 34%; left: -22px; z-index: 4; }
-    .chip-score span { color: var(--green); font-size: .58rem; }
+    .chip-score span { color: var(--green); font-size: .7rem; }
     .chip-price { bottom: 4%; right: -24px; z-index: 4; border-color: rgba(61, 107, 255, .45); }
     .chip-price::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
 
@@ -262,9 +264,9 @@
     .tl-step .step-num {
       display: block;
       font-family: var(--display);
-      font-size: .66rem;
+      font-size: .7rem;
       letter-spacing: .18em;
-      color: var(--accent);
+      color: var(--accent-ink);
       margin-bottom: 26px;
     }
     .tl-step h3 { font-family: var(--display); font-size: 1rem; font-weight: 600; letter-spacing: -.02em; margin-bottom: 8px; line-height: 1.35; }
@@ -290,7 +292,7 @@
     }
     .flow-tab:hover { color: var(--text-secondary); border-color: var(--line); }
     .flow-tab[aria-selected="true"] { border-color: var(--line-strong); background: var(--surface-strong); color: var(--text); }
-    .flow-tab .flow-step { display: block; font-family: var(--display); font-size: .62rem; letter-spacing: .2em; color: var(--text-tertiary); margin-bottom: 6px; }
+    .flow-tab .flow-step { display: block; font-family: var(--display); font-size: .7rem; letter-spacing: .2em; color: var(--text-tertiary); margin-bottom: 6px; }
     .flow-tab strong { font-family: var(--display); font-size: .96rem; font-weight: 600; letter-spacing: -.01em; }
     .flow-panel {
       position: relative;
@@ -318,7 +320,8 @@
     .range-fill { position: absolute; top: 21px; left: 0; width: 62%; height: 5px; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--green)); }
     .range-ask { position: absolute; top: 8px; left: 84%; width: 2px; height: 28px; background: var(--red); }
     .range-ask::after { content: attr(data-label); position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: .68rem; color: var(--red); white-space: nowrap; font-weight: 600; }
-    .range-legend { display: flex; justify-content: space-between; font-size: .72rem; color: var(--text-tertiary); }
+    .light .range-ask::after { color: #b3261e; }
+    .range-legend { display: flex; justify-content: space-between; font-size: .78rem; color: var(--text-tertiary); }
     .flow-footer { display: flex; align-items: center; gap: 10px; margin-top: 20px; font-size: .82rem; color: var(--text-secondary); }
     .flow-dots { display: flex; gap: 6px; margin-top: 22px; }
     .flow-dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--line-strong); transition: width .25s, background .25s; }
@@ -337,18 +340,23 @@
     }
     .case-card:hover { transform: translateY(-3px); border-color: var(--line-strong); background: var(--surface-strong); }
     .case-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--case-tone, var(--line-strong)); }
-    .case-card .case-idx { font-family: var(--display); font-size: .64rem; letter-spacing: .2em; color: var(--text-tertiary); }
+    .case-card .case-idx { font-family: var(--display); font-size: .7rem; letter-spacing: .2em; color: var(--text-tertiary); }
     .case-card h3 { font-family: var(--display); font-size: 1.08rem; font-weight: 600; letter-spacing: -.02em; margin: 10px 0 2px; }
     .case-card .case-meta { font-size: .76rem; color: var(--text-tertiary); }
     .case-card .case-figures { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; margin: 22px 0 6px; font-size: .8rem; color: var(--text-secondary); }
     .case-card .case-figures b { display: block; font-family: var(--display); font-size: 1.2rem; color: var(--text); font-weight: 600; letter-spacing: -.02em; margin-top: 2px; }
-    .case-verdict { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; padding: 4px 10px; border-radius: 999px; font-size: .7rem; font-weight: 600; }
+    .case-verdict { display: inline-flex; align-items: center; gap: 6px; margin-top: 18px; padding: 4px 10px; border-radius: 999px; font-size: .75rem; font-weight: 600; }
     .case-verdict.ok { background: rgba(61, 214, 140, .14); color: #6ee7a8; }
     .case-verdict.warn { background: rgba(232, 163, 61, .16); color: #f0c06a; }
     .case-verdict.bad { background: rgba(255, 92, 92, .14); color: #ff8f8f; }
-    .cases-note { margin-top: 20px; font-size: .74rem; color: var(--text-tertiary); }
+    /* The dark-theme verdict text is a light tint of each hue; on the light page
+       it disappears, so the chips get a darker ink and a lighter wash. */
+    .light .case-verdict.ok { background: rgba(27, 127, 75, .12); color: #146c3e; }
+    .light .case-verdict.warn { background: rgba(154, 103, 0, .14); color: #7a5200; }
+    .light .case-verdict.bad { background: rgba(179, 38, 30, .12); color: #a0170f; }
+    .cases-note { margin-top: 20px; font-size: .78rem; color: var(--text-tertiary); }
     .sources-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
-    .sources-strip span { font-size: .68rem; letter-spacing: .08em; color: var(--text-tertiary); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; text-transform: uppercase; }
+    .sources-strip span { font-size: .7rem; letter-spacing: .08em; color: var(--text-tertiary); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; text-transform: uppercase; }
 
     /* ---------- cta ---------- */
     .cta-section { padding: 130px 0; text-align: center; position: relative; overflow: hidden; }
@@ -357,23 +365,26 @@
     .cta-section h2 { font-family: var(--display); font-size: clamp(2rem, 4.4vw, 3.4rem); font-weight: 700; letter-spacing: -.045em; line-height: 1.02; margin-bottom: 14px; text-wrap: balance; }
     .cta-section p { color: var(--text-secondary); margin: 0 auto 38px; max-width: 34rem; font-size: 1rem; }
     .app-buttons { display: flex; justify-content: center; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .cta-section .cta-primary { margin-top: 34px; }
     .store-btn-wrap img { height: 46px; transition: transform .2s, opacity .2s; }
     .store-btn-wrap:hover img { transform: translateY(-2px); opacity: .9; }
     .store-btn-wrap.is-soon { display: flex; flex-direction: column; align-items: center; gap: 6px; }
     .store-btn-wrap.is-soon img { opacity: .45; cursor: not-allowed; }
     .store-btn-wrap.is-soon:hover img { transform: none; opacity: .45; }
-    .soon-label { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
+    .soon-label { font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
     .deep-link-hint { margin-top: 22px; font-size: .78rem; color: var(--text-tertiary); }
     .deep-link-hint a { color: var(--text); text-decoration: underline; text-underline-offset: 3px; }
 
 
-    .fade-up { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.2, .7, .2, 1), transform .8s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0s); }
-    .fade-up.visible { opacity: 1; transform: none; }
+    /* Entrance is opt-in from JS so the page still reads when scripts fail. */
+    .js .fade-up { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.2, .7, .2, 1), transform .8s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0s); }
+    .js .fade-up.visible { opacity: 1; transform: none; }
 
     .hero-enter.d1 { --d: .05s; }
     .hero-enter.d2 { --d: .15s; }
     .hero-enter.d3 { --d: .25s; }
     .hero-enter.d4 { --d: .3s; }
+    .hero-enter.d5 { --d: .4s; }
 
     @media (prefers-reduced-motion: no-preference) {
       .hero-enter { animation: rise .9s cubic-bezier(.2, .7, .2, 1) both; animation-delay: var(--d, 0s); }
@@ -389,7 +400,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
-      .fade-up { opacity: 1; transform: none; }
+      .js .fade-up { opacity: 1; transform: none; }
       .hero-video { display: none; }
       .device-frame { transform: none; }
       html { scroll-behavior: auto; }
@@ -448,7 +459,7 @@
         {
           "@type": "Question",
           "name": "Qué revisa el informe por placa",
-          "acceptedAnswer": { "@type": "Answer", "text": "SOAT, RUNT, multas en SIMIT, gravámenes y limitaciones al dominio, más los registros públicos del vehículo. Cada dato lleva su fuente." }
+          "acceptedAnswer": { "@type": "Answer", "text": "SOAT, RUNT, multas, deudas y restricciones, cada dato con su fuente." }
         },
         {
           "@type": "Question",
@@ -463,7 +474,7 @@
 
   <nav id="nav">
     <div class="container">
-      <a href="./" class="brand">
+      <a href="./" class="brand" aria-label="velyt">
         <img src="assets/favicon.png" alt="" class="brand-icon" width="30" height="30">
         <span>velyt</span>
       </a>
@@ -473,8 +484,8 @@
         <a class="nav-link" href="calculadora/" id="nav-calc" data-cta="nav-calculadora">Cuota</a>
       </div>
       <div class="nav-actions">
-        <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-          <svg id="theme-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="Theme"><title>Toggle theme</title><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar entre tema claro y oscuro">
+          <svg id="theme-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
         <button type="button" class="lang-toggle" onclick="toggleLang()">EN</button>
       </div>
@@ -498,31 +509,31 @@
       <span class="hero-eyebrow"><img src="assets/favicon.png" alt="" width="18" height="18"> VELYT &middot; COLOMBIA</span>
       <h1 id="hero-title" class="hero-enter d1">¿Buscas carro y no sabes cuál? ¿Ya tienes uno? <span class="hl">Te ayudamos</span>.</h1>
       <p id="hero-desc" class="hero-enter d2">Velyt junta 9+ portales, 12.8k+ precios de referencia y el informe de la placa para decirte cuál te sirve, cuánto vale y qué necesita el que ya es tuyo.</p>
-      <a href="onboarding/" class="hero-cta hero-enter" id="hero-cta" data-d="3" data-cta="hero-wizard">
+      <a href="onboarding/" class="hero-cta hero-enter d3" id="hero-cta" data-cta="hero-wizard">
         <span id="cta-text">Responde 9 preguntas</span>
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" role="img" aria-label="CTA arrow"><title>CTA arrow</title><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
-      <p class="hero-sub hero-enter" id="hero-sub-note" data-d="4">Unos 2 minutos &middot; Sin cuenta</p>
-      <p class="hero-enter deep-link-hint" data-d="5"><a href="https://apps.apple.com/co/app/velyt/id6778179192?ct=web-hero" id="hero-onboarding" data-cta="hero-appstore">Prefiero la app: desc&aacute;rgala en el App Store &rarr;</a></p>
+      <p class="hero-sub hero-enter d4" id="hero-sub-note">Unos 2 minutos &middot; Sin cuenta</p>
+      <p class="hero-enter deep-link-hint d5"><a href="https://apps.apple.com/co/app/velyt/id6778179192?ct=web-hero" id="hero-onboarding" data-cta="hero-appstore">Prefiero la app: desc&aacute;rgala en el App Store &rarr;</a></p>
 
       <div class="gauge-cluster">
         <div class="gauge">
           <div class="gauge-circle">
-            <svg viewBox="0 0 80 80" role="img" aria-label="Vehicles gauge"><title>Vehicles gauge</title><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="vehicles" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
+            <svg viewBox="0 0 80 80" aria-hidden="true"><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="vehicles" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
             <span class="value">3.300+</span>
           </div>
           <div class="gauge-label" id="stat1-label">Veh&iacute;culos</div>
         </div>
         <div class="gauge">
           <div class="gauge-circle">
-            <svg viewBox="0 0 80 80" role="img" aria-label="Marketplaces gauge"><title>Marketplaces gauge</title><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="marketplaces" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
+            <svg viewBox="0 0 80 80" aria-hidden="true"><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="marketplaces" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
             <span class="value">9</span>
           </div>
           <div class="gauge-label" id="stat2-label">Portales de carros</div>
         </div>
         <div class="gauge">
           <div class="gauge-circle">
-            <svg viewBox="0 0 80 80" role="img" aria-label="Price sources gauge"><title>Price sources gauge</title><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="sources" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
+            <svg viewBox="0 0 80 80" aria-hidden="true"><circle class="track" cx="40" cy="40" r="34"/><circle class="fill" data-gauge="sources" cx="40" cy="40" r="34" stroke-dashoffset="213.6"/></svg>
             <span class="value">12.8k+</span>
           </div>
           <div class="gauge-label" id="stat3-label">Referencias de mercado</div>
@@ -899,9 +910,9 @@
           <span class="soon-label" id="soon-label">Pr&oacute;ximamente</span>
         </div>
       </div>
-      <p class="deep-link-hint" id="deep-link-text">&iquest;Ya tienes la app instalada? <a href="velyt://">&Aacute;brela aqu&iacute;</a></p>
-      <p class="deep-link-hint"><a href="onboarding/" id="cta-wizard" data-cta="cta-section-wizard">O responde 9 preguntas aqu&iacute; mismo &rarr;</a></p>
+      <p class="cta-primary"><a href="onboarding/" id="cta-wizard" class="hero-cta" data-cta="cta-section-wizard">O responde 9 preguntas aqu&iacute; mismo &rarr;</a></p>
       <p class="deep-link-hint"><a href="calculadora/" id="calc-link" data-cta="cta-section-calculadora">Simula tu cuota mensual &rarr;</a></p>
+      <p class="deep-link-hint" id="deep-link-text">&iquest;Ya tienes la app instalada? <a href="velyt://">&Aacute;brela aqu&iacute;</a></p>
     </div>
   </section>
 
@@ -927,12 +938,18 @@
       }
     })
 
-    var observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('visible')
-      })
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
-    document.querySelectorAll('.fade-up').forEach((el) => { observer.observe(el) })
+    var observer = ('IntersectionObserver' in window)
+      ? new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) entry.target.classList.add('visible')
+          })
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' })
+      : null
+    // Without the observer the cards never reveal, so show them straight away.
+    document.querySelectorAll('.fade-up').forEach((el) => {
+      if (observer) observer.observe(el)
+      else el.classList.add('visible')
+    })
 
     // Stagger: siblings enter one after another instead of all at once.
     document.querySelectorAll('.props-grid, .checks-grid, .cases-grid, .timeline').forEach((group) => {
@@ -983,6 +1000,10 @@
       const flow = document.querySelector('.flow')
       flow.addEventListener('mouseenter', stop)
       flow.addEventListener('focusin', stop)
+      // A pointer or touch on the tabs is the reader taking over; WCAG 2.2.2
+      // wants auto-advanced content to stop on demand, and hovering is not a
+      // gesture phones have.
+      flow.addEventListener('pointerdown', stop)
       play()
     })()
 

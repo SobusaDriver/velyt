@@ -26,6 +26,7 @@
       finish: "Ver resultados",
       repeat: "Repetir preguntas",
       search: "Buscando carros que encajen contigo…",
+      loading: "Unos segundos…",
       errorTitle: "No pudimos cargar el catálogo",
       errorDesc: "Revisa tu conexión e inténtalo otra vez.",
       retry: "Reintentar",
@@ -34,7 +35,7 @@
         return n ? n + " carros para ti" : "No encontramos carros con esos filtros"
       },
       limited:
-        "Precio justo estimado con Revista Motor y catálogo. El peritaje y el historial completo viven en la app.",
+        "Ordenados por lo que encajan contigo. Cada precio justo trae su referencia; el peritaje completo está en la app.",
       adjust: "Ajustar presupuesto",
       openApp: "Continuar en la app",
       viewInApp: "Ver en la app →",
@@ -51,6 +52,7 @@
       finish: "See results",
       repeat: "Start over",
       search: "Finding cars that fit you…",
+      loading: "A few seconds…",
       errorTitle: "We couldn't load the catalog",
       errorDesc: "Check your connection and try again.",
       retry: "Retry",
@@ -59,7 +61,7 @@
         return n ? n + " cars for you" : "No cars match those filters"
       },
       limited:
-        "Fair price estimated from Revista Motor and the catalog. The inspection and full history live in the app.",
+        "Ordered by how well they fit you. Every fair price carries its reference; the full plate report is in the app.",
       adjust: "Adjust budget",
       openApp: "Continue in the app",
       viewInApp: "Open in the app →",
@@ -320,11 +322,18 @@
   }
 
   function loadingView() {
+    var skeleton = ""
+    for (var i = 0; i < 3; i++) skeleton += '<div class="ob-skeleton"></div>'
     return (
       headView() +
       '<div class="ob-scroll"><h1 class="ob-title">' +
       t().search +
-      "</h1></div>"
+      '</h1><p class="ob-sub" role="status" aria-live="polite">' +
+      '<span class="ob-spinner" aria-hidden="true"></span> ' +
+      t().loading +
+      '</p><div aria-hidden="true">' +
+      skeleton +
+      "</div></div>"
     )
   }
 
@@ -364,7 +373,14 @@
       return html
     }
 
-    html += '<div class="ob-actions"><button class="chip" id="restart">' + t().repeat + "</button></div>"
+    html +=
+      '<div class="ob-actions"><a class="btn" href="' +
+      APP_STORE +
+      '" data-cta="onboarding-appstore-top">' +
+      t().openApp +
+      '</a><button class="chip" id="restart">' +
+      t().repeat +
+      "</button></div>"
     html += '<div class="results">'
     matches.forEach(function (vehicle) {
       var meta = [
@@ -382,10 +398,22 @@
         })
         .join(" · ")
       html +=
-        '<article class="match-card"><div>' +
-        '<div class="match-name">' +
+        '<article class="match-card' +
+        (vehicle.image_url ? "" : " no-thumb") +
+        '">' +
+        (vehicle.image_url
+          ? '<img class="match-thumb" src="' +
+            vehicle.image_url +
+            '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">'
+          : "") +
+        '<div class="match-body">' +
+        '<div class="match-head"><div class="match-name">' +
         [vehicle.make, vehicle.model].filter(Boolean).join(" ") +
-        "</div>" +
+        '</div><div class="match-score"><b>' +
+        (vehicle.matchScore != null ? vehicle.matchScore : "—") +
+        "</b><span>" +
+        t().match +
+        "</span></div></div>" +
         '<div class="match-meta">' +
         meta +
         "</div>" +
@@ -406,11 +434,6 @@
         t().viewInApp +
         "</a></div>" +
         "</div>" +
-        '<div class="match-score"><b>' +
-        (vehicle.matchScore != null ? vehicle.matchScore : "—") +
-        "</b><span>" +
-        t().match +
-        "</span></div>" +
         "</article>"
     })
     html += "</div>"
