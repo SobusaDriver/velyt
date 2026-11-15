@@ -58,7 +58,35 @@
     })
   }
 
+  // The catalog only changes when it is re-synced, so the first visit pays for
+  // the pages and the next ones read them from here. Bump the version when the
+  // shape changes; the seven days cap keeps a stale price from living forever.
+  var CACHE_KEY = "velyt:vehicles:v1"
+  var CACHE_TTL = 7 * 24 * 60 * 60 * 1000
+
+  function cachedVehicles() {
+    try {
+      var raw = localStorage.getItem(CACHE_KEY)
+      if (!raw) return null
+      var box = JSON.parse(raw)
+      if (!box || !Array.isArray(box.rows) || Date.now() - box.at > CACHE_TTL) return null
+      return box.rows
+    } catch (e) {
+      return null
+    }
+  }
+
+  function cacheVehicles(rows) {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), rows: rows }))
+    } catch (e) {
+      // A full or blocked storage must not break the calculator.
+    }
+  }
+
   async function loadVehicles() {
+    var cached = cachedVehicles()
+    if (cached) return cached
     // PostgREST caps every response at 1,000 rows, so page through the catalog.
     var all = []
     for (var from = 0; ; from += 1000) {
@@ -74,6 +102,7 @@
       all = all.concat(page)
       if (page.length < 1000) break
     }
+    cacheVehicles(all)
     return all
   }
 

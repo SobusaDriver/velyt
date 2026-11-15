@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/site.css?v=6">
+  <link rel="stylesheet" href="../assets/site.css?v=7">
   <script src="../assets/theme.js" defer></script>
   <script src="../assets/analytics.js" defer></script>
   <script type="application/ld+json">
@@ -40,6 +40,15 @@
     .fp select, .fp input[type="number"] {
       width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px;
       background: var(--bg-soft); color: var(--text); font: inherit; font-size: 1rem;
+    }
+    /* The native arrow hugs the border; draw it so it keeps its own gutter. */
+    .fp select {
+      appearance: none; -webkit-appearance: none;
+      padding-right: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238a8e97' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-size: 12px 8px;
     }
     .fp select:focus-visible, .fp input:focus-visible { outline: 2px solid var(--text); outline-offset: 1px; }
     .fp .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
@@ -148,6 +157,6 @@
   <script src="../assets/fairprice.js?v=5"></script>
   <script src="../assets/brandmods.js?v=1"></script>
   <script src="../assets/onboarding-data.js?v=5"></script>
-  <script src="../assets/fair-price.js?v=6"></script>
+  <script src="../assets/fair-price.js?v=7"></script>
 </body>
 </html>
