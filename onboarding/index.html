@@ -122,7 +122,7 @@
 
   <footer>
     <div class="container">
-      <p>velyt &mdash; Colombia &middot; El carro, con datos</p>
+      <p>velyt &mdash; Colombia &middot; La s&uacute;per app de carros</p>
       <p><a href="../privacidad.html">Pol&iacute;tica de privacidad</a></p>
     </div>
   </footer>
@@ -130,6 +130,18 @@
   <script src="../assets/fairprice.js?v=5"></script>
   <script src="../assets/brandmods.js?v=1"></script>
   <script src="../assets/onboarding-data.js?v=6"></script>
-  <script src="../assets/onboarding.js?v=7"></script>
+  <script>
+    document.addEventListener('click', function (event) {
+      var link = event.target.closest && event.target.closest('a[data-open-app]')
+      if (!link) return
+      event.preventDefault()
+      var store = 'https://apps.apple.com/co/app/velyt/id6778179192?ct=web-onboarding'
+      setTimeout(function () {
+        if (!document.hidden) window.location.href = store
+      }, 700)
+      window.location.href = link.getAttribute('href')
+    })
+  </script>
+  <script src="../assets/onboarding.js?v=8"></script>
 </body>
 </html>

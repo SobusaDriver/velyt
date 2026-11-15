@@ -4,6 +4,8 @@
   var CFG = window.VELYT_ONBOARDING
   var STORAGE_KEY = "velyt:onboarding"
   var APP_STORE = "https://apps.apple.com/co/app/velyt/id6778179192?ct=web-onboarding"
+  // The results are the app's matches tab; the store is only the fallback.
+  var MATCHES = "velyt://matches"
   var DEEP_BASE = "https://sobusadriver.github.io/velyt/search/vehicle/"
   var cop = new Intl.NumberFormat("es-CO", {
     style: "currency",
@@ -366,8 +368,8 @@
         '</button><button class="chip" id="restart">' +
         t().repeat +
         '</button><a class="btn" href="' +
-        APP_STORE +
-        '" data-cta="onboarding-appstore-empty">' +
+        MATCHES +
+        '" data-open-app data-cta="onboarding-appstore-empty">' +
         t().openApp +
         "</a></div></div>"
       return html
@@ -375,8 +377,8 @@
 
     html +=
       '<div class="ob-actions"><a class="btn" href="' +
-      APP_STORE +
-      '" data-cta="onboarding-appstore-top">' +
+      MATCHES +
+      '" data-open-app data-cta="onboarding-appstore-top">' +
       t().openApp +
       '</a><button class="chip" id="restart">' +
       t().repeat +
@@ -439,8 +441,8 @@
     html += "</div>"
     html +=
       '<div class="ob-actions ob-actions-end"><a class="btn" href="' +
-      APP_STORE +
-      '" data-cta="onboarding-appstore">' +
+      MATCHES +
+      '" data-open-app data-cta="onboarding-appstore">' +
       t().openApp +
       "</a></div>"
     html += "</div>"
